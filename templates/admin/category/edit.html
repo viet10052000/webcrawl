@@ -1,0 +1,53 @@
+{% extends "admin/baseadmin.html" %}
+
+{% block content %}
+<section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+          <!-- jquery validation -->
+          <div class="card card-primary mt-3">
+            <div class="card-header"></div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <form action="/category/edit/{{category._id}}" method="post">
+                    <h1 class="h3 mb-3 fw-normal">Sửa Danh mục</h1>
+                    <div class="form-floating mb-3">
+                        <label for="floatingInput">Tên</label>
+                        <input type="text" value="{{category.name}}" name="name" class="form-control" required>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <label for="floatingPassword">Thông tin</label>
+                        <textarea name="description" rows="4" cols="50" class="form-control">{{ category.description }}</textarea>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <label for="floatingPassword">Danh mục cha</label>
+                        <select name="parent_id" class="form-control select2" style="width: 100%;">
+                            <option value="">Danh mục cha</option>
+                            {% if categories %}
+                                {% for item in categories  %}
+                                    {% if category._id != item._id %}
+                                        <option value={{item._id}}>{{ item.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+                    </div>
+                    <button class="btn btn-sm btn-primary" type="submit">Cập Nhật</button>
+                </form>
+            </div>
+            <!-- form start -->
+          <!-- /.card -->
+          </div>
+        <!--/.col (left) -->
+        <!-- right column -->
+        <div class="col-md-6">
+
+        </div>
+        <!--/.col (right) -->
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </section>
+{% endblock %}

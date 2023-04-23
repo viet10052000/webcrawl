@@ -1,0 +1,61 @@
+{% extends "admin/baseadmin.html" %}
+
+{% block content %}
+<section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+          <!-- jquery validation -->
+          <a class="btn btn-sm btn-success mt-3" href="/category/create">Thêm Danh Mục</a>
+          <div class="card mt-3">
+            <div class="card-header">Danh sách Danh Mục</div>
+            <!-- /.card-header -->
+            <div class="card-body table-responsive p-0" style="height:80%">
+                <table class="table table-head-fixed text-nowrap">
+                    <thead>
+                      <tr>
+                        <th>Tên</th>
+                        <th>Thông tin</th>
+                        <th>Danh mục cha</th>
+                        <th class="col-2"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in lists %}
+                            <tr>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.description }}</td>
+                                <th>{% if item.parent_id %}
+                                    {% for list in lists  %}
+                                        {% if list._id == item.parent_id %}
+                                            <span style="font-weight:400">{{ list.name }}</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% else %}
+                                        <span style="font-weight:400">Không có</span>
+                                    {% endif %}
+                                </th>
+                                <td class="col-2">
+                                    <a class="btn btn-sm btn-primary" href="/category/edit/{{item._id}}">Edit</a>
+                                    <a class="btn btn-sm btn-danger"  href="/category/delete/{{item._id}}">Delete</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                  </table>
+            </div>
+            <!-- form start -->
+          <!-- /.card -->
+          </div>
+        <!--/.col (left) -->
+        <!-- right column -->
+        <div class="col-md-6">
+
+        </div>
+        <!--/.col (right) -->
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </section>
+{% endblock %}

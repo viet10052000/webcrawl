@@ -1,0 +1,48 @@
+{% extends "admin/baseadmin.html" %}
+
+{% block content %}
+<section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+          <!-- jquery validation -->
+          <div class="card card-primary mt-3">
+            <div class="card-header"></div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <form action="/profile/edit" method="post">
+                    <h1 class="h3 mb-3 fw-normal">Chỉnh Sửa Trang Cá Nhân</h1>
+                
+                    <div class="form-floating mb-3">
+                        <label for="floatingInput">Tên</label>
+                        <input type="text" name="name" value={{user.name}} class="form-control">
+                    </div>
+                    <div class="form-floating mb-3">
+                        <label for="floatingPassword">Email</label>
+                        <input type="email" name="email" value={{user.email}} class="form-control">
+                    </div>
+                    <div class="form-floating mb-3">
+                        <label for="floatingPassword">Quyền</label>
+                        <select value={{user.isAdmin}} class="form-control" disabled>
+                            <option value="admin">admin</option>
+                            <option value="user">user</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-sm btn-primary" href="/profile/edit">Cập nhật</a>
+                </form>
+            </div>
+            <!-- form start -->
+          <!-- /.card -->
+          </div>
+        <!--/.col (left) -->
+        <!-- right column -->
+        <div class="col-md-6">
+
+        </div>
+        <!--/.col (right) -->
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </section>
+{% endblock %}
