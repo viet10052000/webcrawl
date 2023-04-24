@@ -26,25 +26,53 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="/dashboard" class="nav-link active">
+            <a href="/dashboard" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
               <p>
                 Thống kê
               </p>
             </a>
           </li>
           <li class="nav-header">Quản lý crawler</li>
-          <li class="nav-item">
+          <li class="nav-item menu-open">
             <a href="/tool/list" class="nav-link">
-              <i class="nav-icon far fa-calendar-alt"></i>
+              <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
-                Danh sách tool
+                Tool Crawl
+                <i class="right fas fa-angle-left"></i>
               </p>
             </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="/crawl/category" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Crawl Category</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/tool/list" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Crawl Product</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/crawl/detail" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Product Detail</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/crawl/comment" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Crawl Comment</p>
+                </a>
+              </li>
+            </ul>
           </li>
           <li class="nav-header">Quản lý sản phẩm</li>
           <li class="nav-item">
             <a href="/category/list" class="nav-link">
-              <i class="nav-icon far fa-calendar-alt"></i>
+              <i class="nav-icon fas fa-copy"></i>
               <p>
                 Danh sách danh mục
               </p>
@@ -52,7 +80,7 @@
           </li>
           <li class="nav-item">
             <a href="/shop/list" class="nav-link">
-              <i class="nav-icon far fa-calendar-alt"></i>
+              <i class="far fa-circle nav-icon"></i>
               <p>
                 Danh sách cửa hàng
               </p>
@@ -60,7 +88,7 @@
           </li>
           <li class="nav-item">
             <a href="/product/list" class="nav-link">
-              <i class="nav-icon far fa-calendar-alt"></i>
+              <i class="nav-icon fas fa-chart-pie"></i>
               <p>
                 Danh sách sản phẩm
               </p>
@@ -69,7 +97,7 @@
           <li class="nav-header">Quản lý người dùng</li>
           <li class="nav-item">
             <a href="/user/list" class="nav-link">
-              <i class="nav-icon far fa-calendar-alt"></i>
+              <i class="nav-icon fas fa-tree"></i>
               <p>
                 Danh sách người dùng
               </p>

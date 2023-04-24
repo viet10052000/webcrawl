@@ -1,0 +1,35 @@
+{% extends "admin/baseadmin.html" %}
+
+{% block content %}
+<section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <h2>Thông Tin Crawl</h2>
+          <div class="card card-primary mt-3">
+            <div class="card-header">Danh sách Crawl Comment</div>
+            <div class="card-body table-responsive p-0" style="height:80%">
+                <table class="table table-head-fixed text-nowrap">
+                    <thead>
+                      <tr>
+                        <th>Id sản phẩm</th>
+                        <th>bình luận đánh giá</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for items in data %}
+                          {% for item in items %}
+                          <tr>
+                              <td>{{ item.product_id }}</td>
+                              <td>{{ item.comment }}</td>
+                          </tr>
+                          {% endfor %}
+                        {% endfor %}
+                    </tbody>
+                  </table>
+            </div>
+          </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
