@@ -50,10 +50,8 @@ from toolcrawl import routes
 from shop import routes
 from category import routes
 from product import routes
-@app.route('/')
-def home():
-    return render_template('home.html')
 
+@app.route('/')
 @app.route('/dashboard')
 @login_required
 @roles_required('admin')
