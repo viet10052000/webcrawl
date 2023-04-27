@@ -1,0 +1,56 @@
+{% extends 'adminv2/layout/base.html' %} 
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <!-- left column -->
+    <div class="col-md-12">
+      <!-- jquery validation -->
+      <div class="card card-primary mt-3">
+        <!-- /.card-header -->
+        <div class="card-body">
+          <form action="/category/create" method="post">
+            <h1 class="h3 mb-3 fw-normal">Thêm Danh mục</h1>
+
+            <div class="form-floating mb-3">
+              <label for="floatingInput">Tên</label>
+              <input type="text" name="name" class="form-control" />
+            </div>
+            <div class="form-floating mb-3">
+              <label for="floatingPassword">Thông tin</label>
+              <textarea
+                id="w3review"
+                name="description"
+                rows="4"
+                cols="50"
+                class="form-control"
+              ></textarea>
+            </div>
+            <div class="form-floating mb-3">
+              <label for="floatingPassword">Danh mục cha</label>
+              <select
+                name="parent_id"
+                class="form-control select2"
+                style="width: 100%"
+              >
+                <option value="">Danh mục cha</option>
+                {% if categories %} {% for category in categories %}
+                <option value="{{category._id}}">{{ category.name }}</option>
+                {% endfor %} {% endif %}
+              </select>
+            </div>
+            <button class="btn btn-sm btn-primary" type="submit">Thêm</button>
+          </form>
+        </div>
+        <!-- form start -->
+        <!-- /.card -->
+      </div>
+      <!--/.col (left) -->
+      <!-- right column -->
+      <div class="col-md-6"></div>
+      <!--/.col (right) -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+  {% endblock %}
+</div>

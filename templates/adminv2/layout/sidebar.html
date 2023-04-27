@@ -1,0 +1,98 @@
+<!-- Sidebar -->
+<ul
+  class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+  id="accordionSidebar"
+>
+  <!-- Sidebar - Brand -->
+  <a
+    class="sidebar-brand d-flex align-items-center justify-content-center"
+    href="index.html"
+  >
+    <div class="sidebar-brand-text mx-3">Admin</div>
+  </a>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider my-0" />
+
+  <!-- Nav Item - Dashboard -->
+  <li class="nav-item {% if request.path == '/dashboard' %} active {% endif %}">
+    <a class="nav-link" href="/dashboard">
+      <i class="fas fa-fw fa-tachometer-alt"></i>
+      <span>Dashboard</span></a
+    >
+  </li>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider" />
+
+  <!-- Heading -->
+  <div class="sidebar-heading">Quản Lý Crawl</div>
+  <!-- Nav Item - Charts -->
+  <li class="nav-item {% if request.path == '/tool/list' %} active {% endif %}">
+    <a class="nav-link" href="/tool/list">
+      <i class="fa-solid fa-spider"></i>
+      <span>Tool Crawl</span></a
+    >
+  </li>
+  <li class="nav-item {% if request.path == '/' %} active {% endif %}">
+    <a class="nav-link" href="/tool/list">
+      <i class="fa-solid fa-spider"></i>
+      <span>Crawl chi tiết sản phẩm</span></a
+    >
+  </li>
+  <li class="nav-item {% if request.path == '/' %} active {% endif %}">
+    <a class="nav-link" href="/tool/list">
+      <i class="fa-solid fa-spider"></i>
+      <span>Crawl comment</span></a
+    >
+  </li>
+  <!-- Divider -->
+  <hr class="sidebar-divider" />
+
+  <!-- Heading -->
+  <div class="sidebar-heading">Quản lý Sản Phẩm</div>
+
+  <!-- Nav Item - Charts -->
+  <li class="nav-item {% if request.path == '/category/list' %} active {% endif %}">
+    <a class="nav-link" href="/category/list">
+      <i class="fas fa-fw fa-table"></i>
+      <span>Danh mục</span></a
+    >
+  </li>
+    <!-- Nav Item - Tables -->
+    <li class="nav-item {% if request.path == '/shop/list' %} active {% endif %}">
+      <a class="nav-link" href="/shop/list">
+        <i class="fa-solid fa-store"></i>
+        <span>Cửa Hàng</span></a
+      >
+    </li>
+
+  <!-- Nav Item - Tables -->
+  <li class="nav-item {% if request.path == '/product/list' %} active {% endif %}">
+    <a class="nav-link" href="/product/list">
+      <i class="fas fa-fw fa-chart-area"></i>
+      <span>Sản Phẩm</span></a
+    >
+  </li>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider d-none d-md-block" />
+
+  <div class="sidebar-heading">Quản lý Người Dùng</div>
+
+    <!-- Nav Item - Tables -->
+  <li class="nav-item {% if request.path == '/user/list' %} active {% endif %}">
+    <a class="nav-link" href="/user/list">
+      <i class="fa-solid fa-users"></i>
+      <span>Người Dùng</span></a
+    >
+  </li>
+
+
+  <!-- Sidebar Toggler (Sidebar) -->
+  <div class="text-center d-none d-md-inline">
+    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+  </div>
+
+</ul>
+<!-- End of Sidebar -->

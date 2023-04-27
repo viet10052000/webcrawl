@@ -10,7 +10,7 @@ def createtool():
     if request.method == 'GET':
         categories = list(db.categories.find())
         stores = list(db.stores.find())
-        return render_template('admin/crawl/createtool.html',categories=categories,stores=stores)
+        return render_template('adminv2/tool/create.html',categories=categories,stores=stores)
     elif request.method == 'POST':
         CrawlProduct().create()
         return redirect('/tool/list')
@@ -20,7 +20,7 @@ def createtool():
 @roles_required('admin')
 def listtool():
     lists = CrawlProduct().index()
-    return render_template('admin/crawl/listtool.html',listtool=lists)
+    return render_template('adminv2/tool/list.html',listtool=lists)
 
 @app.route('/tool/edit/<id>', methods=['GET','POST'])
 @login_required
@@ -30,7 +30,7 @@ def edittool(id):
         categories = list(db.categories.find())
         stores = list(db.stores.find())
         item = db.crawlproducts.find_one({'_id': id})
-        return render_template('admin/crawl/edittool.html',item=item,categories=categories,stores=stores)
+        return render_template('adminv2/tool/edit.html',item=item,categories=categories,stores=stores)
     elif request.method == 'POST':
         data = {
             "_id": id,
@@ -41,6 +41,8 @@ def edittool(id):
             "selector_frame": request.values.get('selector_frame'),
             "selector_name": request.values.get('selector_name'),
             "selector_url": request.values.get('selector_url'),
+            "selector_load_page": request.values.get('selector_load_page'),
+            "number_page": request.values.get('number_page'),
             "status": "no"
         }
         CrawlProduct().update(id,data)

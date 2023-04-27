@@ -1,0 +1,62 @@
+{% extends "adminv2/layout/base.html" %}
+
+{% block content %}
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <h2>Thông Tin Crawl</h2>
+          <div class="card card-primary mt-3">
+            <div class="card-body">
+                <form action="/crawl/save" method="post">
+                    <input type="hidden" name="category_id" value="{{category._id}}">
+                    <input type="hidden" name="store_id" value="{{store._id}}">
+                    <div class="row mb-3">
+                      <div class="form-floating col-6">
+                        <label for="floatingInput">Tên Tool</label>
+                        <input type="text" value="{{crawlproduct.name}}" class="form-control" disabled>
+                      </div>
+                      <div class="form-floating col-6">
+                        <label for="floatingInput">Danh mục</label>
+                        <input type="text" value="{{category.name}}"" class="form-control" disabled>
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <div class="form-floating col-6">
+                        <label for="floatingInput">Cửa Hàng</label>
+                        <input type="text" value="{{store.name}}" class="form-control" disabled>
+                      </div>
+                      <div class="form-floating col-6">
+                        <label for="floatingInput">Link url</label>
+                        <input type="text" value="{{store.link_url}}" class="form-control" disabled>
+                      </div>
+                    </div>
+                    <button class="btn btn-sm btn-primary">
+                      đồng bộ dữ liệu
+                    </button>
+                </form>
+            </div>
+          </div>
+          <div class="card card-primary mt-3">
+            <div class="card-header">Danh sách Crawl</div>
+            <div class="card-body table-responsive p-0" style="height:80%">
+                <table class="table table-head-fixed text-nowrap">
+                    <thead>
+                      <tr>
+                        <th>Tên</th>
+                        <th>Link</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in data %}
+                            <tr>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.link_url }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                  </table>
+            </div>
+          </div>
+      </div>
+    </div>
+{% endblock %}

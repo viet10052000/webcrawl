@@ -2,7 +2,11 @@ from flask import Flask, render_template, request, redirect, jsonify
 from app import app, login_required, roles_required, db
 import asyncio, aiohttp, re, json, uuid, requests, os
 from scrapy import Selector
-
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from bs4 import BeautifulSoup
+import time, json
 DEFAULT_REQUEST_HEADERS = {
    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
    "Accept-Language": "en",
@@ -90,7 +94,7 @@ async def get_crawl_product_comment(crawl):
 @roles_required('admin')
 def crawl(id):
     crawl = db.crawlproducts.find_one({'_id': id})
-    return render_template('admin/crawl/crawl.html',crawl=crawl)
+    return render_template('adminv2/crawl/crawlproduct/crawl.html',crawl=crawl)
 
 @app.route('/crawl/category', methods=['GET','POST'])
 @login_required
@@ -138,12 +142,7 @@ def crawlshow(id):
 
         with open('data.json', 'w') as outfile:
             json.dump(data, outfile)
-            
-        # api_lazada = 'https://www.lazada.vn/dien-thoai-di-dong/apple/?ajax=true&isFirstRequest=true&page=1'
-        # response = requests.get(api_lazada)
-        # if response.status_code == 200:
-        #     data = response.json()
-        #     return data
+    
         return render_template('admin/crawl/showcrawl.html',data=data,crawlproduct=crawlproduct,store=store,category=category)
    
 @app.route('/crawl/detail', methods=['GET'])
@@ -190,6 +189,53 @@ def crawlcomment_show():
             datas.append(result)
         return render_template('admin/crawl/crawlcommentshow.html',data=datas)
 
+@app.route('/crawl/selenium/<id>', methods=['POST'])
+@login_required
+@roles_required('admin')
+def crawlselenium(id):
+  crawlproduct = db.crawlproducts.find_one({'_id': id})
+  store = db.stores.find_one({'_id': crawlproduct['store_id']})
+  category = db.categories.find_one({'_id': crawlproduct['category_id']})
+  DRIVER_PATH='path/to/chrome'
+  options = Options()
+  options.headless = True
+  driver = webdriver.Chrome(options=options, executable_path=DRIVER_PATH)
+  try:
+    driver.get(crawlproduct['link_url'])
+    if crawlproduct['number_page'] and crawlproduct['selector_load_page']:
+        for x in range(int(crawlproduct['number_page'])):
+            btn = driver.find_element(By.CSS_SELECTOR,crawlproduct['selector_load_page'])
+            if not btn: break
+            btn.click()
+            time.sleep(3)
+    datas = []
+    soup = BeautifulSoup(driver.page_source, 'html.parser')
+    items = soup.select(crawlproduct['selector_frame'])
+    for item in items:
+        try:
+            title = item.select_one(crawlproduct['selector_name']).text
+        except:
+            title = ''
+        try:
+            link_url = item.select_one(crawlproduct['selector_url']).get('href')
+            if not store['link_url'] in link_url: 
+                link_url = store['link_url'] + link_url
+        except:
+            link_url = ''
+        data = {
+            'name': title.strip().replace('\n', ''),
+            'link_url': link_url
+        }
+        datas.append(data)
+    with open('data.json', 'w') as json_file:
+        json.dump({}, json_file)
+    with open('data.json', 'w') as json_file:
+        json.dump(datas, json_file)
+    driver.quit()
+    return render_template('adminv2/crawl/crawlproduct/show.html',data=datas,crawlproduct=crawlproduct,store=store,category=category)
+  except:
+    driver.quit()
+    return jsonify('crawl không thành công')
 @app.route('/crawl/save', methods=['POST'])
 @login_required
 @roles_required('admin')

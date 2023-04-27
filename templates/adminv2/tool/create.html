@@ -1,0 +1,81 @@
+{% extends 'adminv2/layout/base.html' %} 
+
+{% block content %}
+    <div class="container-fluid">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+          <!-- jquery validation -->
+          <div class="card card-primary mt-3">
+            <div class="card-header"></div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <form action="/tool/create" method="post">
+                    <h1 class="h3 mb-3 fw-normal">Thêm Tool</h1>
+                
+                    <div class="form-floating mb-3">
+                        <label for="floatingInput">Tên Tool</label>
+                        <input type="text" name="name" class="form-control">
+                    </div>
+                    <div class="form-floating mb-3">
+                      <label for="floatingPassword">Danh mục</label>
+                      <select name="category_id" class="form-control select2" style="width: 100%;">
+                          <option value="">Danh mục</option>
+                          {% if categories %}
+                              {% for category in categories  %}
+                              <option value={{category._id}}>{{ category.name }}</option>
+                              {% endfor %}
+                          {% endif %}
+                      </select>
+                    </div>
+                    <div class="form-floating mb-3">
+                      <label for="floatingPassword">Cửa hàng</label>
+                      <select name="store_id" class="form-control select2" style="width: 100%;">
+                          <option value="">Cửa Hàng</option>
+                          {% if stores %}
+                              {% for category in stores  %}
+                              <option value={{category._id}}>{{ category.name }}</option>
+                              {% endfor %}
+                          {% endif %}
+                      </select>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <label for="floatingPassword">Đường Dẫn</label>
+                        <input type="text" name="link" class="form-control" >
+                    </div>
+                    <div class="form-floating mb-3">
+                        <label for="floatingPassword">Selector Khung</label>
+                        <input type="text" name="selector_frame" class="form-control" >
+                    </div>
+                    <div class="form-floating mb-3">
+                        <label for="floatingPassword">Selector Tên</label>
+                        <input type="text" name="selector_name" class="form-control" >
+                    </div>
+                    <div class="form-floating mb-3">
+                        <label for="floatingPassword">Selector Đường Dẫn</label>
+                        <input type="text" name="selector_url" class="form-control" >
+                    </div>
+                    <div class="form-floating mb-3">
+                      <label for="floatingPassword">Selector Button Load Trang</label>
+                      <input type="text" name="selector_load_page" class="form-control" >
+                    </div>
+                    <div class="form-floating mb-3">
+                      <label for="floatingPassword">Số trang load</label>
+                      <input type="number" name="number_page" class="form-control" >
+                    </div>
+                    <button class="btn btn-sm btn-primary" type="submit">Thêm</button>
+                </form>
+            </div>
+            <!-- form start -->
+          <!-- /.card -->
+          </div>
+        <!--/.col (left) -->
+        <!-- right column -->
+        <div class="col-md-6">
+
+        </div>
+        <!--/.col (right) -->
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+{% endblock %}

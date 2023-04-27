@@ -1,0 +1,50 @@
+{% extends 'adminv2/layout/base.html' %} 
+
+{% block content %}
+    <div class="container-fluid">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+          <!-- jquery validation -->
+          <div class="card card-primary mt-3">
+            <div class="card-header"></div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <form action="/user/create" method="post">
+                    <h1 class="h3 mb-3 fw-normal">Thêm Người Dùng</h1>
+                
+                    <div class="form-floating mb-3">
+                        <label for="floatingInput">Tên</label>
+                        <input type="text" name="name" class="form-control">
+                    </div>
+                    <div class="form-floating mb-3">
+                        <label for="floatingPassword">Email</label>
+                        <input type="text" name="email" class="form-control" >
+                    </div>
+                    <div class="form-floating mb-3">
+                        <label for="floatingPassword">Password</label>
+                        <input type="text" name="password" class="form-control" >
+                    </div>
+                    <div class="form-floating mb-3">
+                        <label for="floatingPassword">Quyền</label>
+                        <select name="is_admin" class="form-control">
+                            <option value="admin">Admin</option>
+                            <option value="user" selected>User</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-sm btn-primary" type="submit">Thêm</button>
+                </form>
+            </div>
+            <!-- form start -->
+          <!-- /.card -->
+          </div>
+        <!--/.col (left) -->
+        <!-- right column -->
+        <div class="col-md-6">
+
+        </div>
+        <!--/.col (right) -->
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+{% endblock %}

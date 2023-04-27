@@ -7,14 +7,14 @@ from shop.models import Store
 @roles_required('admin')
 def index():
     lists = Store().index()
-    return render_template('admin/store/list.html',lists=lists)
+    return render_template('/adminv2/store/list.html',lists=lists)
 
 @app.route('/shop/create', methods=['GET','POST'])
 @login_required
 @roles_required('admin')
 def create():
     if request.method == 'GET':
-        return render_template('admin/store/create.html')
+        return render_template('/adminv2/store/create.html')
     elif request.method == 'POST':
         data = Store().create()
         return redirect('/shop/list')
@@ -25,7 +25,7 @@ def create():
 def edit(id):
     if request.method == 'GET':
         store = db.stores.find_one({ '_id' : id })
-        return render_template('admin/store/edit.html', store=store)
+        return render_template('/adminv2/store/edit.html', store=store)
     elif request.method == 'POST':
         data = {
             "_id" : id,
@@ -42,3 +42,10 @@ def edit(id):
 def delete(id):
     lists = Store().delete(id)
     return redirect('/shop/list')
+
+@app.route('/')
+@app.route('/dashboard')
+@login_required
+@roles_required('admin')
+def dashboard():
+    return render_template('/adminv2/dashboard.html')

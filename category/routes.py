@@ -7,7 +7,7 @@ from category.models import Category
 @roles_required('admin')
 def categorylist():
     lists = Category().index()
-    return render_template('admin/category/list.html',lists=lists)
+    return render_template('adminv2/category/list.html',lists=lists)
 
 @app.route('/category/create', methods=['GET','POST'])
 @login_required
@@ -15,7 +15,7 @@ def categorylist():
 def categorycreate():
     if request.method == 'GET':
         categories = list(db.categories.find())
-        return render_template('admin/category/create.html',categories=categories)
+        return render_template('adminv2/category/create.html',categories=categories)
     elif request.method == 'POST':
         data = Category().create()
         return redirect('/category/list')
@@ -27,7 +27,7 @@ def categoryedit(id):
     if request.method == 'GET':
         category = db.categories.find_one({ '_id' : id })
         categories = list(db.categories.find())
-        return render_template('admin/category/edit.html', category=category, categories=categories)
+        return render_template('adminv2/category/edit.html', category=category, categories=categories)
     elif request.method == 'POST':
         data = {
             "_id" : id,

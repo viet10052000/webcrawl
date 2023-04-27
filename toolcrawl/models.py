@@ -12,6 +12,8 @@ class CrawlProduct:
             "selector_frame": request.values.get('selector_frame'),
             "selector_name": request.values.get('selector_name'),
             "selector_url": request.values.get('selector_url'),
+            "selector_load_page": request.values.get('selector_load_page'),
+            "number_page": request.values.get('number_page'),
             "status": "no"
         }
         db.crawlproducts.insert_one(crawl)
@@ -22,7 +24,7 @@ class CrawlProduct:
         return lists
     
     def update(self, id, data):
-        crawlproduct = db.crawlproducts.update_one({ '_id': id }, { '$set': data })
+        db.crawlproducts.update_one({ '_id': id }, { '$set': data })
         
     def delete(self, id):
         crawlproduct = db.crawlproducts.find_one_and_delete({ '_id': id })

@@ -1,0 +1,65 @@
+{% extends 'adminv2/layout/base.html' %} 
+{% block content %}
+<div class="container-fluid">
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Người Dùng</h1>
+    <a
+      href="/user/create"
+      class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"
+    >
+      <i class="fa-solid fa-circle-plus"></i>
+      Thêm Người Dùng</a
+    >
+  </div>
+  <div class="row">
+    <!-- left column -->
+    <div class="col-md-12">
+      <!-- jquery validation -->
+      <div class="card mt-3">
+        <!-- /.card-header -->
+        <div class="card-body table-responsive p-0" style="height: 80%">
+          <table class="table table-head-fixed text-nowrap">
+            <caption></caption>
+            <thead>
+              <tr>
+                <th>Tên</th>
+                <th>Email</th>
+                <th>Quyền</th>
+                <th class="col-2"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in lists %}
+              <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.email }}</td>
+                <td>{{ item.isAdmin }}</td>
+                <td class="col-2">
+                  <a class="btn" href="/user/delete/{{item._id}}">
+                    <i
+                      data-bs-toggle="tooltip"
+                      title="delete"
+                      data-html="true"
+                      title="<em>Tooltip</em> <u>with</u> <b>HTML</b>"
+                      class="fa-solid fa-trash-can text-danger"
+                    ></i>
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <!-- form start -->
+        <!-- /.card -->
+      </div>
+      <!--/.col (left) -->
+      <!-- right column -->
+      <div class="col-md-6"></div>
+      <!--/.col (right) -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</div>
+  {% endblock %}

@@ -31,14 +31,14 @@ def login_required(f):
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('errorpage.html'), 404
+    return render_template('/adminv2/error/404.html'), 404
 
 def roles_required(*role_names):
     def decorator(original_route):
         @wraps(original_route)
         def decorated_route(*args, **kwargs):          
             if not session['user']['isAdmin'] in role_names:
-                return render_template('accessdenied.html')
+                return render_template('/adminv2/error/403.html')
             else:
                 return original_route(*args, **kwargs)
         return decorated_route
@@ -50,13 +50,6 @@ from toolcrawl import routes
 from shop import routes
 from category import routes
 from product import routes
-
-@app.route('/')
-@app.route('/dashboard')
-@login_required
-@roles_required('admin')
-def dashboard():
-    return render_template('admin/dashboard.html')
 
 if __name__ == '__main__':
     app.run(debug = True)
