@@ -3,7 +3,7 @@ from app import app, login_required, roles_required, db
 import asyncio, aiohttp, re, json, uuid, requests, os
 from scrapy import Selector
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 import time, json
@@ -196,7 +196,7 @@ def crawlselenium(id):
   crawlproduct = db.crawlproducts.find_one({'_id': id})
   store = db.stores.find_one({'_id': crawlproduct['store_id']})
   category = db.categories.find_one({'_id': crawlproduct['category_id']})
-  DRIVER_PATH='path/to/chrome'
+  DRIVER_PATH='path/to/geckodriver'
   options = Options()
   options.headless = True
   driver = webdriver.Chrome(options=options, executable_path=DRIVER_PATH)
