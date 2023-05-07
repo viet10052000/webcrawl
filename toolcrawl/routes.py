@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, jsonify
 from app import app, login_required, roles_required
-from toolcrawl.models import CrawlProduct
+from toolcrawl.models import CrawlProduct, CrawlComment, CrawlProductDetail
 from app import db
 
 @app.route('/tool/create', methods=['GET','POST'])
@@ -54,3 +54,32 @@ def edittool(id):
 def deletetool(id):
     lists = CrawlProduct().delete(id)
     return redirect('/tool/list')
+
+@app.route('/tool/comment/create', methods=['GET','POST'])
+@login_required
+@roles_required('admin')
+def createtoolcomment():
+    if request.method == 'GET':
+        crawlproducts = list(db.crawlproducts.find())
+        return render_template('adminv2/tool/createcomment.html',crawlproducts=crawlproducts)
+    elif request.method == 'POST':
+        CrawlComment().create()
+        return redirect('/tool/list')
+
+@app.route('/tool/comment/list')
+@login_required
+@roles_required('admin')
+def listtoolcomment():
+    lists = CrawlComment().index()
+    return render_template('adminv2/tool/listcomment.html',listtool=lists)
+
+@app.route('/tool/detail/create', methods=['GET','POST'])
+@login_required
+@roles_required('admin')
+def createtooldetail():
+    if request.method == 'GET':
+        crawlproducts = list(db.crawlproducts.find())
+        return render_template('adminv2/tool/createdetail.html',crawlproducts=crawlproducts)
+    elif request.method == 'POST':
+        CrawlProductDetail().create()
+        return redirect('/tool/list')

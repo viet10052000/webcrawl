@@ -1,6 +1,56 @@
 from flask import Flask, jsonify, request, session, redirect
 from app import db
 import uuid
+class CrawlProductDetail:
+    def create(self):
+        crawl = {
+            "_id": uuid.uuid4().hex,
+            "selector_frame": request.values.get('selector_frame'),
+            "selector_price": request.values.get('selector_price'),
+            "link_image": request.values.get('selector_link_image'),
+            "rating": request.values.get('selector_rating'),
+            "total_rating": request.values.get('selector_total_rating'),
+            "description": request.values.get('selector_description'),
+            "crawlproduct_id": request.values.get("crawlproduct_id"),
+        }
+        db.crawlproductdetails.insert_one(crawl)
+    
+    def index(self):
+        lists = list(db.crawlproductdetails.find())
+        return lists
+    
+    def update(self, id, data):
+        db.crawlproductdetails.update_one({ '_id': id }, { '$set': data })
+        
+    def delete(self, id):
+        crawlcomment = db.crawlproductdetails.find_one_and_delete({ '_id': id })
+        return crawlcomment  
+
+class CrawlComment:
+    def create(self):
+        crawl = {
+            "_id": uuid.uuid4().hex,
+            "selector_frame_comment": request.values.get('selector_frame'),
+            "selector_comment": request.values.get('selector_comment'),
+            "after_url": request.values.get("after_url"),
+            "selector_load_page": request.values.get('selector_load_page'),
+            "number_page": request.values.get('number_page'),
+            "crawlproduct_id": request.values.get("crawlproduct_id"),
+        }
+        db.crawlcomments.insert_one(crawl)
+    
+    def index(self):
+        lists = list(db.crawlcomments.find())
+        return lists
+    
+    def update(self, id, data):
+        db.crawlcomments.update_one({ '_id': id }, { '$set': data })
+        
+    def delete(self, id):
+        crawlcomment = db.crawlcomments.find_one_and_delete({ '_id': id })
+        return crawlcomment
+
+
 class CrawlProduct:
     def create(self):
         crawl = {
