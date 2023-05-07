@@ -52,4 +52,4 @@ from category import routes
 from product import routes
 
 if __name__ == '__main__':
-    app.run(port=8999,debug = True)
+    app.run(debug = True)
