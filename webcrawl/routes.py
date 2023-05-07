@@ -7,6 +7,7 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 import time, json
+DRIVER_PATH='/home/crawl03/webcrawl/venv/bin/geckodriver'
 DEFAULT_REQUEST_HEADERS = {
    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
    "Accept-Language": "en",
@@ -193,13 +194,13 @@ def crawlcomment_show():
 @login_required
 @roles_required('admin')
 def crawlselenium(id):
+  print(DRIVER_PATH)
   crawlproduct = db.crawlproducts.find_one({'_id': id})
   store = db.stores.find_one({'_id': crawlproduct['store_id']})
   category = db.categories.find_one({'_id': crawlproduct['category_id']})
-  DRIVER_PATH='path/to/geckodriver'
   options = Options()
   options.headless = True
-  driver = webdriver.Chrome(options=options, executable_path=DRIVER_PATH)
+  driver = webdriver.Firefox(options=options, executable_path=DRIVER_PATH)
   try:
     driver.get(crawlproduct['link_url'])
     if crawlproduct['number_page'] and crawlproduct['selector_load_page']:
