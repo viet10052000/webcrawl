@@ -3,34 +3,21 @@
 {% block content %}
     <div class="container-fluid">
       <div class="row">
+        <h1 class="h3 mb-3 fw-normal">Thêm selector comment sản phẩm</h1>
         <!-- left column -->
         <div class="col-md-12">
           <!-- jquery validation -->
           <div class="card card-primary mt-3">
-            <div class="card-header"></div>
             <!-- /.card-header -->
             <div class="card-body">
-                <form action="/tool/create" method="post">
-                    <h1 class="h3 mb-3 fw-normal">Thêm selector comment sản phẩm</h1>
-
+                <form action="/tool/comment/create" method="post">
                     <div class="form-floating mb-3">
-                      <label for="floatingPassword">Danh mục</label>
-                      <select name="category_id" class="form-control select2" style="width: 100%;">
-                          <option value="">Danh mục</option>
-                          {% if categories %}
-                              {% for category in categories  %}
-                              <option value={{category._id}}>{{ category.name }}</option>
-                              {% endfor %}
-                          {% endif %}
-                      </select>
-                    </div>
-                    <div class="form-floating mb-3">
-                      <label for="floatingPassword">Cửa hàng</label>
-                      <select name="store_id" class="form-control select2" style="width: 100%;">
-                          <option value="">Cửa Hàng</option>
-                          {% if stores %}
-                              {% for category in stores  %}
-                              <option value={{category._id}}>{{ category.name }}</option>
+                      <label for="floatingPassword">Tool Crawl</label>
+                      <select name="crawlproduct_id" class="form-control select2" style="width: 100%;">
+                          <option>Tool Crawl</option>
+                          {% if crawlproducts %}
+                              {% for crawlproduct in crawlproducts  %}
+                              <option value={{crawlproduct._id}}>{{ crawlproduct.name }}</option>
                               {% endfor %}
                           {% endif %}
                       </select>
@@ -40,12 +27,12 @@
                         <input type="text" name="selector_frame" class="form-control" >
                     </div>
                     <div class="form-floating mb-3">
-                        <label for="floatingPassword">Selector Tên</label>
-                        <input type="text" name="selector_name" class="form-control" >
+                        <label for="floatingPassword">Selector Comment</label>
+                        <input type="text" name="selector_comment" class="form-control" >
                     </div>
                     <div class="form-floating mb-3">
-                        <label for="floatingPassword">Selector Đường Dẫn</label>
-                        <input type="text" name="selector_url" class="form-control" >
+                      <label for="floatingPassword">Đường dẫn sau url sản phẩm(Ví dụ: '/review')</label>
+                      <input type="text" name="after_url" class="form-control" >
                     </div>
                     <div class="form-floating mb-3">
                       <label for="floatingPassword">Selector Button Load Trang</label>

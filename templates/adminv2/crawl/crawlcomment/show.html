@@ -1,0 +1,28 @@
+{% extends "adminv2/layout/base.html" %}
+
+{% block content %}
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card card-primary mt-3">
+            <div class="card-header">Danh sách Crawl</div>
+            <div class="card-body table-responsive p-0" style="height:80%">
+                <table class="table table-head-fixed text-nowrap">
+                    <thead>
+                      <tr>
+                        <th>Nhận xét</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in data %}
+                            <tr>
+                                <td>{{ item.name }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                  </table>
+            </div>
+          </div>
+      </div>
+    </div>
+{% endblock %}

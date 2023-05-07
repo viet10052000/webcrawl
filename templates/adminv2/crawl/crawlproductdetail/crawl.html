@@ -1,0 +1,44 @@
+{% extends "adminv2/layout/base.html" %}
+
+{% block content %}
+    <div class="container-fluid">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+          <!-- jquery validation -->
+          <div class="card card-primary mt-3">
+            <!-- /.card-header -->
+            <div class="card-body">
+                <form action="/crawl/detail/show" method="post">
+                    <button id="toggle" class="btn btn-sm btn-primary d-flex" type="submit">
+                      <div id="third" style="width:1.5rem;height:1.5rem;display:none" class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                      <span style="padding: 4px;">Bắt đầu crawl</span>
+                    </button>
+                </form>
+            </div>
+            <!-- form start -->
+          <!-- /.card -->
+          </div>
+        <!--/.col (left) -->
+        <!-- right column -->
+        <div class="col-md-6">
+
+        </div>
+        <!--/.col (right) -->
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+    <script>
+      const targetDiv = document.getElementById("third");
+      const btn = document.getElementById("toggle");
+      btn.onclick = function () {
+        if (targetDiv.style.display !== "none") {
+          targetDiv.style.display = "none";
+        } else {
+          targetDiv.style.display = "block";
+        }
+      };
+    </script>
+{% endblock %}
