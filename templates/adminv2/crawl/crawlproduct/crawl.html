@@ -1,74 +1,141 @@
-{% extends "adminv2/layout/base.html" %}
-
-{% block content %}
-    <div class="container-fluid">
-      <h1 class="h3 mb-3 fw-normal">Thông tin Tool</h1>
-      <div class="row">
-        <!-- left column -->
-        <div class="col-md-12">
-          <!-- jquery validation -->
-          <div class="card card-primary mt-3">
-            <!-- /.card-header -->
-            <div class="card-body">
-                <form action="/crawl/selenium/{{crawl._id}}" method="post">
-                
-                    <div class="form-floating mb-3">
-                        <label for="floatingInput">Tên Tool</label>
-                        <input disabled type="text" value="{{crawl.name}}" name="name" class="form-control">
-                    </div>
-                    <div class="form-floating mb-3">
-                        <label for="floatingPassword">Đường Dẫn</label>
-                        <input disabled type="text" value="{{crawl.link_url}}" name="link" class="form-control" >
-                    </div>
-                    <div class="form-floating mb-3">
-                        <label for="floatingPassword">Selector Khung</label>
-                        <input disabled type="text" value="{{crawl.selector_frame}}" name="selector_frame" class="form-control" >
-                    </div>
-                    <div class="form-floating mb-3">
-                        <label for="floatingPassword">Selector Tên</label>
-                        <input disabled type="text" value="{{crawl.selector_name}}" name="selector_name" class="form-control" >
-                    </div>
-                    <div class="form-floating mb-3">
-                        <label for="floatingPassword">Selector Đường Dẫn</label>
-                        <input disabled type="text" value="{{crawl.selector_url}}" name="selector_url" class="form-control" >
-                    </div>
-                    <div class="form-floating mb-3">
-                      <label for="floatingPassword">Selector Button Load Trang</label>
-                      <input disabled type="text" value="{{crawl.selector_load_page}}" name="selector_load_page" class="form-control" >
-                    </div>
-                    <div class="form-floating mb-3">
-                      <label for="floatingPassword">Số trang load</label>
-                      <input disabled type="number" value="{{crawl.number_page}}" min="0" name="number_page" class="form-control" >
-                    </div>
-                    <button id="toggle" class="btn btn-sm btn-primary d-flex" type="submit">
-                      <div id="third" style="width:1.5rem;height:1.5rem;display:none" class="spinner-border" role="status">
-                        <span class="sr-only">Loading...</span>
-                      </div>
-                      <span style="padding: 4px;">Bắt đầu crawl</span>
-                    </button>
-                </form>
+{% extends "adminv2/layout/base.html" %} {% block content %}
+<div class="container-fluid">
+  <h1 class="h3 mb-3 fw-normal">Thông tin Tool</h1>
+  <div class="row">
+    <!-- left column -->
+    <div class="col-md-12">
+      <!-- jquery validation -->
+      <div class="card card-primary mt-3">
+        <!-- /.card-header -->
+        <div class="card-body">
+          <div class="row">
+            <div class="form-floating mb-3 col-6">
+              <label for="floatingInput">Tên Tool</label>
+              <input
+                disabled
+                type="text"
+                value="{{crawl.name}}"
+                name="name"
+                class="form-control"
+              />
             </div>
-            <!-- form start -->
-          <!-- /.card -->
+            <div class="form-floating mb-3 col-6">
+              <label for="floatingPassword">Đường Dẫn</label>
+              <input
+                disabled
+                type="text"
+                value="{{crawl.link_url}}"
+                name="link"
+                class="form-control"
+              />
+            </div>
           </div>
-        <!--/.col (left) -->
-        <!-- right column -->
-        <div class="col-md-6">
-
+          <div class="row">
+            <div class="form-floating mb-3 col-6">
+              <label for="floatingInput">Cửa Hàng</label>
+              <input
+                disabled
+                type="text"
+                value="{{store}}"
+                name="name"
+                class="form-control"
+              />
+            </div>
+            <div class="form-floating mb-3 col-6">
+              <label for="floatingPassword">Danh Mục</label>
+              <input
+                disabled
+                type="text"
+                value="{{category}}"
+                name="link"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-floating mb-3 col-2">
+              <button
+                id="submit"
+                class="btn btn-sm btn-primary d-flex"
+                type="submit"
+              >
+                Bắt đầu crawl
+              </button>
+            </div>
+            <div id="button_save"></div>
+          </div>
         </div>
-        <!--/.col (right) -->
+        <!-- form start -->
+        <!-- /.card -->
       </div>
-      <!-- /.row -->
-    </div><!-- /.container-fluid -->
-    <script>
-      const targetDiv = document.getElementById("third");
-      const btn = document.getElementById("toggle");
-      btn.onclick = function () {
-        if (targetDiv.style.display !== "none") {
-          targetDiv.style.display = "none";
-        } else {
-          targetDiv.style.display = "block";
-        }
-      };
-    </script>
-{% endblock %}
+      <!--/.col (left) -->
+      <!-- right column -->
+      <div id="list_product"></div>
+      <!--/.col (right) -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+  <script>
+    $(document).ready(function () {
+      $("#submit").click(function () {
+        $.blockUI({
+          message: '<h4><i class="fa fa-spinner fa-spin"></i></h4>',
+          css: {
+            border: "none",
+            backgroundColor: "none",
+          },
+          overlayCSS: {
+            backgroundColor: "grey",
+            opacity: 0.5,
+            cursor: "wait",
+          },
+        });
+
+        $.ajax({
+          type: "POST",
+          url: "/crawl/selenium/{{crawl._id}}",
+          contentType: "application/json",
+          success: function (response) {
+            console.log(response);
+            let render_list = "";
+            for (let i = 0; i < response.length; i++) {
+              render_list += `
+              <tr>
+                <td><a href="${response[i].link_url}" target="_blank">${response[i].name}</a></td>
+                <td><img width="75" height="75" src="${response[i].link_image}" /></td>
+                <td>${response[i].price}</td>
+              </tr>`;
+            }
+            let html_to_append =
+              '<div class="card card-primary mt-3">' +
+              '<div class="card-header"><div>Danh sách</div>' +
+              '</div>' +
+              '<div class="card-body table-responsive p-0" style="height:80%">' +
+              '<table class="table table-head-fixed text-nowrap">' +
+              "<thead>" +
+              "<tr>" +
+              "<th>Tên</th>" +
+              "<th>Ảnh</th>" +
+              "<th>Giá</th>" +
+              "</tr>" +
+              "</thead>" +
+              "<tbody>" +
+              render_list +
+              "</tbody>" +
+              "</table>" +
+              "</div>" +
+              "</div>";
+            $("#list_product").html(html_to_append);
+            $('#button_save').html('<a href="/crawl/selenium/save/{{crawl._id}}" class="btn btn-sm btn-success">Lưu dữ liệu</button>')
+            $.unblockUI();
+          },
+          error: function (error) {
+            $.unblockUI();
+          },
+        });
+      });
+    });
+  </script>
+  {% endblock %}
+</div>

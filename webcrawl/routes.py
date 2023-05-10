@@ -7,7 +7,7 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 import time, json
-DRIVER_PATH='/home/crawl03/webcrawl/venv/bin/geckodriver'
+DRIVER_PATH='path/to/geckodriver'
 DEFAULT_REQUEST_HEADERS = {
    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
    "Accept-Language": "en",
@@ -34,21 +34,16 @@ async def get_crawl(crawl,linkstore):
                     results.append(item)
             return results
 
-async def get_crawl_category():
+async def get_crawl_category(url):
     async with aiohttp.ClientSession() as session:
-        async with session.get('https://cellphones.com.vn', headers=DEFAULT_REQUEST_HEADERS) as response:
+        async with session.get(url, headers=DEFAULT_REQUEST_HEADERS) as response:
             html = await response.text()
             sel = Selector(text=html)
-            datas = sel.response.css('.menu-tree>a')
+            datas = sel.response.css('.list-brand>a')
             results = []
             for data in datas:
-                item = {
-                    'name': data.css('a>.label-item>span::text').get(),
-                    'link_url': data.css('a::attr(href)').get(),
-                }
-                
-                if item['link_url'] != '#':
-                    results.append(item)
+                link_url =  data.css('a::attr(href)').get(),
+                results.append(link_url)
             return results
 
 async def get_crawl_product_detail(crawl):
@@ -70,32 +65,15 @@ async def get_crawl_product_detail(crawl):
                 return item
                    
         await asyncio.sleep(DOWNLOAD_DELAY)
-        
-async def get_crawl_product_comment(crawl):
-    async with aiohttp.ClientSession() as session:
-        str = crawl['link_url'].replace(".html", "") + '/review'
-        async with session.get(str, headers=DEFAULT_REQUEST_HEADERS) as response:
-            html = await response.text()
-            sel = Selector(text=html)
-            datas = sel.response.css('.boxReview-comment>.boxReview-comment-item')
-            results = []
-            for data in datas:
-                item = {
-                    'product_id': crawl['_id'],
-                    'comment': data.css('.comment-content>p::text').get(),
-                }
-                results.append(item)
-                
-            return results
-                   
-        await asyncio.sleep(DOWNLOAD_DELAY)
 
 @app.route('/crawl/<id>', methods=['GET'])
 @login_required
 @roles_required('admin')
 def crawl(id):
     crawl = db.crawlproducts.find_one({'_id': id})
-    return render_template('adminv2/crawl/crawlproduct/crawl.html',crawl=crawl)
+    store = db.stores.find_one({'_id': crawl['store_id']})
+    category = db.categories.find_one({'_id': crawl['category_id']})
+    return render_template('adminv2/crawl/crawlproduct/crawl.html',crawl=crawl,store=store['name'],category=category['name'])
     
 @app.route('/crawl/detail', methods=['GET'])
 @login_required
@@ -103,14 +81,6 @@ def crawl(id):
 def crawldetail():
     if request.method == 'GET':
         return render_template('adminv2/crawl/crawlproductdetail/crawl.html')
-    
-@app.route('/crawl/comment/<id>', methods=['GET'])
-@login_required
-@roles_required('admin')
-def crawlcomment(id):
-    if request.method == 'GET':
-        crawlcomment = db.crawlcomments.find_one({'_id': id})
-        return render_template('adminv2/crawl/crawlcomment/crawl.html',crawl=crawlcomment)
 
 @app.route('/crawl/detail/show', methods=['POST'])
 @login_required
@@ -141,21 +111,6 @@ def crawldetail_save():
             result = loop.run_until_complete(get_crawl_product_detail(item))
             datas.append(result)
         return render_template('adminv2/crawl/crawlproductdetail/show.html',data=datas)
-
-@app.route('/crawl/comment/show', methods=['POST'])
-@login_required
-@roles_required('admin')
-def crawlcomment_show():
-    if request.method == 'POST':
-        store = db.stores.find_one({'name': 'cellphones'})
-        data = db.products.find({'store_id': store['_id']})
-        datas = []
-        for item in data:
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            result = loop.run_until_complete(get_crawl_product_comment(item))
-            datas.append(result)
-        return render_template('admin/crawl/crawlcommentshow.html',data=datas)
 
 @app.route('/crawl/selenium/<id>', methods=['POST'])
 @login_required
@@ -190,9 +145,19 @@ def crawlselenium(id):
                 link_url = store['link_url'] + link_url
         except:
             link_url = ''
+        try:
+            price = item.select_one(crawlproduct['selector_price']).text
+        except:
+            price = ''
+        try:
+            link_image = item.select_one(crawlproduct['selector_link_image']).get('src')
+        except:
+            link_image = ''
         data = {
             'name': title.strip().replace('\n', ''),
-            'link_url': link_url
+            'link_url': link_url,
+            'price': ''.join(re.findall(r'\d+', price)),
+            'link_image': link_image,
         }
         datas.append(data)
     with open('data.json', 'w') as json_file:
@@ -200,70 +165,24 @@ def crawlselenium(id):
     with open('data.json', 'w') as json_file:
         json.dump(datas, json_file)
     driver.quit()
-    return render_template('adminv2/crawl/crawlproduct/show.html',data=datas,crawlproduct=crawlproduct,store=store,category=category)
+    return jsonify(datas), 200
   except:
     driver.quit()
-    return jsonify('crawl không thành công')
+    return jsonify('crawl không thành công'), 400
 
-@app.route('/crawl/selenium/comment/<id>', methods=['POST'])
+@app.route('/crawl/selenium/save/<id>', methods=['GET'])
 @login_required
 @roles_required('admin')
-def crawlseleniumcomment(id):
-  crawlcomment = db.crawlcomments.find_one({'_id': id})
-  crawlcomment['link_url'] = "https://cellphones.com.vn/iphone-14-pro-max.html"
-  if '.html' in crawlcomment['link_url']:
-    crawlcomment['link_url'] = crawlcomment['link_url'].replace(".html","")
-    if crawlcomment['after_url']: crawlcomment['link_url'] = crawlcomment['link_url'] + crawlcomment['after_url']
-  DRIVER_PATH='path/to/chrome'
-  options = Options()
-  options.headless = True
-  driver = webdriver.Chrome(options=options, executable_path=DRIVER_PATH)
-  try:
-    driver.get(crawlcomment['link_url'])
-    datas = []
-    while True:
-        try:
-            btn = driver.find_element(By.CSS_SELECTOR,crawlcomment['selector_load_page'])
-            btn.click()
-            time.sleep(3)
-        except:
-            break
-    soup = BeautifulSoup(driver.page_source, 'html.parser')
-    items = soup.select(crawlcomment['selector_frame_comment'])
-    for item in items:
-        try:
-            title = item.select_one(crawlcomment['selector_comment']).text
-        except:
-            title = ''
-        data = {
-            'name': title.strip().replace('\n', ''),
-        }
-        datas.append(data)
-    with open('data.json', 'w') as json_file:
-        json.dump({}, json_file)
-    with open('data.json', 'w') as json_file:
-        json.dump(datas, json_file)
-    driver.quit()
-    return render_template('adminv2/crawl/crawlcomment/show.html',data=datas)
-  except:
-    driver.quit()
-    return jsonify('crawl không thành công')
-
-@app.route('/crawl/save', methods=['POST'])
-@login_required
-@roles_required('admin')
-def crawlsave():
-    category_id = request.values.get('category_id')
-    store_id = request.values.get('store_id')
+def crawlsave(id):
+    crawlproduct = db.crawlproducts.find_one({'_id': id})
+    store = db.stores.find_one({'_id': crawlproduct['store_id']})
+    category = db.categories.find_one({'_id': crawlproduct['category_id']})
     with open('data.json', 'r') as file:
         data = json.load(file)
 
     for item in data:
-        item['category_id'] = category_id
-        item['store_id'] = store_id
-    
-    if db.products.find_one({'store_id': store_id, 'category_id': category_id}):
-        return jsonify('đã crawl sản phẩm này rồi '), 400
+        item['category_id'] = category['_id']
+        item['store_id'] = store['_id']
     
     if db.products.insert_many(data):
         with open('data.json', 'w') as json_file:

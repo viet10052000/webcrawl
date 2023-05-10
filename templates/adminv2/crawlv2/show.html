@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="error-page mt-5 text-center">
+  <div class="error-content">
+    <!-- <h3>
+        <button type="button">Load Content</button>
+      </h3> -->
+      Đường dẫn: <input type="text" id="url" name="url">
+      <button type="submit" id="submit">Submit</button>
+  </div>
+  <div id="list_category"></div>
+  <!-- /.error-content -->
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"
+  integrity="sha512-eYSzo+20ajZMRsjxB6L7eyqo5kuXuS2+wEbbOkpaur+sA2shQameiJiWEzCIDwJqaB0a4a6tCuEvCOBHUg3Skg=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+<script>
+  $(document).ready(function () {
+    $("#submit").click(function () {
+      $.blockUI({
+        message: '<h1><i class="fa fa-spinner fa-spin"></i> Loading...</h1>',
+        css: {
+          border: "none",
+          backgroundColor: "none",
+        },
+        overlayCSS: {
+          backgroundColor: "grey",
+          opacity: 0.5,
+          cursor: "wait",
+        },
+      });
+      let data = {
+        url: $("#url").val(),
+      };
+
+      $.ajax({
+        type: "POST",
+        url: "/crawl/show/data",
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        success: function (response) {
+          console.log(response);
+          let html_to_append = '';
+          for(let i = 0;i < response.length;i++) {
+            html_to_append += '<div>' + response[i] + '</div>'
+          }
+
+          $("#list_category").html(html_to_append);
+          $.unblockUI();
+        },
+        error: function(error) {
+          $.unblockUI();
+        }
+      });
+    });
+  });
+</script>
+{% endblock %}

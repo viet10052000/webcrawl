@@ -6,11 +6,10 @@ class CrawlProductDetail:
         crawl = {
             "_id": uuid.uuid4().hex,
             "selector_frame": request.values.get('selector_frame'),
-            "selector_price": request.values.get('selector_price'),
-            "link_image": request.values.get('selector_link_image'),
-            "rating": request.values.get('selector_rating'),
-            "total_rating": request.values.get('selector_total_rating'),
-            "description": request.values.get('selector_description'),
+            "selector_rating": request.values.get('selector_rating'),
+            "selector_total_rating": request.values.get('selector_total_rating'),
+            "selector_introduction": request.values.get('introduction'),
+            "selector_description": request.values.get('selector_description'),
             "crawlproduct_id": request.values.get("crawlproduct_id"),
         }
         db.crawlproductdetails.insert_one(crawl)
@@ -61,10 +60,10 @@ class CrawlProduct:
             "link_url": request.values.get('link'),
             "selector_frame": request.values.get('selector_frame'),
             "selector_name": request.values.get('selector_name'),
+            "selector_price": request.values.get('selector_price'),
+            "selector_link_image": request.values.get('selector_link_image'),
             "selector_url": request.values.get('selector_url'),
             "selector_load_page": request.values.get('selector_load_page'),
-            "number_page": request.values.get('number_page'),
-            "status": "no"
         }
         db.crawlproducts.insert_one(crawl)
         return jsonify(crawl)

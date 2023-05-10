@@ -11,10 +11,6 @@
       Thêm Sản Phẩm</a
     >
   </div>
-  <select class="js-example-basic-single" style="width: 20%" name="state">
-    <option value="AL">Alabama</option>
-    <option value="WY">Wyoming</option>
-  </select>
   <div class="row">
     <!-- left column -->
     <div class="col-md-12">
@@ -25,15 +21,17 @@
             <thead>
               <tr>
                 <th>Tên Sản Phẩm</th>
-                <th>Link</th>
+                <th>Ảnh</th>
+                <th>Giá</th>
                 <th class="col-2"></th>
               </tr>
             </thead>
             <tbody>
               {% for item in lists %}
               <tr>
-                <td>{{ item.name }}</td>
-                <td>{{ item.link_url }}</td>
+                <td><a href="{{ item.link_url }}" target="_blank">{{ item.name }}</a></td>
+                <td><img src="{{ item.link_image }}" width="75" height="75" /></td>
+                <td>{{ item.price }}</td>
                 <td class="col-2">
                   <a class="btn" href="/product/edit/{{item._id}}"
                     ><i
