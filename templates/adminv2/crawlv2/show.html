@@ -9,9 +9,21 @@
       <button type="submit" id="submit">Submit</button>
   </div>
   <div id="list_category"></div>
+  <textarea id="editor">
+    
+  </textarea>
+
   <!-- /.error-content -->
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/30.0.0/classic/ckeditor.js"></script>
+<script>
+  ClassicEditor
+    .create( document.querySelector( '#editor' ) )
+    .catch( error => {
+      console.error( error );
+    } );
+</script>
 <script
   src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"
   integrity="sha512-eYSzo+20ajZMRsjxB6L7eyqo5kuXuS2+wEbbOkpaur+sA2shQameiJiWEzCIDwJqaB0a4a6tCuEvCOBHUg3Skg=="
@@ -39,15 +51,12 @@
 
       $.ajax({
         type: "POST",
-        url: "/crawl/show/data",
+        url: "/crawl/brand/test",
         data: JSON.stringify(data),
         contentType: "application/json",
         success: function (response) {
           console.log(response);
           let html_to_append = '';
-          for(let i = 0;i < response.length;i++) {
-            html_to_append += '<div>' + response[i] + '</div>'
-          }
 
           $("#list_category").html(html_to_append);
           $.unblockUI();

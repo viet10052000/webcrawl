@@ -13,58 +13,17 @@ DEFAULT_REQUEST_HEADERS = {
    "Accept-Language": "en",
    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
 }
-DOWNLOAD_DELAY = 2
-
-async def get_crawl(crawl,linkstore):
-    async with aiohttp.ClientSession() as session:
-        async with session.get(crawl['link_url'], headers=DEFAULT_REQUEST_HEADERS) as response:
-            html = await response.text()
-            sel = Selector(text=html)
-            datas = sel.response.css(crawl['selector_frame'])
-            results = []
-            for data in datas:
-                item = {
-                    '_id': uuid.uuid4().hex,
-                    'name': data.css(crawl['selector_name']).get(),
-                    'link_url': data.css(crawl['selector_url']).get(),
-                }
-                if item['name'] or item['link_url']:
-                    if not 'https' in item['link_url']:
-                        item['link_url'] = linkstore + item['link_url']
-                    results.append(item)
-            return results
-
 async def get_crawl_category(url):
     async with aiohttp.ClientSession() as session:
         async with session.get(url, headers=DEFAULT_REQUEST_HEADERS) as response:
             html = await response.text()
             sel = Selector(text=html)
-            datas = sel.response.css('.list-brand>a')
+            datas = sel.response.css('.list-brand>a.list-brand__item')
             results = []
             for data in datas:
                 link_url =  data.css('a::attr(href)').get(),
                 results.append(link_url)
             return results
-
-async def get_crawl_product_detail(crawl):
-    async with aiohttp.ClientSession() as session:
-        async with session.get(crawl['link_url'], headers=DEFAULT_REQUEST_HEADERS) as response:
-            html = await response.text()
-            sel = Selector(text=html)
-            datas = sel.response.css('.block-detail-product')
-            for data in datas:
-                price = data.css('.product__price--show::text').get()
-                item = {
-                    'product_id': crawl['_id'],
-                    'price': ''.join(re.findall(r'\d+', price)),
-                    'link_image': data.css('.box-ksp>img::attr(src)').get(),
-                    'rating': data.css('.boxReview-score>p::text').get(),
-                    'total_rating': data.css('.boxReview-score>p>strong::text').get()
-                    # 'description': data.css('.technical-content').get()
-                }
-                return item
-                   
-        await asyncio.sleep(DOWNLOAD_DELAY)
 
 @app.route('/crawl/<id>', methods=['GET'])
 @login_required
@@ -81,36 +40,6 @@ def crawl(id):
 def crawldetail():
     if request.method == 'GET':
         return render_template('adminv2/crawl/crawlproductdetail/crawl.html')
-
-@app.route('/crawl/detail/show', methods=['POST'])
-@login_required
-@roles_required('admin')
-def crawldetail_show():
-    if request.method == 'POST':
-        store = db.stores.find_one({'name': 'cellphones'})
-        data = db.products.find({'store_id': store['_id']})
-        datas = []
-        for item in data:
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            result = loop.run_until_complete(get_crawl_product_detail(item))
-            datas.append(result)
-        return render_template('adminv2/crawl/crawlproductdetail/show.html',data=datas)
-
-@app.route('/crawl/detail/save', methods=['POST'])
-@login_required
-@roles_required('admin')
-def crawldetail_save():
-    if request.method == 'POST':
-        store = db.stores.find_one({'name': 'cellphones'})
-        data = db.products.find({'store_id': store['_id']})
-        datas = []
-        for item in data:
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            result = loop.run_until_complete(get_crawl_product_detail(item))
-            datas.append(result)
-        return render_template('adminv2/crawl/crawlproductdetail/show.html',data=datas)
 
 @app.route('/crawl/selenium/<id>', methods=['POST'])
 @login_required
@@ -164,7 +93,6 @@ def crawlselenium(id):
         json.dump({}, json_file)
     with open('data.json', 'w') as json_file:
         json.dump(datas, json_file)
-    driver.quit()
     return jsonify(datas), 200
   except:
     driver.quit()
@@ -190,3 +118,31 @@ def crawlsave(id):
         return redirect('/product/list')
     else:
         return jsonify('đồng bộ không thành công'), 400
+
+@app.route('/crawl/brand/test', methods=['GET','POST'])
+@login_required
+@roles_required('admin')
+def branlist():
+    if request.method == "GET":
+        return render_template("adminv2/crawlv2/show.html")
+    elif request.method == "POST":
+        data = request.json
+        options = Options()
+        options.headless = True
+        driver = webdriver.Firefox(options=options, executable_path=DRIVER_PATH)
+        driver.get(data["url"])
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
+        items = []
+        brand = soup.select(".menu-container .menu-tree .label-menu-tree .label-item")
+        for item in brand:
+            items.append(item.get('href'))
+        unique_arr = []
+        for i in items:
+            if i not in unique_arr:
+                unique_arr.append(i)
+        # driver.get(items[0])
+        # soup = BeautifulSoup(driver.page_source, 'html.parser')
+        # items = soup.select_one(".product-item")
+        # print(items)
+        driver.quit()
+        return jsonify(unique_arr), 200
