@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Web so sanh</title>
+
+    <!--====== Google Font ======-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet">
+
+    <!--====== Vendor Css ======-->
+    <link rel="stylesheet" href="../../../static/template_user/css/vendor.css">
+
+    <!--====== Utility-Spacing ======-->
+    <link rel="stylesheet" href="../../../static/template_user/css/utility.css">
+
+    <!--====== App ======-->
+    <link rel="stylesheet" href="../../../static/template_user/css/app.css">
+</head>
+<body class="config" id="js-scrollspy-trigger">
+    <!--====== Main App ======-->
+    <div id="app">
+
+        <!--====== Main Header ======-->
+        <header style="background: #c96b5b;">
+
+            <!--====== Nav 1 ======-->
+            <nav class="primary-nav-wrapper">
+                <div class="container">
+
+                    <!--====== Primary Nav ======-->
+                    <div class="primary-nav">
+
+                        <!--====== Main Logo ======-->
+
+                        <div class="main-logo" style="font-size: 20px;color:rgb(56, 52, 52);font-weight: bold;">WEBSOSANH.COM</div>
+                        <!--====== End - Main Logo ======-->
+
+
+                        <!--====== Search Form ======-->
+                        <form class="main-form">
+
+                            <label for="main-search"></label>
+
+                            <input class="input-text input-text--border-radius input-text--style-2" type="text" id="main-search" placeholder="Tìm Kiếm Sản Phẩm">
+
+                            <button class="btn btn--icon fas fa-search main-search-button" type="submit"></button></form>
+                        <!--====== End - Search Form ======-->
+                        <div class="menu-init" id="navigation">
+
+                          <button class="btn btn--icon toggle-button toggle-button--white fas fa-cogs" type="button"></button>
+
+                          <!--====== Menu ======-->
+                          <div class="ah-lg-mode">
+
+                              <!--====== List ======-->
+                              <ul class="ah-list ah-list--design1 ah-list--link-color-white">
+                                <li style="color: black;">
+                                    {% if session['user'] %}
+                                        {{ session['user']['email'] }}
+                                    {% endif %}
+                                </li>
+                                {% if session['user'] and session['user']['role'] == 'admin' %}
+                                <li data-tooltip="tooltip" data-placement="left" title="Trang Admin">
+
+                                    <a href="/dashboard"><i class="fas fa-bars"></i></a>
+                                </li>
+                                {% endif %}
+                                  <li class="has-dropdown" data-tooltip="tooltip" data-placement="left" title="Account">
+
+                                      <a><i class="far fa-user-circle"></i></a>
+
+                                      <!--====== Dropdown ======-->
+
+                                      <span class="js-menu-toggle"></span>
+                                      <ul style="width:120px">
+                                        {% if session['user'] %}
+                                            <li>
+                                                <a href="/dashboard"><i class="fas fa-user-circle u-s-m-r-6"></i>
+                                                <span>Tài Khoản</span></a></li>
+                                            <li>
+                                                <a href="/signout"><i class="fas fa-lock-open u-s-m-r-6"></i>
+                                                <span>Đăng Xuất</span></a></li>
+                                        {% else %}
+                                          <li>
+                                              <a href="/login"><i class="fas fa-lock u-s-m-r-6"></i>
+                                              <span>Đăng Nhập</span></a></li>
+                                          <li>
+                                              <a href="/register"><i class="fas fa-user-plus u-s-m-r-6"></i>
+                                              <span>Đăng Ký</span></a></li>
+                                        {% endif %}
+
+                                      </ul>
+                                      <!--====== End - Dropdown ======-->
+                                  </li>
+                                  <li data-tooltip="tooltip" data-placement="left" title="Contact">
+
+                                      <a href="tel:+0900901904"><i class="fas fa-phone-volume"></i></a></li>
+                                  <li data-tooltip="tooltip" data-placement="left" title="Mail">
+
+                                      <a href="mailto:contact@domain.com"><i class="far fa-envelope"></i></a></li>
+                              </ul>
+                              <!--====== End - List ======-->
+                          </div>
+                          <!--====== End - Menu ======-->
+                      </div>
+                    </div>
+                    <!--====== End - Primary Nav ======-->
+                </div>
+            </nav>
+            <!--====== End - Nav 1 ======-->
+
+
+            <!--====== Nav 2 ======-->
+            <nav class="secondary-nav-wrapper">
+                <div class="container">
+
+                    <!--====== Secondary Nav ======-->
+                    <div class="secondary-nav">
+
+                        <!--====== Dropdown Main plugin ======-->
+                        <div class="menu-init" id="navigation1">
+                            <!--====== Menu ======-->
+                            <div class="ah-lg-mode">
+                                <!--====== End - List ======-->
+                            </div>
+                            <!--====== End - Menu ======-->
+                        </div>
+                        <!--====== End - Dropdown Main plugin ======-->
+
+
+                        <!--====== Dropdown Main plugin ======-->
+                        <div class="menu-init" id="navigation2">
+
+                            <button class="btn btn--icon toggle-button toggle-button--white fas fa-cog" type="button"></button>
+
+                            <!--====== Menu ======-->
+                            <div class="ah-lg-mode">
+
+                                <span class="ah-close">✕ Close</span>
+
+                                <!--====== List ======-->
+                                <ul class="ah-list ah-list--design2 ah-list--link-color-white">
+                                    <li>
+
+                                        <a href="shop-side-version-2.html">Trang Chủ</a></li>
+                                    <li class="has-dropdown">
+
+                                        <a>Danh Mục<i class="fas fa-angle-down u-s-m-l-6"></i></a>
+
+                                        <!--====== Dropdown ======-->
+
+                                        <span class="js-menu-toggle"></span>
+                                        <ul style="width:170px">
+                                            <li class="has-dropdown has-dropdown--ul-left-100">
+
+                                                <a>Home<i class="fas fa-angle-down i-state-right u-s-m-l-6"></i></a>
+
+                                                <!--====== Dropdown ======-->
+
+                                                <span class="js-menu-toggle"></span>
+                                                <ul style="width:118px">
+                                                    <li>
+
+                                                        <a href="index.html">Home 1</a></li>
+                                                    <li>
+
+                                                        <a href="index-2.html">Home 2</a></li>
+                                                    <li>
+
+                                                        <a href="index-3.html">Home 3</a></li>
+                                                </ul>
+                                                <!--====== End - Dropdown ======-->
+                                            </li>
+                                        </ul>
+                                        <!--====== End - Dropdown ======-->
+                                    </li>
+                                    <li>
+
+                                        <a href="/home/product">Sản Phẩm</a></li>
+                                    <li>
+
+                                        <a href="shop-side-version-2.html">Thông tin về trang web</a></li>
+                                </ul>
+                                <!--====== End - List ======-->
+                            </div>
+                            <!--====== End - Menu ======-->
+                        </div>
+                        <!--====== End - Dropdown Main plugin ======-->
+
+
+                        <!--====== Dropdown Main plugin ======-->
+                        <div class="menu-init" id="navigation3">
+
+                            <button class="btn btn--icon toggle-button toggle-button--white fas fa-shopping-bag toggle-button-shop" type="button"></button>
+
+                            <span class="total-item-round">2</span>
+
+                            <!--====== Menu ======-->
+                            <div class="ah-lg-mode">
+
+                                <span class="ah-close">✕ Close</span>
+
+                                <!--====== List ======-->
+                                <ul class="ah-list ah-list--design1 ah-list--link-color-white"></ul>
+                            </div>
+                            <!--====== End - Menu ======-->
+                        </div>
+                        <!--====== End - Dropdown Main plugin ======-->
+                    </div>
+                    <!--====== End - Secondary Nav ======-->
+                </div>
+            </nav>
+            <!--====== End - Nav 2 ======-->
+        </header>
+        <!--====== End - Main Header ======-->
+
+        {% block content %} {# use template #} {% endblock %}
+        <!--====== Main Footer ======-->
+
+    </div>
+    <!--====== End - Main App ======-->
+
+
+    <!--====== Google Analytics: change UA-XXXXX-Y to be your site's ID ======-->
+    <script>
+        window.ga = function() {
+            ga.q.push(arguments)
+        };
+        ga.q = [];
+        ga.l = +new Date;
+        ga('create', 'UA-XXXXX-Y', 'auto');
+        ga('send', 'pageview')
+    </script>
+    <script src="https://www.google-analytics.com/analytics.js" async defer></script>
+
+    <!--====== Vendor Js ======-->
+    <script src="../../../static/template_user/js/vendor.js"></script>
+
+    <!--====== jQuery Shopnav plugin ======-->
+    <script src="../../../static/template_user/js/jquery.shopnav.js"></script>
+
+    <!--====== App ======-->
+    <script src="../../../static/template_user/js/app.js"></script>
+
+    <!--====== Noscript ======-->
+    <noscript>
+        <div class="app-setting">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="app-setting__wrap">
+                            <h1 class="app-setting__h1">JavaScript is disabled in your browser.</h1>
+
+                            <span class="app-setting__text">Please enable JavaScript in your browser or upgrade to a JavaScript-capable browser.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </noscript>
+</body>
+</html>

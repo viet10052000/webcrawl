@@ -37,19 +37,17 @@ def roles_required(*role_names):
     def decorator(original_route):
         @wraps(original_route)
         def decorated_route(*args, **kwargs):          
-            if not session['user']['isAdmin'] in role_names:
+            if not session['user']['role'] in role_names:
                 return render_template('/adminv2/error/403.html')
             else:
                 return original_route(*args, **kwargs)
         return decorated_route
     return decorator
-
 from user import routes
 from webcrawl import routes
 from toolcrawl import routes
 from shop import routes
 from category import routes
 from product import routes
-
 if __name__ == '__main__':
     app.run(debug = True)

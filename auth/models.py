@@ -16,7 +16,7 @@ class Auth:
             "name": request.values.get('name'),
             "email": request.values.get('email'),
             "password": request.values.get('password'),
-            "isAdmin": "0"
+            "role": "admin"
         }
         
         user['password'] = pbkdf2_sha256.encrypt(user['password'])

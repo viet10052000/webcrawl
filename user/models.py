@@ -10,7 +10,7 @@ class User:
             "name": request.values.get('name'),
             "email": request.values.get('email'),
             "password": request.values.get('password'),
-            "isAdmin": request.values.get('is_admin')
+            "role": request.values.get('is_admin')
         }
         
         user['password'] = pbkdf2_sha256.encrypt(user['password'])
@@ -30,7 +30,7 @@ class User:
             "_id": id,
             "name": request.values.get('name'),
             "email": request.values.get('email'),
-            "isAdmin": request.values.get('is_admin')
+            "role": request.values.get('is_admin')
         }
         user = db.users.update_one({ '_id': id }, { '$set': data })
         
