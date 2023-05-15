@@ -1,41 +1,30 @@
 {% extends 'user/layout/base.html' %}
 {% block content %}
-        <!--====== App Content ======-->
+<!--====== App Content ======-->
         <div class="app-content">
 
           <!--====== Section 1 ======-->
           <div class="u-s-p-t-90">
               <div class="container">
                   <div class="row">
+                      <div class="pd-breadcrumb u-s-m-b-30">
+                            <ul class="pd-breadcrumb__list">
+                                <li class="has-separator">
+                                    <a href="/" style="font-size:18px">Trang Chủ</a></li>
+                                <li class="has-separator">
+                                    <a href="/home/product" style="font-size:18px">Sản Phẩm</a></li>
+                                <li class="is-marked">
+                                <a style="font-size:18px">{{product.name}}</a></li>
+                            </ul>
+                      </div>
                       <div class="col-lg-7">
-
-                          <!--====== Product Breadcrumb ======-->
-                          <div class="pd-breadcrumb u-s-m-b-30">
-                              <ul class="pd-breadcrumb__list">
-                                  <li class="has-separator">
-
-                                      <a href="index.hml">Home</a></li>
-                                  <li class="has-separator">
-
-                                      <a href="shop-side-version-2.html">Electronics</a></li>
-                                  <li class="has-separator">
-
-                                      <a href="shop-side-version-2.html">DSLR Cameras</a></li>
-                                  <li class="is-marked">
-
-                                      <a href="shop-side-version-2.html">Nikon Cameras</a></li>
-                              </ul>
-                          </div>
-                          <!--====== End - Product Breadcrumb ======-->
-
-
                           <!--====== Product Detail Zoom ======-->
                           <div class="pd u-s-m-b-30">
                               <div class="pd-wrap">
                                   <div id="pd-o-initiate">
-                                      <div class="pd-o-img-wrap" data-src="../../../static/template_user/images/product/product-d-1.jpg">
+                                      <div class="pd-o-img-wrap">
 
-                                          <img class="u-img-fluid" src="../../../static/template_user/images/product/product-d-1.jpg" style="height: 300px;"></div>
+                                          <img class="u-img-fluid" src="{{product.link_image}}" style="height: 300px;object-fit:contain;"></div>
                                   </div>
                               </div>
                           </div>
@@ -44,43 +33,41 @@
                       <div class="col-lg-5">
 
                           <!--====== Product Right Side Details ======-->
-                          <div class="pd-detail" style="margin-top: 50px;">
+                          <div class="pd-detail" style="margin-top: 75px;">
                               <div>
 
-                                  <span class="pd-detail__name">Nikon Camera 4k Lens Zoom Pro</span></div>
+                                  <span class="pd-detail__name">{{product.name}}</span></div>
                               <div>
                                   <div class="pd-detail__inline">
 
-                                      <span class="pd-detail__price">$6.99</span>
+                                      <span class="pd-detail__price">{{product.price}} VNĐ</span>
 
-                                      <span class="pd-detail__discount">(76% OFF)</span><del class="pd-detail__del">$28.97</del></div>
+                                      <span class="pd-detail__discount">(76%)</span><del class="pd-detail__del">$28.97</del></div>
                               </div>
                               <div class="u-s-m-b-15">
                                   <div class="pd-detail__rating gl-rating-style"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
 
                                       <span class="pd-detail__review u-s-m-l-4">
 
-                                          <a data-click-scroll="#view-review">23 Reviews</a></span></div>
+                                          <a data-click-scroll="#view-review">{{productdetail.rating}} | {{productdetail.total_rating}} đánh giá</a></span></div>
                               </div>
-                              <div class="u-s-m-b-15">
+                              <div class="u-s-m-b-15" style="margin-top:10px">
                                   <div class="pd-detail__inline">
 
                                       <span class="pd-detail__click-wrap"><i class="far fa-heart u-s-m-r-6"></i>
 
-                                          <a href="signin.html">Add to Wishlist</a>
+                                          <a href="signin.html" style="font-size:18px">Thêm vào danh sách yêu thích</a>
 
-                                          <span class="pd-detail__click-count">(222)</span></span></div>
                               </div>
-                              <div class="u-s-m-b-15">
+                              <div class="u-s-m-b-15" style="margin-top:10px">
                                   <div class="pd-detail__inline">
 
                                       <span class="pd-detail__click-wrap"><i class="far fa-envelope u-s-m-r-6"></i>
 
-                                          <a href="signin.html">Email me When the price drops</a>
+                                          <a href="signin.html" style="font-size:18px">gửi email khi giá giảm</a>
 
-                                          <span class="pd-detail__click-count">(20)</span></span></div>
                               </div>
-                              <div class="u-s-m-b-15">
+                              <div class="u-s-m-b-15" style="margin-top:10px">
                                   <ul class="pd-social-list">
                                       <li>
 
@@ -126,9 +113,9 @@
 
                                   <!--====== Tab 1 ======-->
                                   <div class="tab-pane fade show active" id="pd-desc">
-                                      <div class="pd-tab__desc">
+                                      <div>
                                           <div class="u-s-m-b-15">
-                                              <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                                            <p style="font-size:18px">{{productdetail.description}}</p>
                                           </div>
                                       </div>
                                   </div>
@@ -142,42 +129,12 @@
                                             <div class="pd-table gl-scroll">
                                                 <table>
                                                     <tbody>
+                                                        {% for key, value in productdetail.introduction.items()  %}
                                                         <tr>
-                                                            <td>Main Material</td>
-                                                            <td>Cotton</td>
+                                                            <td>{{key}}</td>
+                                                            <td>{{value}}</td>
                                                         </tr>
-                                                        <tr>
-                                                            <td>Color</td>
-                                                            <td>Green, Blue, Red</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Sleeves</td>
-                                                            <td>Long Sleeve</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Top Fit</td>
-                                                            <td>Regular</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Print</td>
-                                                            <td>Not Printed</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Neck</td>
-                                                            <td>Round Neck</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Pieces Count</td>
-                                                            <td>1 Piece</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Occasion</td>
-                                                            <td>Casual</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Shipping Weight (kg)</td>
-                                                            <td>0.5</td>
-                                                        </tr>
+                                                        {% endfor %}
                                                     </tbody>
                                                 </table>
                                             </div>
