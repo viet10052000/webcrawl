@@ -43,7 +43,6 @@ def delete(id):
     lists = Store().delete(id)
     return redirect('/shop/list')
 
-@app.route('/')
 @app.route('/dashboard')
 @login_required
 @roles_required('admin')

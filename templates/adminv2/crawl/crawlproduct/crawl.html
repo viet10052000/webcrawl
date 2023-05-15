@@ -102,9 +102,8 @@
             for (let i = 0; i < response.length; i++) {
               render_list += `
               <tr>
-                <td><a href="${response[i].link_url}" target="_blank">${response[i].name}</a></td>
-                <td><img width="75" height="75" src="${response[i].link_image}" /></td>
-                <td>${response[i].price}</td>
+                <td>${response[i].name}</td>
+                <td><a href="${response[i].link_url}" target="_blank">${response[i].link_url}</a></td>
               </tr>`;
             }
             let html_to_append =
@@ -116,8 +115,7 @@
               "<thead>" +
               "<tr>" +
               "<th>Tên</th>" +
-              "<th>Ảnh</th>" +
-              "<th>Giá</th>" +
+              "<th>Link Url</th>" +
               "</tr>" +
               "</thead>" +
               "<tbody>" +

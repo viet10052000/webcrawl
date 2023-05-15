@@ -6,6 +6,7 @@ from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
+import uuid
 import time, json
 DRIVER_PATH='path/to/geckodriver'
 DEFAULT_REQUEST_HEADERS = {
@@ -46,6 +47,7 @@ def crawldetail():
 @roles_required('admin')
 def crawlselenium(id):
   crawlproduct = db.crawlproducts.find_one({'_id': id})
+  crawlproductdetail = db.crawlproductdetails.find_one({"crawlproduct_id":id})
   store = db.stores.find_one({'_id': crawlproduct['store_id']})
   category = db.categories.find_one({'_id': crawlproduct['category_id']})
   options = Options()
@@ -75,24 +77,56 @@ def crawlselenium(id):
         except:
             link_url = ''
         try:
-            price = item.select_one(crawlproduct['selector_price']).text
-        except:
-            price = ''
-        try:
             link_image = item.select_one(crawlproduct['selector_link_image']).get('src')
         except:
             link_image = ''
+        try:
+            price = item.select_one(crawlproduct['selector_price']).text
+        except:
+            price = ''
         data = {
-            'name': title.strip().replace('\n', ''),
-            'link_url': link_url,
-            'price': ''.join(re.findall(r'\d+', price)),
+            '_id': uuid.uuid4().hex,
+            'category_id': category["_id"],
+            'store_id': store["_id"],
+            'name': title,
             'link_image': link_image,
+            'price': ''.join(re.findall(r'\d+', price)),
+            'link_url': link_url,
         }
         datas.append(data)
+    for data in datas:
+        driver.get(data["link_url"])
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
+        items = soup.select(crawlproductdetail['selector_description'])
+        description = ''
+        introduction = {}
+        rating = 0
+        total_rating = 0
+        for item in items:
+            description += item.text
+        items = soup.select(crawlproductdetail['selector_specification_frame'])
+        for item in items:
+            name = item.select_one(crawlproductdetail['selector_specification_name']).text
+            detail = item.select_one(crawlproductdetail['selector_specification_detail']).text
+            introduction[name] = detail
+        rating = soup.select_one(crawlproductdetail['selector_rating']).text
+        total_rating = soup.select_one(crawlproductdetail['selector_total_rating']).text
+        detail = {
+            "_id": uuid.uuid4().hex,
+            "product_id": data["_id"],
+            "description": description,
+            "introduction": introduction,
+            "rating": rating,
+            "total_rating": int(total_rating),
+        }
+        data["detail"] = detail
     with open('data.json', 'w') as json_file:
         json.dump({}, json_file)
     with open('data.json', 'w') as json_file:
         json.dump(datas, json_file)
+    with open('geckodriver.log', 'w') as json_file:
+        json.dump({}, json_file)
+    driver.quit()    
     return jsonify(datas), 200
   except:
     driver.quit()
@@ -109,15 +143,14 @@ def crawlsave(id):
         data = json.load(file)
 
     for item in data:
-        item['category_id'] = category['_id']
-        item['store_id'] = store['_id']
+        detail = item["detail"]
+        del item["detail"]
+        db.products.insert_one(item)
+        db.productdetails.insert_one(detail)
     
-    if db.products.insert_many(data):
-        with open('data.json', 'w') as json_file:
-            json.dump({}, json_file)
-        return redirect('/product/list')
-    else:
-        return jsonify('đồng bộ không thành công'), 400
+    with open('data.json', 'w') as json_file:
+        json.dump({}, json_file)
+    return redirect('/product/list')
 
 @app.route('/crawl/brand/test', methods=['GET','POST'])
 @login_required
@@ -133,7 +166,7 @@ def branlist():
         driver.get(data["url"])
         soup = BeautifulSoup(driver.page_source, 'html.parser')
         items = []
-        brand = soup.select(".menu-container .menu-tree .label-menu-tree .label-item")
+        brand = soup.select(".list-brand__item")
         for item in brand:
             items.append(item.get('href'))
         unique_arr = []

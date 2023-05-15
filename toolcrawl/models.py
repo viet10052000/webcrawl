@@ -5,8 +5,6 @@ class CrawlProductDetail:
     def create(self, crawlproduct_id):
         crawl = {
             "_id": uuid.uuid4().hex,
-            "selector_price": request.values.get('selector_price'),
-            "selector_link_image": request.values.get('selector_link_image'),
             "selector_specification_frame": request.values.get('selector_specification_frame'),
             "selector_specification_name": request.values.get('selector_specification_name'),
             "selector_specification_detail": request.values.get('selector_specification_detail'),
@@ -39,6 +37,8 @@ class CrawlProduct:
             "selector_frame": request.values.get('selector_frame'),
             "selector_name": request.values.get('selector_name'),
             "selector_url": request.values.get('selector_url'),
+            "selector_price": request.values.get('selector_price'),
+            "selector_link_image": request.values.get('selector_link_image'),
             "selector_load_page": request.values.get('selector_load_page'),
         }
         db.crawlproducts.insert_one(crawl)

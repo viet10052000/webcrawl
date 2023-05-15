@@ -48,7 +48,7 @@ def profileEdit():
             'name': request.values.get('name'),
             'email': request.values.get('email'),
             'password': user['password'],
-            'isAdmin': user['isAdmin'],
+            'role': user['role'],
         }
         db.users.update_one({ '_id': user['_id'] }, { '$set': data })
         return redirect('/profile')
@@ -66,7 +66,7 @@ def changePassword():
             'name': request.values.get('name'),
             'email': request.values.get('email'),
             'password': user['password'],
-            'isAdmin': user['isAdmin'],
+            'role': user['role'],
         }
         db.users.update_one({ '_id': user['_id'] }, { '$set': data })
         return redirect('/profile')

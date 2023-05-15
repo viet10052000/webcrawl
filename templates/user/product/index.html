@@ -1,0 +1,277 @@
+{% extends 'user/layout/base.html' %}
+{% block content %}
+
+        <!--====== App Content ======-->
+        <div class="app-content">
+
+          <!--====== Section 1 ======-->
+          <div class="u-s-p-y-90">
+              <div class="container">
+                  <div class="row">
+                      <div class="col-lg-3 col-md-12">
+                          <div class="shop-w-master">
+                              <h1 class="shop-w-master__heading u-s-m-b-30"><i class="fas fa-filter u-s-m-r-8"></i>
+
+                                  <span>Lọc</span></h1>
+                              <div class="shop-w-master__sidebar sidebar--bg-snow">
+                                  <div class="u-s-m-b-30">
+                                      <div class="shop-w">
+                                          <div class="shop-w__intro-wrap">
+                                              <h1 class="shop-w__h">Danh Mục</h1>
+
+                                              <span class="fas fa-minus shop-w__toggle" data-target="#s-category" data-toggle="collapse"></span>
+                                          </div>
+                                          <div class="shop-w__wrap collapse show" id="s-category">
+                                              <ul class="shop-w__category-list gl-scroll">
+                                                {% for item in categories %}
+                                                  <li>
+
+                                                      <a href="#">{{item.name}}</a>
+
+                                                {% endfor %}
+                                              </ul>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="u-s-m-b-30">
+                                    <div class="shop-w">
+                                        <div class="shop-w__intro-wrap">
+                                            <h1 class="shop-w__h">Cửa Hàng</h1>
+
+                                            <span class="fas fa-minus shop-w__toggle" data-target="#s-category" data-toggle="collapse"></span>
+                                        </div>
+                                        <div class="shop-w__wrap collapse show" id="s-category">
+                                            <ul class="shop-w__category-list gl-scroll">
+                                              {% for item in stores %}
+                                                <li>
+
+                                                    <a href="#">{{item.name}}</a>
+
+                                              {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                  <div class="u-s-m-b-30">
+                                    <div class="shop-w">
+                                        <div class="shop-w__intro-wrap">
+                                            <h1 class="shop-w__h">Giá</h1>
+
+                                            <span class="fas fa-minus shop-w__toggle" data-target="#s-price" data-toggle="collapse"></span>
+                                        </div>
+                                        <div class="shop-w__wrap collapse show" id="s-price">
+                                            <form class="shop-w__form-p">
+                                                <div class="shop-w__form-p-wrap">
+                                                    <div>
+
+                                                        <label for="price-min"></label>
+
+                                                        <input class="input-text input-text--primary-style" type="text" id="price-min" placeholder="Min"></div>
+                                                    <div>
+
+                                                        <label for="price-max"></label>
+
+                                                        <input class="input-text input-text--primary-style" type="text" id="price-max" placeholder="Max"></div>
+                                                    <div>
+
+                                                        <button class="btn btn--icon fas fa-angle-right btn--e-transparent-platinum-b-2" type="submit"></button></div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                  <div class="u-s-m-b-30">
+                                      <div class="shop-w">
+                                          <div class="shop-w__intro-wrap">
+                                              <h1 class="shop-w__h">RATING</h1>
+
+                                              <span class="fas fa-minus shop-w__toggle" data-target="#s-rating" data-toggle="collapse"></span>
+                                          </div>
+                                          <div class="shop-w__wrap collapse show" id="s-rating">
+                                              <ul class="shop-w__list gl-scroll">
+                                                  <li>
+                                                      <div class="rating__check">
+
+                                                          <input type="checkbox">
+                                                          <div class="rating__check-star-wrap"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                                                      </div>
+
+                                                      <span class="shop-w__total-text">(2)</span>
+                                                  </li>
+                                                  <li>
+                                                      <div class="rating__check">
+
+                                                          <input type="checkbox">
+                                                          <div class="rating__check-star-wrap"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+
+                                                              <span>& Up</span></div>
+                                                      </div>
+
+                                                      <span class="shop-w__total-text">(8)</span>
+                                                  </li>
+                                                  <li>
+                                                      <div class="rating__check">
+
+                                                          <input type="checkbox">
+                                                          <div class="rating__check-star-wrap"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                                              <span>& Up</span></div>
+                                                      </div>
+
+                                                      <span class="shop-w__total-text">(10)</span>
+                                                  </li>
+                                                  <li>
+                                                      <div class="rating__check">
+
+                                                          <input type="checkbox">
+                                                          <div class="rating__check-star-wrap"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                                              <span>& Up</span></div>
+                                                      </div>
+
+                                                      <span class="shop-w__total-text">(12)</span>
+                                                  </li>
+                                                  <li>
+                                                      <div class="rating__check">
+
+                                                          <input type="checkbox">
+                                                          <div class="rating__check-star-wrap"><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                                              <span>& Up</span></div>
+                                                      </div>
+
+                                                      <span class="shop-w__total-text">(1)</span>
+                                                  </li>
+                                              </ul>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-lg-9 col-md-12">
+                          <div class="shop-p">
+                              <div class="shop-p__toolbar u-s-m-b-30">
+                                  <div class="shop-p__tool-style">
+                                      <div class="tool-style__group u-s-m-b-8">
+
+                                          <span class="js-shop-grid-target is-active">Hiển Thị Dạng Lưới</span>
+
+                                          <span class="js-shop-list-target">Hiển Thị Dạng Danh Sách</span></div>
+                                      <form>
+                                          <div class="tool-style__form-wrap">
+                                              <div class="u-s-m-b-8"><select class="select-box select-box--transparent-b-2">
+                                                      <option>Sắp Xếp: Giá từ cao đến thấp</option>
+                                                      <option>Sắp Xếp: Giá từ thấp đến cao</option>
+                                                  </select></div>
+                                          </div>
+                                      </form>
+                                  </div>
+                              </div>
+                              <div class="shop-p__collection">
+                                  <div class="row is-grid-active">
+                                      {% for item in lists %}
+                                      <div class="col-lg-4 col-md-6 col-sm-6">
+                                          <div class="product-m">
+                                              <div class="product-m__thumb">
+
+                                                  <a class="aspect aspect--bg-grey aspect--square u-d-block" href="/home/product/detail/{{item._id}}">
+
+                                                      <img class="aspect__img" src="{{item.link_image}}" alt=""></a>
+                                              </div>
+                                              <div class="product-m__content" style="height: 100px;">
+                                                  <div class="product-m__category">
+                                                    <div class="product-m__name" style="height: 58px;">
+                                                        <a href="/home/product/detail{{item._id}}" style="margin-top: 5px;font-weight: bold;">{{item.name}}</a>
+                                                    </div>
+                                                    <div class="product-m__price" style="margin-top: 5px;color: red;">
+                                                      {{item.price}} VNĐ
+                                                    </div>
+                                                  </div>
+                                              </div>
+                                      </div>
+                                    </div>
+                                    {% endfor %}
+                                  </div>
+                              </div>
+                              <div class="u-s-p-y-60">
+
+                                  <!--====== Pagination ======-->
+                                  <ul class="shop-p__pagination">
+                                    {% if current_page > 1 %}
+                                      <li class="page-item">
+                                        <a
+                                          class="page-link"
+                                          href="/product/list/page/{{current_page-1}}"
+                                          tabindex="-1"
+                                        >
+                                          <span aria-hidden="true">&laquo;</span>
+                                          <span class="sr-only">Previous</span>
+                                        </a>
+                                      </li>
+                                      {% else %}
+                                      <li class="page-item disabled">
+                                        <a
+                                          class="page-link"
+                                          href="/home/product/page/{{current_page-1}}"
+                                          tabindex="-1"
+                                        >
+                                          <span aria-hidden="true">&laquo;</span>
+                                          <span class="sr-only">Previous</span>
+                                        </a>
+                                      </li>
+                                      {% endif %} {% for page in pages %} {% if page == current_page %}
+                                      <li class="page-item">
+                                        <a
+                                          aria-disabled="true"
+                                          class="page-link"
+                                          style="background-color: rgb(44, 219, 161); color: white"
+                                        >
+                                          {{ page }}
+                                        </a>
+                                      </li>
+                                      {% elif page == '...' %}
+                                      <li class="page-item">
+                                        <a aria-disabled="true" class="page-link"> {{ page }} </a>
+                                      </li>
+                                      {% else %}
+                                      <li class="page-item">
+                                        <a class="page-link" href="/home/product/page/{{page}}">
+                                          {{ page }}
+                                        </a>
+                                      </li>
+                                      {% endif %} {% endfor %} {% if current_page == pages %}
+                                      <li class="page-item diabled">
+                                        <a
+                                          class="page-link"
+                                          href="/home/product/page/{{current_page+1}}"
+                                          tabindex="-1"
+                                        >
+                                          <span aria-hidden="true">&raquo;</span>
+                                          <span class="sr-only">Next</span>
+                                        </a>
+                                      </li>
+                                      {% else %}
+                                      <li class="page-item">
+                                        <a
+                                          class="page-link"
+                                          href="/home/product/page/{{current_page+1}}"
+                                          tabindex="-1"
+                                        >
+                                          <span aria-hidden="true">&raquo;</span>
+                                          <span class="sr-only">Next</span>
+                                        </a>
+                                      </li>
+                                      {% endif %}
+                                  </ul>
+                                  <!--====== End - Pagination ======-->
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <!--====== End - Section 1 ======-->
+      </div>
+      <!--====== End - App Content ======-->
+{% endblock %}
