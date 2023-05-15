@@ -26,7 +26,7 @@
                                                 {% for item in categories %}
                                                   <li>
 
-                                                      <a href="#">{{item.name}}</a>
+                                                      <a href="/home/product?category={{item.name}}">{{item.name}}</a>
 
                                                 {% endfor %}
                                               </ul>
@@ -38,14 +38,14 @@
                                         <div class="shop-w__intro-wrap">
                                             <h1 class="shop-w__h">Cửa Hàng</h1>
 
-                                            <span class="fas fa-minus shop-w__toggle" data-target="#s-category" data-toggle="collapse"></span>
+                                            <span class="fas fa-minus shop-w__toggle" data-target="#s-store" data-toggle="collapse"></span>
                                         </div>
-                                        <div class="shop-w__wrap collapse show" id="s-category">
+                                        <div class="shop-w__wrap collapse show" id="s-store">
                                             <ul class="shop-w__category-list gl-scroll">
                                               {% for item in stores %}
                                                 <li>
 
-                                                    <a href="#">{{item.name}}</a>
+                                                    <a href="/home/product?store={{item.name}}">{{item.name}}</a>
 
                                               {% endfor %}
                                             </ul>
