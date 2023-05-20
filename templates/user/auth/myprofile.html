@@ -1,0 +1,81 @@
+{% extends 'user/layout/base.html' %}
+{% block content %}
+        <!--====== App Content ======-->
+        <div class="app-content">
+          <div class="section__content">
+            <div class="container">
+                <div class="breadcrumb">
+                    <div class="breadcrumb__wrap">
+                        <ul class="breadcrumb__list">
+                            <li class="has-separator">
+                                <a href="/">Trang Chủ</a>
+                            </li>
+                            <li class="is-marked"><a>Trang Cá Nhân</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+          <!--====== End - Section 1 ======-->
+
+
+          <!--====== Section 2 ======-->
+          <div class="u-s-p-b-60">
+              <!--====== Section Content ======-->
+              <div class="section__content">
+                  <div class="dash">
+                      <div class="container">
+                          <div class="row">
+                              <div class="col-lg-12 col-md-12">
+                                  <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
+                                      <div class="dash__pad-2">
+                                          <h1 class="dash__h1 u-s-m-b-14">Trang cá nhân của tôi</h1>
+
+                                          <span class="dash__text u-s-m-b-30">Xem tất cả thông tin của bạn, bạn có thể tùy chỉnh hồ sơ của mình.</span>
+                                          <div class="row">
+                                              <div class="col-lg-6 u-s-m-b-30">
+                                                  <h2 class="dash__h2 u-s-m-b-8">Tên Đầy Đủ</h2>
+
+                                                  <span class="dash__text">{{user.firstname}} {{user.lastname}}</span>
+                                              </div>
+                                              <div class="col-lg-6 u-s-m-b-30">
+                                                  <h2 class="dash__h2 u-s-m-b-8">Email</h2>
+
+                                                  <span class="dash__text">{{user.email}}</span>
+                                              </div>
+  
+                                              <div class="col-lg-6 u-s-m-b-30">
+                                                  <h2 class="dash__h2 u-s-m-b-8">Sinh Nhật</h2>
+
+                                                  <span class="dash__text">{{user.birthday}}</span>
+                                              </div>
+                                              <div class="col-lg-6 u-s-m-b-30">
+                                                  <h2 class="dash__h2 u-s-m-b-8">Giới Tính</h2>
+
+                                                  <span class="dash__text">{% if user.gender == 'male' %}Nam{% else %}Nữ{% endif %}</span>
+                                              </div>
+                                          </div>
+                                          <div class="row">
+                                              <div class="col-lg-12">
+                                                  <div class="dash__link dash__link--secondary u-s-m-b-30">
+                                                  <div class="u-s-m-b-16">
+
+                                                      <a class="dash__custom-link btn--e-transparent-brand-b-2" href="/profile/edit">Sửa Trang Cá Nhân</a></div>
+                                                  <div>
+
+                                                      <a class="dash__custom-link btn--e-brand-b-2" href="/changepassword">Đổi Mật Khẩu</a></div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <!--====== End - Section Content ======-->
+          </div>
+          <!--====== End - Section 2 ======-->
+      </div>
+      <!--====== End - App Content ======-->
+{% endblock %}

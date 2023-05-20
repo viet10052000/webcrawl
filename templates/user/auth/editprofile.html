@@ -1,0 +1,96 @@
+{% extends 'user/layout/base.html' %}
+{% block content %}
+        <!--====== App Content ======-->
+        <div class="app-content">
+              <!--====== Section Content ======-->
+              <div class="section__content">
+                <div class="container">
+                    <div class="breadcrumb">
+                        <div class="breadcrumb__wrap">
+                            <ul class="breadcrumb__list">
+                                <li class="has-separator">
+
+                                    <a href="index.html">Home</a></li>
+                                <li class="is-marked">
+
+                                    <a href="dash-edit-profile.html">My Account</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>          
+
+          <!--====== Section 2 ======-->
+          <div class="u-s-p-b-60">
+
+              <!--====== Section Content ======-->
+              <div class="section__content">
+                  <div class="dash">
+                      <div class="container">
+                          <div class="row">
+                              <div class="col-lg-12 col-md-12">
+                                  <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white">
+                                      <div class="dash__pad-2">
+                                          <h1 class="dash__h1 u-s-m-b-14">Sửa trang Cá Nhân</h1>
+
+                                          <span class="dash__text u-s-m-b-30">Có vẻ như bạn chưa cập nhật hồ sơ của mình.</span>
+                                          <div class="row">
+                                              <div class="col-lg-12">
+                                                  <form action="/profile/edit" method="post" class="dash-edit-p">
+                                                      <div class="gl-inline">
+                                                          <div class="u-s-m-b-30">
+
+                                                              <label class="gl-label" for="reg-fname">Họ</label>
+
+                                                              <input name="firstname" value="{{user.firstname}}" class="input-text input-text--primary-style" type="text" id="reg-fname"></div>
+                                                          <div class="u-s-m-b-30">
+
+                                                              <label class="gl-label" for="reg-lname">Tên</label>
+
+                                                              <input name="lastname" value="{{user.lastname}}" class="input-text input-text--primary-style" type="text" id="reg-lname"></div>
+                                                      </div>
+                                                      <div class="gl-inline">
+                                                          <div class="u-s-m-b-30">
+                                                              <span class="gl-label">Sinh Nhật</span>
+                                                              <input value="{{user.birthday}}" name="birthday" class="input-text input-text--primary-style" type="date" id="reg-lname" required>
+                                                          </div>
+                                                          <div class="u-s-m-b-30">
+                                                              <label class="gl-label" for="gender">Giới Tính</label>
+                                                              <select name="gender" class="select-box select-box--primary-style u-w-100" id="gender">
+                                                                  <option value="male" {% if user.gender == 'male' %}selected{% endif %}>Nam</option>
+                                                                  <option value="female" {% if user.gender == 'female' %}selected{% endif %}>Nữ</option>
+                                                              </select></div>
+                                                      </div>
+                                                      <div class="gl-inline">
+                                                          <div class="u-s-m-b-30">
+                                                              <h2 class="dash__h2 u-s-m-b-8">Email</h2>
+                                                              <span class="dash__text">{{user.email}}</span>
+                                                          </div>
+                                                      </div>
+
+                                                      <button onclick="return confirmSubmit()" class="btn btn--e-brand-b-2" type="submit">Sửa</button>
+                                                  </form>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <!--====== End - Section Content ======-->
+          </div>
+          <!--====== End - Section 2 ======-->
+      </div>
+      <script>
+        function confirmSubmit() {
+            var result = confirm("Bạn có chắc chắn muốn thay đổi?");
+            if (result == true) {
+                document.forms["myForm"].submit();
+            } else {
+              return false
+            }
+        }
+      </script>
+{% endblock %}

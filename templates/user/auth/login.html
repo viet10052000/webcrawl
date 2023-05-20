@@ -12,18 +12,24 @@
                           <div class="col-lg-6 col-md-8 u-s-m-b-30">
                               <div class="l-f-o">
                                   <div class="l-f-o__pad-box">
-                                      <h1 class="gl-h1">Đăng Nhập</h1>
+                                      <h1 class="gl-h1" style="text-align: center;">Đăng Nhập</h1>
+                                      {% if user %}
+                                        {% if user.error %}
+                                            <div style="margin-bottom: 8px;color: red;text-align: center;">{{user.error}}</div>
+                                        {% endif %}
+                                      {% endif %}
                                       <form action="/login" class="l-f-o__form" method="post">
                                           <div class="u-s-m-b-30">
 
                                               <label class="gl-label" for="reg-email">Email *</label>
 
-                                              <input name="email" class="input-text input-text--primary-style" type="text" id="reg-email" placeholder="Nhập E-mail"></div>
+                                              <input name="email" class="input-text input-text--primary-style" type="text" id="reg-email" required></div>
+
                                           <div class="u-s-m-b-30">
 
                                               <label class="gl-label" for="reg-password">Mật Khẩu *</label>
 
-                                              <input name="password" class="input-text input-text--primary-style" type="password" id="reg-password" placeholder="Nhập Mật Khẩu"></div>
+                                              <input name="password" class="input-text input-text--primary-style" type="password" id="reg-password" required></div>
                                           <div class="u-s-m-b-15">
 
                                               <button class="btn btn--e-transparent-brand-b-2" type="submit">Đăng Nhập</button></div>

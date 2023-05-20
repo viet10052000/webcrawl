@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, jsonify, session
 from app import app, login_required, roles_required, db
 from passlib.hash import pbkdf2_sha256
 from user.models import User
-
+from auth.models import Auth
 @app.route('/user/list')
 @login_required
 @roles_required('admin')
@@ -33,22 +33,21 @@ def userdelete(id):
 @login_required
 def profile():
     user = db.users.find_one({'_id': session['user']['_id']})
-    return render_template('adminv2/user/profile.html',user=user)
+    return render_template('user/auth/myprofile.html',user=user)
 
 @app.route('/profile/edit', methods=['GET','POST'])
 @login_required
 def profileEdit():
     if request.method == 'GET':
         user = db.users.find_one({'_id': session['user']['_id']})
-        return render_template('adminv2/user/editprofile.html',user=user)
+        return render_template('user/auth/editprofile.html',user=user)
     elif request.method == 'POST':
         user = db.users.find_one({'_id': session['user']['_id']})
         data = {
-            '_id': user['_id'],
-            'name': request.values.get('name'),
-            'email': request.values.get('email'),
-            'password': user['password'],
-            'role': user['role'],
+            "firstname": request.values.get('firstname'),
+            "lastname": request.values.get('lastname'),
+            "gender": request.values.get('gender'),
+            "birthday": request.values.get('birthday'),
         }
         db.users.update_one({ '_id': user['_id'] }, { '$set': data })
         return redirect('/profile')
@@ -57,17 +56,34 @@ def profileEdit():
 @login_required
 def changePassword():
     if request.method == 'GET':
-        user = db.users.find_one({'_id': session['user']['_id']})
-        return render_template('adminv2/user/changepass.html',user=user)
+        return render_template('user/auth/changepassword.html')
     elif request.method == 'POST':
-        user = db.users.find_one({'_id': session['user']['_id'],'password': pbkdf2_sha256.encrypt(request.values.get('old_password'))})
-        data = {
-            '_id': user['_id'],
-            'name': request.values.get('name'),
-            'email': request.values.get('email'),
-            'password': user['password'],
-            'role': user['role'],
-        }
-        db.users.update_one({ '_id': user['_id'] }, { '$set': data })
-        return redirect('/profile')
-    
+        user = db.users.find_one({'_id': session['user']['_id']})
+        checkpass = pbkdf2_sha256.verify(request.values.get('old_password'), user['password'])
+        if checkpass == False:
+            data = {
+                "error":"Mật khẩu không chính xác"
+            }
+            return render_template('user/auth/changepassword.html',user=data)
+        else:
+            if request.values.get('old_password') == request.values.get('new_password'):
+                data = {
+                    "error":"Mật khẩu không được trùng"
+                }
+                return render_template('user/auth/changepassword.html',user=data)
+            elif request.values.get('new_password') != request.values.get('confirm_password'):
+                data = {
+                    "error":"Mật khẩu xác nhận không chính xác"
+                }
+                return render_template('user/auth/changepassword.html',user=data) 
+            else:
+                data = {
+                    'old_password': request.values.get('old_password'),
+                    'new_password': request.values.get('new_password'),
+                    'confirm_password': request.values.get('confirm_password'),
+                }
+                password = pbkdf2_sha256.encrypt(data['new_password'])
+                user["password"] = password
+                db.users.update_one({ '_id': user['_id'] }, { '$set': user })
+                Auth().signout()
+                return redirect('/login')

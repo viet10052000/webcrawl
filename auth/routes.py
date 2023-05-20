@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, jsonify
 from app import app
 from auth.models import Auth
 
@@ -8,7 +8,10 @@ def signup():
         return render_template('user/auth/register.html')
     elif request.method == 'POST':
         user = Auth().sinup()
-        return redirect('/')
+        if "error" in user:
+            return render_template('user/auth/register.html',user=user)
+        else:
+            return redirect('/login')  
 
 @app.route('/signout')
 def signout():
@@ -20,6 +23,10 @@ def login():
         return render_template('user/auth/login.html')
     elif request.method == 'POST':
         user = Auth().login()
-        return redirect('/dashboard')  
+        if "error" in user:
+            return render_template('user/auth/login.html',user=user)
+        else:
+            return redirect('/')  
+
     
   

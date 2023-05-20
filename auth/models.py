@@ -8,26 +8,30 @@ class Auth:
         del user['password']
         session['logger_in'] = True
         session['user'] = user
-        return jsonify(user), 200
+        return user
     
     def sinup(self):
         user = {
             "_id": uuid.uuid4().hex,
-            "name": request.values.get('name'),
+            "firstname": request.values.get('firstname'),
+            "lastname": request.values.get('lastname'),
+            "gender": request.values.get('gender'),
+            "birthday": request.values.get('birthday'),
             "email": request.values.get('email'),
             "password": request.values.get('password'),
-            "role": "admin"
+            "role": "user"
         }
         
         user['password'] = pbkdf2_sha256.encrypt(user['password'])
         
         if db.users.find_one({ "email": user['email'] }):
-            return jsonify({ "error": "Email address already in use" }), 400
+            data = {
+                "error": "Email đã tồn tại."
+            }            
+            return data
         
         if db.users.insert_one(user):
-            return self.start_session(user)
-        
-        return jsonify({ "error": "Sign up failed" }), 400
+            return { "success" : "Đăng Ký Thành Công" }
 
     def signout(self):
         session.clear()
@@ -39,7 +43,11 @@ class Auth:
         })
         
         if user and pbkdf2_sha256.verify(request.values.get('password'), user['password']):
-            return self.start_session(user)
-        
-        return jsonify({ "error": "Invalid login creadentials"}), 401
+            self.start_session(user)
+            return { "success" : "Đăng Nhập Thành Công" }
+
+        data = {
+            "error": "Tên tài thoản hoặc mật khẩu không chính xác"
+        }
+        return data
         

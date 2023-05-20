@@ -9,10 +9,10 @@ from app import db
 @roles_required('admin')
 def createtool():
     if request.method == 'GET':
-        categories = list(db.categories.find())
-        stores = list(db.stores.find())
-        return render_template('adminv2/tool/create.html',categories=categories,stores=stores)
+        return render_template('adminv2/tool/create.html')
     elif request.method == 'POST':
+        links = request.form.getlist('link[]')
+        request.form.getlist('category_id[]')
         crawl = CrawlProduct().create()
         CrawlProductDetail().create(crawl["_id"])
         return redirect('/tool/list')
@@ -47,10 +47,9 @@ def edittool(id):
             "selector_link_image": request.values.get('selector_link_image'),
             "selector_load_page": request.values.get('selector_load_page'),
         }
-        CrawlProduct().update(id,data)
         detail = db.crawlproductdetails.find_one({'crawlproduct_id': id})
-        if detail:
-            datadetail = {
+        datadetail = {
+                "_id": detail["_id"],
                 "selector_specification_frame": request.values.get('selector_specification_frame'),
                 "selector_specification_name": request.values.get('selector_specification_name'),
                 "selector_specification_detail": request.values.get('selector_specification_detail'),
@@ -59,12 +58,10 @@ def edittool(id):
                 "selector_total_rating": request.values.get('selector_total_rating'),
                 "selector_description": request.values.get('selector_description'),
                 "crawlproduct_id": id,
-            }
+        }
+        if detail:
             CrawlProduct().update(id,data)
             CrawlProductDetail().update(detail["_id"], datadetail)
-        else:
-            datadetail["_id"] = uuid.uuid4().hex
-            CrawlProductDetail().create(datadetail)
         return redirect('/tool/list')
 
 @app.route('/tool/delete/<id>', methods=['GET'])
