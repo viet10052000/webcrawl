@@ -9,7 +9,7 @@
         <div class="card-header"></div>
         <!-- /.card-header -->
         <div class="card-body">
-          <form action="/category/edit/{{category._id}}" method="post">
+          <form action="/category/edit/{{category._id}}" method="post"  enctype="multipart/form-data">
             <h1 class="h3 mb-3 fw-normal">Sửa Danh mục</h1>
             <div class="form-floating mb-3">
               <label for="floatingInput">Tên</label>
@@ -21,6 +21,16 @@
                 required
               />
             </div>
+            <div class="form-floating mb-3" style="position: relative;">
+              <div class="mb-2">Ảnh</div>
+              <input type="file" name="image" id="uploadInput" required>
+              {% if category.image %}
+                <img width="150" height="150" id="previewImage" src="data:image;base64,{{ category.image }}">     
+              {% else %}
+                <img width="150" height="150" id="previewImage" style="display: none;">     
+              {% endif %}
+              <span id="deleteButton" style="color: red;display: none;cursor: pointer;position: absolute;left: 145px;top: 50px;font-weight: bold">x</span> 
+            </div>
             <div class="form-floating mb-3">
               <label for="floatingPassword">Thông tin</label>
               <textarea
@@ -28,8 +38,7 @@
                 rows="4"
                 cols="50"
                 class="form-control"
-              >
-{{ category.description }}</textarea
+              >{{ category.description }}</textarea
               >
             </div>
             <div class="form-floating mb-3">
@@ -62,4 +71,29 @@
     <!-- /.row -->
   </div>
 </div>
+<script>
+  const uploadInput = document.getElementById('uploadInput');
+  const previewImage = document.getElementById('previewImage');
+  const deleteButton = document.getElementById('deleteButton');
+  
+  uploadInput.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+  
+    reader.onload = (event) => {
+      previewImage.src = event.target.result;
+      previewImage.style.display = 'block';
+      deleteButton.style.display = 'block';
+    };
+  
+    reader.readAsDataURL(file);
+  });
+  
+  deleteButton.addEventListener('click', () => {
+    previewImage.src = '';
+    previewImage.style.display = 'none';
+    deleteButton.style.display = 'none';
+    uploadInput.value = ''; // Clear the file input value
+  });           
+</script> 
 {% endblock %}

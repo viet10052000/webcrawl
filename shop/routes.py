@@ -9,6 +9,13 @@ def index():
     lists = Store().index()
     return render_template('/adminv2/store/list.html',lists=lists)
 
+@app.route('/api/shop/list')
+@login_required
+@roles_required('admin')
+def api_store_list():
+    lists = Store().index()
+    return jsonify(lists), 200
+
 @app.route('/shop/create', methods=['GET','POST'])
 @login_required
 @roles_required('admin')

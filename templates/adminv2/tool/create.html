@@ -10,103 +10,117 @@
             <!-- /.card-header -->
             <div class="card-body">
                 <form action="/tool/create" method="post">
-                    <h1 class="h3 mb-3 fw-normal">Thêm Tool</h1>
-                
-                    <div class="form-floating mb-3">
-                        <label for="floatingInput">Tên Tool</label>
-                        <input type="text" name="name" class="form-control">
-                    </div>
+                    <h1 class="h3 mb-3 fw-normal" >Thêm Tool</h1>
                     <div class="row">
                       <div class="form-floating mb-3 col-6">
-                        <label for="floatingPassword">Danh mục</label>
-                        <select name="category_id" class="form-control select2" style="width: 100%;">
-                            <option value="">Danh mục</option>
-                            {% if categories %}
-                                {% for category in categories  %}
-                                <option value={{category._id}}>{{ category.name }}</option>
-                                {% endfor %}
-                            {% endif %}
-                        </select>
+                        <div class="form-floating mb-3">
+                          <label for="floatingInput">Tên Tool</label>
+                          <input type="text" name="name" class="form-control" required>
+                        </div>
                       </div>
                       <div class="form-floating mb-3 col-6">
-                        <label for="floatingPassword">Cửa hàng</label>
-                        <select name="store_id" class="form-control select2" style="width: 100%;">
-                            <option value="">Cửa Hàng</option>
-                            {% if stores %}
-                                {% for category in stores  %}
-                                <option value={{category._id}}>{{ category.name }}</option>
-                                {% endfor %}
-                            {% endif %}
-                        </select>
+                        <div>Cửa Hàng (<a href="/shop/create" target="_blank">Thêm</a>) <span class="btn btn-sm" style="cursor: pointer;" id="loadstore"><i class="fa-solid fa-rotate-right"></i></span></div>
+                        <select id="store_list" name="store_id" class="form-control select2" style="width: 100%;"></select>
                       </div>
                     </div>
-                    <div class="form-floating mb-3">
-                        <label for="floatingPassword">Đường Dẫn</label>
-                        <input type="text" name="link" class="form-control" >
-                    </div>
-                    <div class="row">
-                      <div class="form-floating mb-3 col-6">
-                        <label for="floatingPassword">Selector Khung</label>
-                        <input type="text" name="selector_frame" class="form-control" >
-                      </div>
-                      <div class="form-floating mb-3 col-6">
-                          <label for="floatingPassword">Selector Tên</label>
-                          <input type="text" name="selector_name" class="form-control" >
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="form-floating mb-3 col-6">
-                        <label for="floatingPassword">Selector Giá</label>
-                        <input type="text" name="selector_price" class="form-control" >
-                      </div>
-                      <div class="form-floating mb-3 col-6">
-                        <label for="floatingPassword">Selector Ảnh</label>
-                        <input type="text" name="selector_link_image" class="form-control" >
+                    <div id="nameContainer">
+                      <div class="d-flex">
+                        <div class="form-floating mb-3" style="width:70%;margin-right:10px">
+                          <div class="mb-2">Đường Dẫn</div>
+                          <div>
+                            <input type="text" name="link[]" class="form-control" required>
+                          </div>
+                        </div>
+                        <div class="form-floating mb-3" style="margin-right: 10px;width:20%">
+                          <div>Danh Mục (<a href="/category/create" target="_blank">Thêm</a>) <span class="btn btn-sm" style="cursor: pointer;" id="loadcategory"><i class="fa-solid fa-rotate-right"></i></span></div>
+                          <select id="first_category" name="category_id[]" class="form-control select2" style="width: 100%;"></select>
+                        </div>
+                        <div class="form-floating mb-3 me-1">
+                          <div class="mb-4" style="margin-top: 10px;"></div>
+                          <div style="padding: 6px;margin-top:9px" class="btn btn-sm btn-success" onclick="addInput()">+</div>
+                        </div>
                       </div>
                     </div>
-                    <div class="row">
-                      <div class="form-floating mb-3 col-6">
-                        <label for="floatingPassword">Selector Đường Dẫn Sản Phẩm</label>
-                        <input type="text" name="selector_url" class="form-control" >
-                      </div>
-                      <div class="form-floating mb-3 col-6">
-                        <label for="floatingPassword">Selector Button Load Trang</label>
-                        <input type="text" name="selector_load_page" class="form-control" >
-                      </div>
+                    <div class="form-floating mb-3 form-check">
+                      <input name="check" class="form-check-input" type="checkbox" id="defaultCheck1" checked>
+                      <label class="form-check-label" for="defaultCheck1">
+                        Sử dụng selector cửa hàng đã chọn
+                      </label>
                     </div>
-                    <h1 class="h5 mb-3 fw-normal">Chi Tiết Sản Phẩm</h1>
-                    <div class="row">
-                      <div class="form-floating mb-3 col-4">
-                        <label for="floatingPassword">Selector Khung Thông Số</label>
-                        <input type="text" name="selector_specification_frame" class="form-control" >
-                      </div>
-                      <div class="form-floating mb-3 col-4">
-                        <label for="floatingPassword">Selector Tên Thông Số</label>
-                        <input type="text" name="selector_specification_name" class="form-control" >
-                      </div>
-                      <div class="form-floating mb-3 col-4">
-                        <label for="floatingPassword">Selector Thông Số Chi Tiết</label>
-                        <input type="text" name="selector_specification_detail" class="form-control" >
-                      </div>
+                    <div class="form-floating mb-3 form-check">
+                      <input name="jobtimer" class="form-check-input" type="checkbox" id="jobtimer">
+                      <label class="form-check-label" for="jobtimer">
+                        Đặt Lịch crawl
+                      </label>
                     </div>
-                    <div class="row">
-                      <div class="form-floating mb-3 col-6">
-                        <label for="floatingPassword">Selector Button Hiển Thị Thông Số</label>
-                        <input type="text" name="selector_specification_button" class="form-control" >
-                      </div>
-                      <div class="form-floating mb-3 col-6">
-                        <label for="floatingPassword">Selector Giới Thiệu Sản Phẩm</label>
-                        <input type="text" name="selector_description" class="form-control" >
-                      </div>
+                    <div id="jobtimer_time" class="mb-3 form-floating" style="display: none;">
+                      <input type="datetime-local" id="datetimeInput" name="datetimeInput" class="form-control col-4">
                     </div>
-                    <div class="row">
-                      <div class="form-floating mb-3 col-6">
-                        <label for="floatingPassword">Selector Rating</label>
-                        <input type="text" name="selector_rating" class="form-control" >
+                    <div id="selector" style="display: none;">
+                      <div class="row">
+                        <div class="form-floating mb-3 col-6">
+                          <label for="floatingPassword">Selector Khung</label>
+                          <input type="text" name="selector_frame" class="form-control">
+                        </div>
+                        <div class="form-floating mb-3 col-6">
+                            <label for="floatingPassword">Selector Tên</label>
+                            <input type="text" name="selector_name" class="form-control" >
+                        </div>
                       </div>
-                      <div class="form-floating mb-3 col-6">
-                        <label for="floatingPassword">Selector Total Rating</label>
-                        <input type="text" name="selector_total_rating" class="form-control" >
+                      <div class="row">
+                        <div class="form-floating mb-3 col-6">
+                          <label for="floatingPassword">Selector Giá</label>
+                          <input type="text" name="selector_price" class="form-control" >
+                        </div>
+                        <div class="form-floating mb-3 col-6">
+                          <label for="floatingPassword">Selector Ảnh</label>
+                          <input type="text" name="selector_link_image" class="form-control" >
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="form-floating mb-3 col-6">
+                          <label for="floatingPassword">Selector Đường Dẫn Sản Phẩm</label>
+                          <input type="text" name="selector_url" class="form-control" >
+                        </div>
+                        <div class="form-floating mb-3 col-6">
+                          <label for="floatingPassword">Selector Button Load Trang</label>
+                          <input type="text" name="selector_load_page" class="form-control" >
+                        </div>
+                      </div>
+                      <h1 class="h5 mb-3 fw-normal">Chi Tiết Sản Phẩm</h1>
+                      <div class="row">
+                        <div class="form-floating mb-3 col-4">
+                          <label for="floatingPassword">Selector Khung Thông Số</label>
+                          <input type="text" name="selector_specification_frame" class="form-control" >
+                        </div>
+                        <div class="form-floating mb-3 col-4">
+                          <label for="floatingPassword">Selector Tên Thông Số</label>
+                          <input type="text" name="selector_specification_name" class="form-control" >
+                        </div>
+                        <div class="form-floating mb-3 col-4">
+                          <label for="floatingPassword">Selector Thông Số Chi Tiết</label>
+                          <input type="text" name="selector_specification_detail" class="form-control" >
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="form-floating mb-3 col-6">
+                          <label for="floatingPassword">Selector Button Hiển Thị Thông Số</label>
+                          <input type="text" name="selector_specification_button" class="form-control" >
+                        </div>
+                        <div class="form-floating mb-3 col-6">
+                          <label for="floatingPassword">Selector Giới Thiệu Sản Phẩm</label>
+                          <input type="text" name="selector_description" class="form-control" >
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="form-floating mb-3 col-6">
+                          <label for="floatingPassword">Selector Rating</label>
+                          <input type="text" name="selector_rating" class="form-control" >
+                        </div>
+                        <div class="form-floating mb-3 col-6">
+                          <label for="floatingPassword">Selector Total Rating</label>
+                          <input type="text" name="selector_total_rating" class="form-control" >
+                        </div>
                       </div>
                     </div>
                     <button class="btn btn-sm btn-primary" type="submit">Thêm</button>
@@ -117,11 +131,136 @@
           </div>
         <!--/.col (left) -->
         <!-- right column -->
-        <div class="col-md-6">
-
-        </div>
+        <div class="col-md-6"></div>
         <!--/.col (right) -->
       </div>
       <!-- /.row -->
     </div><!-- /.container-fluid -->
+{% endblock %}
+{% block style %}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+{% endblock %}
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+</script>
+<script>
+  let render_list = "";
+  let render_list_store = "";
+  const get_list_category = () => {
+    $.blockUI({
+      message: '<h4><i class="fa fa-spinner fa-spin"></i></h4>',
+      css: {
+        border: "none",
+        backgroundColor: "none",
+      },
+      overlayCSS: {
+        backgroundColor: "grey",
+        opacity: 0.5,
+        cursor: "wait",
+      },
+    });
+
+    $.ajax({
+      type: "GET",
+      url: '/api/category/list',
+      success: function (response) {
+        render_list = "";
+        for (let i = 0; i < response.length; i++) {
+          render_list += `<option value=${response[i]["_id"]}>${ response[i]["name"] }</option>`;
+        }
+        $("#first_category").html(render_list);
+        $.unblockUI();
+      },
+      error: function (error) {
+        $.unblockUI();
+      },
+    });
+  }
+  const get_list_store = () => {
+    $.blockUI({
+      message: '<h4><i class="fa fa-spinner fa-spin"></i></h4>',
+      css: {
+        border: "none",
+        backgroundColor: "none",
+      },
+      overlayCSS: {
+        backgroundColor: "grey",
+        opacity: 0.5,
+        cursor: "wait",
+      },
+    });
+
+    $.ajax({
+      type: "GET",
+      url: '/api/shop/list',
+      success: function (response) {
+        render_list_store = "";
+        for (let i = 0; i < response.length; i++) {
+          render_list_store += `<option value=${response[i]["_id"]}>${ response[i]["name"] }</option>`;
+        }
+        $("#store_list").html(render_list_store);
+        $.unblockUI();
+      },
+      error: function (error) {
+        $.unblockUI();
+      },
+    });
+  }
+  $(document).ready(function () {
+    get_list_category()
+    get_list_store()
+  });
+  $("#loadcategory").click(function () {
+    get_list_category()
+  })
+  $("#loadstore").click(function () {
+    get_list_store()
+  })
+    let counter = 0;
+
+    const addInput = () => {
+      const container = document.getElementById("nameContainer");
+    
+      const inputContainer = document.createElement("div");
+      inputContainer.id = `inputContainer${counter}`;
+    
+      const inputHTML = `
+          <div class="d-flex">
+            <div class="form-floating mb-3" style="width:70%;margin-right:10px">
+              <div>
+                <input type="text" name="link[]" class="form-control" required>
+              </div>
+            </div>
+            <div class="form-floating mb-3" style="margin-right: 10px;width:20%">
+              <select name="category_id[]" class="form-control select2" style="width: 100%;">${render_list}</select>
+            </div>
+            <div class="form-floating mb-3 me-1">
+              <div style="padding: 6px;" class="btn btn-sm btn-danger" onclick="deleteInput(${counter})">-</div>
+            </div>
+          </div>
+      `;
+      inputContainer.innerHTML = inputHTML;
+      container.appendChild(inputContainer);
+    
+      counter++;
+    };
+    const deleteInput = (index) => {
+      const container = document.getElementById("nameContainer");
+      const inputContainer = document.getElementById(`inputContainer${index}`);
+      container.removeChild(inputContainer);
+    };
+</script>
+<script>
+const myCheckbox = document.getElementById("defaultCheck1");
+const myDiv = document.getElementById("selector");
+myCheckbox.addEventListener("change", () => {
+  myDiv.style.display = myCheckbox.checked ? "none" : "block";
+}); 
+const myCheckbox1 = document.getElementById("jobtimer");
+const myDiv1 = document.getElementById("jobtimer_time");
+myCheckbox1.addEventListener("change", () => {
+  myDiv1.style.display = myCheckbox1.checked ? "block" : "none";
+}); 
+</script>
 {% endblock %}

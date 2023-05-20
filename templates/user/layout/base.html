@@ -19,6 +19,25 @@
 
     <!--====== App ======-->
     <link rel="stylesheet" href="../../../static/template_user/css/app.css">
+    <link
+    href="https://code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css"
+    rel="stylesheet"
+    />
+
+    <!-- ✅ load jQuery ✅ -->
+    <script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"
+    ></script>
+
+    <!-- ✅ load jquery UI ✅ -->
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
+        integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    ></script>
 </head>
 <body class="config" id="js-scrollspy-trigger">
     <!--====== Main App ======-->
@@ -58,7 +77,7 @@
 
                               <!--====== List ======-->
                               <ul class="ah-list ah-list--design1 ah-list--link-color-white">
-                                <li style="color: black;">
+                                <li style="font-size: 13px;color:rgb(56, 52, 52);font-weight: bold;">
                                     {% if session['user'] %}
                                         {{ session['user']['email'] }}
                                     {% endif %}
@@ -79,7 +98,7 @@
                                       <ul style="width:120px">
                                         {% if session['user'] %}
                                             <li>
-                                                <a href="/dashboard"><i class="fas fa-user-circle u-s-m-r-6"></i>
+                                                <a href="/profile"><i class="fas fa-user-circle u-s-m-r-6"></i>
                                                 <span>Tài Khoản</span></a></li>
                                             <li>
                                                 <a href="/signout"><i class="fas fa-lock-open u-s-m-r-6"></i>

@@ -2,12 +2,15 @@ from flask import Flask, session, render_template, redirect
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from functools import wraps
+from dotenv import load_dotenv
+import os
 app = Flask(__name__)
+load_dotenv()
 app.secret_key = b"\x8d\x17Jw\x02\xcbY\xb8\xdb8\xe7\x02\xd4'\xef\xf0"
-uri = 'mongodb+srv://user:123456Aa@cluster0.t3aqomt.mongodb.net'
+# uri = 'mongodb+srv://user:123456Aa@cluster0.t3aqomt.mongodb.net'
 # database
 # Create a new client and connect to the server
-client = MongoClient(uri, server_api=ServerApi('1'))
+client = MongoClient(os.getenv('MONGODB_URI'), server_api=ServerApi('1'))
 # Send a ping to confirm a successful connection
 try:
     client.admin.command('ping')
@@ -15,7 +18,7 @@ try:
 except Exception as e:
     print(e)
     
-db = client.shops
+db = client[os.getenv('DATABASE_NAME')]
 # routes
 from auth import routes
 #decorators

@@ -22,6 +22,7 @@
               <tr>
                 <th>Tên</th>
                 <th>Thông tin</th>
+                <th>Ảnh</th>
                 <th>Danh mục cha</th>
                 <th class="col-2"></th>
               </tr>
@@ -31,6 +32,13 @@
               <tr>
                 <td>{{ item.name }}</td>
                 <td>{{ item.description }}</td>
+                <td>
+                  {% if item.image %}
+                    <img src="data:image;base64,{{ item.image }}" width="75" height="75" />
+                  {% else %}
+                    <img src="https://i.pinimg.com/736x/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg" width="75" height="75">
+                  {% endif %}
+                </td>
                 <td>
                   {% if item.parent_id %} {% for list in lists %} {% if list._id
                   == item.parent_id %}

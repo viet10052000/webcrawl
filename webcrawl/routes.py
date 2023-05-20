@@ -7,8 +7,14 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 import uuid
-import time, json
-DRIVER_PATH='path/to/geckodriver'
+import time, json, math
+from dotenv import load_dotenv
+import os
+
+# Đường dẫn tới file .env
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+load_dotenv(dotenv_path)
+DRIVER_PATH=os.getenv('DRIVER_CRAWL')
 DEFAULT_REQUEST_HEADERS = {
    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
    "Accept-Language": "en",
@@ -68,6 +74,7 @@ def crawlselenium(id):
     for item in items:
         try:
             title = item.select_one(crawlproduct['selector_name']).text
+            title = title.strip().replace("\n", "")
         except:
             title = ''
         try:
@@ -77,7 +84,17 @@ def crawlselenium(id):
         except:
             link_url = ''
         try:
-            link_image = item.select_one(crawlproduct['selector_link_image']).get('src')
+            string = str(item.select_one(crawlproduct['selector_link_image']))
+            start_index = string.find('data-src="')
+            start_index_src = string.find('src="')
+            if start_index != -1:
+                start_index += len('data-src="')
+                end_index = string.find('"', start_index)
+                link_image = string[start_index:end_index]
+            else:
+                start_index_src += len('src="')
+                end_index = string.find('"', start_index_src)
+                link_image = string[start_index_src:end_index]
         except:
             link_image = ''
         try:
@@ -95,31 +112,68 @@ def crawlselenium(id):
         }
         datas.append(data)
     for data in datas:
-        driver.get(data["link_url"])
-        soup = BeautifulSoup(driver.page_source, 'html.parser')
-        items = soup.select(crawlproductdetail['selector_description'])
-        description = ''
-        introduction = {}
-        rating = 0
-        total_rating = 0
-        for item in items:
-            description += item.text
-        items = soup.select(crawlproductdetail['selector_specification_frame'])
-        for item in items:
-            name = item.select_one(crawlproductdetail['selector_specification_name']).text
-            detail = item.select_one(crawlproductdetail['selector_specification_detail']).text
-            introduction[name] = detail
-        rating = soup.select_one(crawlproductdetail['selector_rating']).text
-        total_rating = soup.select_one(crawlproductdetail['selector_total_rating']).text
-        detail = {
-            "_id": uuid.uuid4().hex,
-            "product_id": data["_id"],
-            "description": description,
-            "introduction": introduction,
-            "rating": rating,
-            "total_rating": int(total_rating),
-        }
-        data["detail"] = detail
+        try:
+            driver.get(data["link_url"])
+            soup = BeautifulSoup(driver.page_source, 'html.parser')
+            items = soup.select(crawlproductdetail['selector_description'])
+            description = ''
+            introduction = {}
+            for item in items:
+                description += item.text
+            items = soup.select(crawlproductdetail['selector_specification_frame'])
+            for item in items:
+                try:
+                    name = item.select_one(crawlproductdetail['selector_specification_name']).text
+                    detail = item.select_one(crawlproductdetail['selector_specification_detail']).text
+                    introduction[name] = detail
+                except AttributeError:
+                    continue
+            try:
+                rating = 0
+                total_rating = 0
+                if crawlproductdetail['selector_total_rating'] == '':
+                    i = 5
+                    count = 0
+                    ratingitem = soup.select(crawlproductdetail['selector_rating'])
+                    for item in ratingitem:
+                        count += int(item.text)*i
+                        total_rating += int(item.text)
+                        i = i - 1
+                    if total_rating != 0:
+                        rating = math.ceil(count/total_rating)
+                else:
+                    rating = soup.select_one(crawlproductdetail['selector_rating']).text
+                    total_rating = soup.select_one(crawlproductdetail['selector_total_rating']).text
+            except:
+                rating = 0
+                total_rating = 0
+            detail = {
+                "_id": uuid.uuid4().hex,
+                "product_id": data["_id"],
+                "description": description,
+                "introduction": introduction,
+                "rating": rating,
+                "total_rating": total_rating,
+            }
+            if link_image == '':
+                string = str(item.select_one('.js--slide--full .swiper-slide.swiper-slide-active img'))
+                start_index = string.find('data-src="')
+                start_index_src = string.find('src="')
+                if start_index != -1:
+                    start_index += len('data-src="')
+                    end_index = string.find('"', start_index)
+                    data["link_image"] = string[start_index:end_index]
+                elif start_index_src != -1:
+                    start_index_src += len('src="')
+                    end_index = string.find('"', start_index_src)
+                    data["link_image"] = string[start_index_src:end_index]
+                else:
+                    data["link_image"] = ''
+                    
+            data["detail"] = detail
+        except:
+            data["detail"] = {}
+            continue
     with open('data.json', 'w') as json_file:
         json.dump({}, json_file)
     with open('data.json', 'w') as json_file:
@@ -130,7 +184,7 @@ def crawlselenium(id):
     return jsonify(datas), 200
   except:
     driver.quit()
-    return jsonify('crawl không thành công'), 400
+    return jsonify('crawl error'), 400
 
 @app.route('/crawl/selenium/save/<id>', methods=['GET'])
 @login_required
@@ -143,6 +197,7 @@ def crawlsave(id):
         data = json.load(file)
 
     for item in data:
+        if not item["detail"]: continue
         detail = item["detail"]
         del item["detail"]
         db.products.insert_one(item)
@@ -151,31 +206,3 @@ def crawlsave(id):
     with open('data.json', 'w') as json_file:
         json.dump({}, json_file)
     return redirect('/product/list')
-
-@app.route('/crawl/brand/test', methods=['GET','POST'])
-@login_required
-@roles_required('admin')
-def branlist():
-    if request.method == "GET":
-        return render_template("adminv2/crawlv2/show.html")
-    elif request.method == "POST":
-        data = request.json
-        options = Options()
-        options.headless = True
-        driver = webdriver.Firefox(options=options, executable_path=DRIVER_PATH)
-        driver.get(data["url"])
-        soup = BeautifulSoup(driver.page_source, 'html.parser')
-        items = []
-        brand = soup.select(".list-brand__item")
-        for item in brand:
-            items.append(item.get('href'))
-        unique_arr = []
-        for i in items:
-            if i not in unique_arr:
-                unique_arr.append(i)
-        # driver.get(items[0])
-        # soup = BeautifulSoup(driver.page_source, 'html.parser')
-        # items = soup.select_one(".product-item")
-        # print(items)
-        driver.quit()
-        return jsonify(unique_arr), 200

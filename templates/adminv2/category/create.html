@@ -8,12 +8,18 @@
       <div class="card card-primary mt-3">
         <!-- /.card-header -->
         <div class="card-body">
-          <form action="/category/create" method="post">
+          <form action="/category/create" method="post" enctype="multipart/form-data">
             <h1 class="h3 mb-3 fw-normal">Thêm Danh mục</h1>
 
             <div class="form-floating mb-3">
               <label for="floatingInput">Tên</label>
-              <input type="text" name="name" class="form-control" />
+              <input type="text" name="name" class="form-control" required/>
+            </div>
+            <div class="form-floating mb-3" style="position: relative;">
+              <div class="mb-2">Ảnh</div>
+              <input type="file" name="image" id="uploadInput" required>
+              <img width="150" height="150" id="previewImage" style="display: none;">     
+              <span id="deleteButton" style="color: red;display: none;cursor: pointer;position: absolute;left: 145px;top: 50px;font-weight: bold">x</span> 
             </div>
             <div class="form-floating mb-3">
               <label for="floatingPassword">Thông tin</label>
@@ -33,9 +39,11 @@
                 style="width: 100%"
               >
                 <option value="">Danh mục cha</option>
-                {% if categories %} {% for category in categories %}
-                <option value="{{category._id}}">{{ category.name }}</option>
-                {% endfor %} {% endif %}
+                {% if categories %} 
+                  {% for category in categories %}
+                    <option value="{{category._id}}">{{ category.name }}</option>
+                  {% endfor %} 
+                {% endif %}
               </select>
             </div>
             <button class="btn btn-sm btn-primary" type="submit">Thêm</button>
@@ -51,6 +59,31 @@
     </div>
     <!-- /.row -->
   </div>
-  <!-- /.container-fluid -->
-  {% endblock %}
 </div>
+<script>
+  const uploadInput = document.getElementById('uploadInput');
+  const previewImage = document.getElementById('previewImage');
+  const deleteButton = document.getElementById('deleteButton');
+  
+  uploadInput.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+  
+    reader.onload = (event) => {
+      previewImage.src = event.target.result;
+      previewImage.style.display = 'block';
+      deleteButton.style.display = 'block';
+    };
+  
+    reader.readAsDataURL(file);
+  });
+  
+  deleteButton.addEventListener('click', () => {
+    previewImage.src = '';
+    previewImage.style.display = 'none';
+    deleteButton.style.display = 'none';
+    uploadInput.value = ''; // Clear the file input value
+  });           
+</script> 
+  <!-- /.container-fluid -->
+{% endblock %}

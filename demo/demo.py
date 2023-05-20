@@ -1,17 +1,53 @@
-# from selenium import webdriver
-# from selenium.webdriver.chrome.options import Options
-# from selenium.webdriver.common.by import By
-# from bs4 import BeautifulSoup
-# import json, time
-# DRIVER_PATH='path/to/chrome'
-# options = Options()
-# options.headless = True
-# driver = webdriver.Chrome(options=options, executable_path=DRIVER_PATH)
-# driver.get("https://cellphones.com.vn/iphone-14-pro-max.html")
-# soup = BeautifulSoup(driver.page_source, 'html.parser')
-# items = soup.select('.modal-content')
-# print(items)
-# driver.quit()
+from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.common.by import By
+from bs4 import BeautifulSoup
+import json, time, re
+DRIVER_PATH='path/to/geckodriver'
+options = Options()
+options.headless = True
+driver = webdriver.Firefox(options=options, executable_path=DRIVER_PATH)
+driver.get("https://tiki.vn/search?q=iphone&brand=17827")
+soup = BeautifulSoup(driver.page_source, 'html.parser')
+items = soup.select('.CatalogProducts__Wrapper-sc-1hmhz3p-0')
+print(items)
+for item in items:
+        try:
+            title = item.select_one('.name').text
+        except:
+            title = ''
+        try:
+            link_url = item.select_one('.product-item').get('href')
+            # if not store['link_url'] in link_url: 
+            #     link_url = store['link_url'] + link_url
+        except:
+            link_url = ''
+        try:
+            string = str(item.select_one('.webpimg-container img'))
+            start_index = string.find('data-src="')
+            start_index_src = string.find('src="')
+            if start_index != -1:
+                start_index += len('data-src="')
+                end_index = string.find('"', start_index)
+                link_image = string[start_index:end_index]
+            else:
+                start_index_src += len('src="')
+                end_index = string.find('"', start_index_src)
+                link_image = string[start_index_src:end_index]
+        except:
+            link_image = ''
+        try:
+            price = item.select_one('.price-discount__price').text
+        except:
+            price = ''
+        data = {
+            'name': title.strip().replace("\n", ""),
+            'link_image': link_image,
+            'price': ''.join(re.findall(r'\d+', price)),
+            'link_url': link_url,
+        }
+        print(data)
+driver.quit()
 
 # from selenium import webdriver
 # from selenium.webdriver.chrome.options import Options
@@ -68,43 +104,39 @@
 # print(items)
 # driver.quit()
 
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-from bs4 import BeautifulSoup
-import json, time, re
-DRIVER_PATH='path/to/chrome'
-options = Options()
-options.headless = True
-driver = webdriver.Chrome(options=options, executable_path=DRIVER_PATH)
-driver.get("https://cellphones.com.vn/samsung-galaxy-s23-ultra.html")
-btn_description = driver.find_element(By.CSS_SELECTOR,'button.button__show-modal-technical')
-btn_description.click()
-soup = BeautifulSoup(driver.page_source, 'html.parser')
-items = soup.select('.cps-block-content div p')
-description = ''
-introduction = {}
-rating = 0
-total_rating = 0
-for item in items:
-  description += item.text
-items = soup.select('.technical-content-modal-item .modal-item-description .is-justify-content-space-between')
-for item in items:
-  name = item.select_one('p').text
-  detail = item.select_one('div').text
-  introduction[name] = detail
-rating = soup.select_one('.boxReview-score p').text
-total_rating = soup.select_one('.boxReview-score strong').text
-price = soup.select_one(".box-detail-product__box-center .block-box-price .box-info__box-price .product__price--show").text
-link_image = soup.select_one(".box-ksp img").get('src')
-data = {
-  "description": description,
-  "introduction": introduction,
-  "rating": re.findall("\d+\.\d+", rating)[0],
-  "total_rating": int(total_rating),
-  "price": ''.join(re.findall(r'\d+', price)),
-  "link_imge": link_image,
-}
-print(data)
-driver.quit()
+# from selenium import webdriver
+# from selenium.webdriver.chrome.options import Options
+# from selenium.webdriver.common.by import By
+# from bs4 import BeautifulSoup
+# import json, time, re
+# DRIVER_PATH='path/to/chrome'
+# options = Options()
+# options.headless = True
+# driver = webdriver.Chrome(options=options, executable_path=DRIVER_PATH)
+# driver.get("https://fptshop.com.vn/dien-thoai/iphone-14-pro-max")
+# # btn_description = driver.find_element(By.CSS_SELECTOR,'button.button__show-modal-technical')
+# # btn_description.click()
+# soup = BeautifulSoup(driver.page_source, 'html.parser')
+# items = soup.select('.st-pd-content p')
+# description = ''
+# introduction = {}
+# rating = 0
+# total_rating = 0
+# for item in items:
+#   description += item.text
+# items = soup.select('.st-pd-table tr')
+# for item in items:
+#   name = item.select_one('td:nth-child(1)').text
+#   detail = item.select_one('td:nth-child(2)').text
+#   introduction[name] = detail
+# rating = soup.select_one('.star div.f-s-ui-44').text
+# total_rating = soup.select_one('.star div.m-t-4.text').text
+# data = {
+#   "description": description,
+#   "introduction": introduction,
+#   "rating": rating,
+#   "total_rating": int(''.join(re.findall(r'\d+', total_rating))),
+# }
+# print(data)
+# driver.quit()
 

@@ -29,7 +29,7 @@
             <tbody>
               {% for item in lists %}
               <tr>
-                <td><a href="{{ item.link_url }}" target="_blank">{{ item.name }}</a></td>
+                <td><a href="/home/product/detail/{{item._id}}" target="_blank">{{ item.name }}</a></td>
                 <td><img src="{{ item.link_image }}" width="75" height="75" /></td>
                 <td>{{ item.price }}</td>
                 <td class="col-2">
