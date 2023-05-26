@@ -1,6 +1,7 @@
 from flask import render_template, request, redirect, jsonify
 from app import app, login_required, roles_required, db
 from product.models import Product
+from category.models import Category
 from math import ceil
 from pymongo import ASCENDING
 import locale
@@ -25,7 +26,22 @@ def productlist(page=1):
 @app.route('/', methods=['GET'])
 @app.route('/home', methods=['GET'])
 def home():
-    return render_template("user/home/index.html")
+    categories = Category().index()
+    cate = []
+    category = []
+    for item in categories:
+        if not item["parent_id"]:
+            cate.append(item)
+    for ca in cate:
+        child = list(db.categories.find({"parent_id": ca["_id"]}))
+        category_item = {
+            "_id": ca["_id"],
+            "name": ca["name"],
+            "image": ca["image"],
+            "child": child
+        }
+        category.append(category_item)
+    return render_template("user/home/index.html",category=category)
 
 @app.route('/home/product')
 @app.route('/home/product/page/<int:page>')
@@ -54,6 +70,14 @@ def home_product(page=1):
 @app.route('/home/product/detail/<id>',methods=['GET'])
 def product_detail(id):
     product = db.products.find_one({"_id":id})
+    price = product["price"]
+    print(price)
+    print(int(price) - 1000000)
+    print(int(price) + 1000000)
+    similar_product = []
+    for item in db.products.find({},{"_id":1,"name":1,"price":1,"link_image":1}):
+        if int(item["price"]) >= int(price) - 500000 and int(item["price"]) < int(price) + 500000:
+            similar_product.append(item)
     product["price"] = locale.format_string("%.0f", int(product["price"]), grouping=True)
     productdetail = db.productdetails.find_one({"product_id": id})
-    return render_template("user/product/detail.html",productdetail=productdetail,product=product)
+    return render_template("user/product/detail.html",productdetail=productdetail,product=product,similar_product=similar_product)

@@ -165,7 +165,7 @@
                                 <ul class="ah-list ah-list--design2 ah-list--link-color-white">
                                     <li>
 
-                                        <a href="shop-side-version-2.html">Trang Chủ</a></li>
+                                        <a href="/">Trang Chủ</a></li>
                                     <li class="has-dropdown">
 
                                         <a>Danh Mục<i class="fas fa-angle-down u-s-m-l-6"></i></a>
@@ -174,34 +174,38 @@
 
                                         <span class="js-menu-toggle"></span>
                                         <ul style="width:170px">
+                                            {% for item in category %}
                                             <li class="has-dropdown has-dropdown--ul-left-100">
 
-                                                <a>Home<i class="fas fa-angle-down i-state-right u-s-m-l-6"></i></a>
+                                                <a href="/home" >{{item.name}}
+                                                    {% if item.child %}
+                                                    <i class="fas fa-angle-down i-state-right u-s-m-l-6"></i>
+                                                    {% endif %}
+                                                </a>
+                                               
 
                                                 <!--====== Dropdown ======-->
-
+                                                {% if item.child %}
                                                 <span class="js-menu-toggle"></span>
                                                 <ul style="width:118px">
-                                                    <li>
-
-                                                        <a href="index.html">Home 1</a></li>
-                                                    <li>
-
-                                                        <a href="index-2.html">Home 2</a></li>
-                                                    <li>
-
-                                                        <a href="index-3.html">Home 3</a></li>
+                                                    <li>                                                
+                                                        {% for item in item.child %}
+                                                            <a href="/home">{{ item.name }}</a>
+                                                        {% endfor %}
+                                                    </li>
                                                 </ul>
+                                                {% endif %}
                                                 <!--====== End - Dropdown ======-->
                                             </li>
+                                            {% endfor %}
                                         </ul>
                                         <!--====== End - Dropdown ======-->
                                     </li>
                                     <li>
-
                                         <a href="/home/product">Sản Phẩm</a></li>
                                     <li>
-
+                                            <a href="/home/product">So sánh Giá</a></li>
+                                    <li>
                                         <a href="shop-side-version-2.html">Thông tin về trang web</a></li>
                                 </ul>
                                 <!--====== End - List ======-->
