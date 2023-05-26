@@ -101,7 +101,7 @@ def crawlselenium(id):
             'store_id': store["_id"],
             'name': title,
             'link_image': link_image,
-            'price': ''.join(re.findall(r'\d+', price)),
+            'price': int(''.join(re.findall(r'\d+', price))),
             'link_url': link_url,
         }
         datas.append(data)

@@ -54,4 +54,14 @@ def delete(id):
 @login_required
 @roles_required('admin')
 def dashboard():
-    return render_template('/adminv2/dashboard.html')
+    total_user = db["users"].count_documents({"role": "user"})
+    total_product = db["products"].count_documents({})
+    total_store = db["stores"].count_documents({})
+    total_tool = db["crawlproducts"].count_documents({})
+    total = {
+        "user": total_user,
+        "product":total_product,
+        "store":total_store,
+        "tool":total_tool
+    }
+    return render_template('/adminv2/dashboard.html',total=total)
