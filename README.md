@@ -1,4 +1,4 @@
-tải trình duyệt firefox
+ở local tải trình duyệt firefox
 
 git clone https://github.com/viet10052000/webcrawl
 
