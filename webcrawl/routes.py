@@ -8,13 +8,7 @@ from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 import uuid
 import time, json, math
-from dotenv import load_dotenv
 import os
-
-# Đường dẫn tới file .env
-dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
-load_dotenv(dotenv_path)
-DRIVER_PATH=os.getenv('DRIVER_CRAWL')
 DEFAULT_REQUEST_HEADERS = {
    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
    "Accept-Language": "en",
@@ -58,7 +52,7 @@ def crawlselenium(id):
   category = db.categories.find_one({'_id': crawlproduct['category_id']})
   options = Options()
   options.headless = True
-  driver = webdriver.Firefox(options=options, executable_path=DRIVER_PATH)
+  driver = webdriver.Firefox(options=options)
   try:
     driver.get(crawlproduct['link_url'])
     while True:

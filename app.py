@@ -7,9 +7,6 @@ import os
 app = Flask(__name__)
 load_dotenv()
 app.secret_key = b"\x8d\x17Jw\x02\xcbY\xb8\xdb8\xe7\x02\xd4'\xef\xf0"
-uri = 'mongodb+srv://user:123456Aa@cluster0.t3aqomt.mongodb.net'
-# uri_server="mongodb://crawl03:crawl03123@localhost:27017"
-# client = MongoClient("mongodb://crawl03:crawl03123@localhost:27017/")
 # database
 # Create a new client and connect to the server
 client = MongoClient(os.getenv('MONGODB_URI'), server_api=ServerApi('1'))
