@@ -1,22 +1,23 @@
 from flask import Flask, jsonify, request, session, redirect
 from app import db
 import uuid
-  
+import datetime
 class Schedule:
     def create(self):
         schedule = {
             "_id": uuid.uuid4().hex,
             "name": request.values.get('name'),
-            "crawlproduct_id": request.values.get('crawlproduct_id'),
-            "last_execution_time": "",
-            "next_execution_time": "",            
+            "crawlproduct_id": request.values.get('crawlproduct_id'),       
             "message": "",
             "status": "",
             "total": "",
+            "time_crawl_old": "",
+            "time_crawl_next": "",
+            "time_repeat": "",
             "updated_at": datetime.utcnow(),
             "created_at": datetime.utcnow()
         }
-        schedule = db.schedules.insert_one(store)
+        schedule = db.schedules.insert_one(schedule)
         return schedule
     
     def index(self):
