@@ -5,21 +5,21 @@ import uuid, base64
 from bson.binary import Binary
 @app.route('/category/list')
 @login_required
-@roles_required('admin')
+@roles_required('admin','collector')
 def categorylist():
     lists = Category().index()
     return render_template('adminv2/category/list.html',lists=lists)
 
 @app.route('/api/category/list')
 @login_required
-@roles_required('admin')
+@roles_required('admin','collector')
 def api_category_list():
     lists = Category().index()
     return jsonify(lists), 200
 
 @app.route('/category/create', methods=['GET','POST'])
 @login_required
-@roles_required('admin')
+@roles_required('admin','collector')
 def categorycreate():
     if request.method == 'GET':
         categories = list(db.categories.find())
@@ -30,7 +30,7 @@ def categorycreate():
     
 @app.route('/category/edit/<id>', methods=['GET','POST'])
 @login_required
-@roles_required('admin')
+@roles_required('admin','collector')
 def categoryedit(id):
     if request.method == 'GET':
         category = db.categories.find_one({ '_id' : id })
@@ -56,7 +56,7 @@ def categoryedit(id):
     
 @app.route('/category/delete/<id>', methods=['GET'])
 @login_required
-@roles_required('admin')
+@roles_required('admin','collector')
 def categorydelete(id):
     lists = Category().delete(id)
     return redirect('/category/list')

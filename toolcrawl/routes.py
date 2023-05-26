@@ -6,7 +6,7 @@ from app import db
 
 @app.route('/tool/create', methods=['GET','POST'])
 @login_required
-@roles_required('admin')
+@roles_required('admin','collector')
 def createtool():
     if request.method == 'GET':
         return render_template('adminv2/tool/create.html')
@@ -19,14 +19,14 @@ def createtool():
 
 @app.route('/tool/list')
 @login_required
-@roles_required('admin')
+@roles_required('admin','collector')
 def listtool():
     lists = CrawlProduct().index()
     return render_template('adminv2/tool/list.html',listtool=lists)
 
 @app.route('/tool/edit/<id>', methods=['GET','POST'])
 @login_required
-@roles_required('admin')
+@roles_required('admin','collector')
 def edittool(id):
     if request.method == 'GET':
         categories = list(db.categories.find())
@@ -66,7 +66,7 @@ def edittool(id):
 
 @app.route('/tool/delete/<id>', methods=['GET'])
 @login_required
-@roles_required('admin')
+@roles_required('admin','collector')
 def deletetool(id):
     CrawlProduct().delete(id)
     detail = db.crawlproductdetails.find_one({'crawlproduct_id': id})

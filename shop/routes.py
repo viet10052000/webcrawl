@@ -4,7 +4,7 @@ from shop.models import Store
 
 @app.route('/shop/list')
 @login_required
-@roles_required('admin')
+@roles_required('admin','collector')
 def index():
     lists = Store().index()
     return render_template('/adminv2/store/list.html',lists=lists)
@@ -18,7 +18,7 @@ def api_store_list():
 
 @app.route('/shop/create', methods=['GET','POST'])
 @login_required
-@roles_required('admin')
+@roles_required('admin','collector')
 def create():
     if request.method == 'GET':
         return render_template('/adminv2/store/create.html')
@@ -28,7 +28,7 @@ def create():
     
 @app.route('/shop/edit/<id>', methods=['GET','POST'])
 @login_required
-@roles_required('admin')
+@roles_required('admin','collector')
 def edit(id):
     if request.method == 'GET':
         store = db.stores.find_one({ '_id' : id })
@@ -45,14 +45,14 @@ def edit(id):
     
 @app.route('/shop/delete/<id>', methods=['GET'])
 @login_required
-@roles_required('admin')
+@roles_required('admin','collector')
 def delete(id):
     lists = Store().delete(id)
     return redirect('/shop/list')
 
 @app.route('/dashboard')
 @login_required
-@roles_required('admin')
+@roles_required('admin','collector')
 def dashboard():
     total_user = db["users"].count_documents({"role": "user"})
     total_product = db["products"].count_documents({})

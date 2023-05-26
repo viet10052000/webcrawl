@@ -10,7 +10,7 @@ locale.setlocale(locale.LC_ALL, '')
 @app.route('/product/list')
 @app.route('/product/list/page/<int:page>')
 @login_required
-@roles_required('admin')
+@roles_required('admin','collector')
 def productlist(page=1):
     per_page = 10
     skip = (page - 1) * per_page

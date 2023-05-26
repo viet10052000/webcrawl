@@ -28,7 +28,7 @@ async def get_crawl_category(url):
 
 @app.route('/crawl/<id>', methods=['GET'])
 @login_required
-@roles_required('admin')
+@roles_required('admin','collector')
 def crawl(id):
     crawl = db.crawlproducts.find_one({'_id': id})
     store = db.stores.find_one({'_id': crawl['store_id']})
@@ -37,14 +37,14 @@ def crawl(id):
     
 @app.route('/crawl/detail', methods=['GET'])
 @login_required
-@roles_required('admin')
+@roles_required('admin','collector')
 def crawldetail():
     if request.method == 'GET':
         return render_template('adminv2/crawl/crawlproductdetail/crawl.html')
 
 @app.route('/crawl/selenium/<id>', methods=['POST'])
 @login_required
-@roles_required('admin')
+@roles_required('admin','collector')
 def crawlselenium(id):
   crawlproduct = db.crawlproducts.find_one({'_id': id})
   crawlproductdetail = db.crawlproductdetails.find_one({"crawlproduct_id":id})
@@ -182,7 +182,7 @@ def crawlselenium(id):
 
 @app.route('/crawl/selenium/save/<id>', methods=['GET'])
 @login_required
-@roles_required('admin')
+@roles_required('admin','collector')
 def crawlsave(id):
     crawlproduct = db.crawlproducts.find_one({'_id': id})
     store = db.stores.find_one({'_id': crawlproduct['store_id']})
