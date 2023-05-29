@@ -68,12 +68,12 @@ def my_job(url):
     driver.quit()
 def start_job():
     start_time = time.perf_counter()
-    products = db.products.find({ "store_id" : "349d7c6741eb4e248a0842e540ce5954"})
+    products = db.products.find_one({ "store_id" : "349d7c6741eb4e248a0842e540ce5954"})
     for item in products:
         my_job(item["link_url"])
     end_time = time.perf_counter()
     print(end_time - start_time)
-trigger = DateTrigger(run_date=datetime(2023, 5, 11, 17, 13, 15))
+trigger = DateTrigger(run_date=datetime(2023, 5, 29, 20, 13, 15))
 # add the job to the scheduler
 scheduler.add_job(start_job, trigger)
 

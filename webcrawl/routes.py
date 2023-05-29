@@ -3,7 +3,7 @@ from app import app, login_required, roles_required, db
 import asyncio, aiohttp, re, json, uuid, requests, os
 from scrapy import Selector
 from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 import uuid
@@ -52,7 +52,7 @@ def crawlselenium(id):
   category = db.categories.find_one({'_id': crawlproduct['category_id']})
   options = Options()
   options.headless = True
-  driver = webdriver.Firefox(options=options)
+  driver = webdriver.Chrome(options=options)
   try:
     driver.get(crawlproduct['link_url'])
     while True:
@@ -100,7 +100,7 @@ def crawlselenium(id):
             'category_id': category["_id"],
             'store_id': store["_id"],
             'name': title,
-            'link_image': link_image if not link_image else '/static/image_default.jpg',
+            'link_image': link_image if link_image else '/static/image_default.jpg',
             'price': int(''.join(re.findall(r'\d+', price))),
             'link_url': link_url,
         }
