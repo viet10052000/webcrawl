@@ -44,21 +44,24 @@ def home():
     return render_template("user/home/index.html",category=category)
 
 @app.route('/home/product')
-@app.route('/home/product/page/<int:page>')
-def home_product(page=1):
+def home_product():
+    page = request.args.get('page', default=1, type=int)
     if request.args.get('category'):
-        category = db.categories.find_one({"name": request.args.get('category')})
-        query = db.products.find({'category_id': category["_id"]})
+        category = db.categories.find_one({"name": request.args.get('category')},{"_id":1,"name":1,"parent_id":1})
+        if not category["parent_id"]:
+            cate = list(db.categories.find({"parent_id": category["_id"]}).distinct('_id'))
+            query = {'category_id': {'$in': cate}}
+        else:
+            query = {'category_id': category["_id"]}
     elif request.args.get('store'):
         category = db.stores.find_one({"name": request.args.get('store')})
-        query = db.products.find({'store_id': category["_id"]})
+        query = {'store_id': category["_id"]}
     else:
-        query = db.products.find()
+        query = {}
     per_page = 12
     skip = (page - 1) * per_page
-    total = db.products.count_documents({})
-    cursor = query.sort("field_to_sort", ASCENDING).skip(skip).limit(per_page)
-    lists = list(cursor)
+    total = db.products.count_documents(query)
+    lists = list(db.products.find(query).skip(skip).limit(per_page))
     for item in lists:
         item["price"] = locale.format_string("%.0f", int(item["price"]), grouping=True)
     displayed_page_nums = Product().get_displayed_pages(page,int(ceil(total / per_page)),5)
@@ -71,13 +74,9 @@ def home_product(page=1):
 def product_detail(id):
     product = db.products.find_one({"_id":id})
     price = product["price"]
-    print(price)
-    print(int(price) - 1000000)
-    print(int(price) + 1000000)
-    similar_product = []
-    for item in db.products.find({},{"_id":1,"name":1,"price":1,"link_image":1}):
-        if int(item["price"]) >= int(price) - 500000 and int(item["price"]) < int(price) + 500000:
-            similar_product.append(item)
+    similar_product = list(db.products.find({"price": {"$gte": price - 500000, "$lt": price + 500000}},{"_id":1,"name":1,"price":1,"link_image":1}))
+    for item in similar_product:
+        item["price"] = locale.format_string("%.0f", int(item["price"]), grouping=True)
     product["price"] = locale.format_string("%.0f", int(product["price"]), grouping=True)
     productdetail = db.productdetails.find_one({"product_id": id})
     return render_template("user/product/detail.html",productdetail=productdetail,product=product,similar_product=similar_product)

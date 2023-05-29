@@ -1,0 +1,223 @@
+{% extends 'adminv2/layout/base.html' %} 
+
+{% block content %}
+    <div class="container-fluid">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+          <!-- jquery validation -->
+          <div class="card card-primary mt-3">
+            <div class="card-header"></div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <form action="/tool/edit/{{item._id}}" method="post">
+                    <h1 class="h3 mb-3 fw-normal">Sửa Tool</h1>
+                
+                    <div class="form-floating mb-3">
+                        <div class="row">
+                          <div class="form-floating mb-3 col-6">
+                            <div class="form-floating mb-3">
+                              <label for="floatingInput">Tên Tool</label>
+                              <input type="text" value="{{item.name}}" name="name" class="form-control" required>
+                            </div>
+                          </div>
+                          <div class="form-floating mb-3 col-6">
+                            <div>Cửa Hàng (<a href="/shop/create" target="_blank">Thêm</a>) <span class="btn btn-sm" style="cursor: pointer;" id="loadstore"><i class="fa-solid fa-rotate-right"></i></span></div>
+                            <select id="store_list" name="store_id" class="form-control select2" style="width: 100%;"></select>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-floating mb-3 col-6">
+                        <label for="floatingPassword">Đường Dẫn</label>
+                        <input type="text" value="{{item.link_url}}" name="link" class="form-control" >
+                      </div>
+                      <div class="form-floating mb-3 col-6">
+                        <div>Danh Mục (<a href="/category/create" target="_blank">Thêm</a>) <span class="btn btn-sm" style="cursor: pointer;" id="loadcategory"><i class="fa-solid fa-rotate-right"></i></span></div>
+                        <select id="first_category" name="category_id" class="form-control select2" style="width: 100%;"></select>
+                      </div>
+                    </div>
+                    <div class="form-floating mb-3 form-check">
+                      <input name="check" class="form-check-input" type="checkbox" id="defaultCheck1">
+                      <label class="form-check-label" for="defaultCheck1">
+                        Sử dụng selector cửa hàng đã chọn
+                      </label>
+                    </div>
+                    <div id="selector" style="display: block;">
+                      <div class="row">
+                        <div class="form-floating mb-3 col-6">
+                          <label for="floatingPassword">Selector Khung</label>
+                          <input type="text" value="{{item.selector_frame}}" name="selector_frame" class="form-control" >
+                      </div>
+                      <div class="form-floating mb-3 col-6">
+                          <label for="floatingPassword">Selector Tên</label>
+                          <input type="text" value="{{item.selector_name}}" name="selector_name" class="form-control" >
+                      </div>
+                      </div>
+                      <div class="row">
+                        <div class="form-floating mb-3 col-6">
+                          <label for="floatingPassword">Selector Giá</label>
+                          <input type="text" value="{{item.selector_price}}" name="selector_price" class="form-control" >
+                        </div>
+                        <div class="form-floating mb-3 col-6">
+                          <label for="floatingPassword">Selector Ảnh</label>
+                          <input type="text" value="{{item.selector_link_image}}" name="selector_link_image" class="form-control" >
+                        </div>
+                      </div>
+                      <div class="form-floating mb-3">
+                          <label for="floatingPassword">Selector Đường Dẫn Sản Phẩm</label>
+                          <input type="text" value="{{item.selector_url}}" name="selector_url" class="form-control" >
+                      </div>
+                      <div class="form-floating mb-3">
+                        <label for="floatingPassword">Selector Button Load Trang</label>
+                        <input type="text" value="{{item.selector_load_page}}" name="selector_load_page" class="form-control" >
+                      </div>
+                      <h1 class="h5 mb-3 fw-normal">Chi Tiết Sản Phẩm</h1>
+                      <div class="row">
+                        <div class="form-floating mb-3 col-4">
+                          <label for="floatingPassword">Selector Khung Thông Số</label>
+                          <input type="text" value="{{detail.selector_specification_frame}}" name="selector_specification_frame" class="form-control" >
+                        </div>
+                        <div class="form-floating mb-3 col-4">
+                          <label for="floatingPassword">Selector Tên Thông Số</label>
+                          <input type="text" value="{{detail.selector_specification_name}}" name="selector_specification_name" class="form-control" >
+                        </div>
+                        <div class="form-floating mb-3 col-4">
+                          <label for="floatingPassword">Selector Thông Số Chi Tiết</label>
+                          <input type="text" value="{{detail.selector_specification_detail}}" name="selector_specification_detail" class="form-control" >
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="form-floating mb-3 col-6">
+                          <label for="floatingPassword">Selector Button Hiển Thị Thông Số</label>
+                          <input type="text" value="{{detail.selector_specification_button}}" name="selector_specification_button" class="form-control" >
+                        </div>
+                        <div class="form-floating mb-3 col-6">
+                          <label for="floatingPassword">Selector Giới Thiệu Sản Phẩm</label>
+                          <input type="text" value="{{detail.selector_description}}" name="selector_description" class="form-control" >
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="form-floating mb-3 col-6">
+                          <label for="floatingPassword">Selector Rating</label>
+                          <input type="text" value="{{detail.selector_rating}}" name="selector_rating" class="form-control" >
+                        </div>
+                        <div class="form-floating mb-3 col-6">
+                          <label for="floatingPassword">Selector Total Rating</label>
+                          <input type="text" value="{{detail.selector_total_rating}}" name="selector_total_rating" class="form-control" >
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-floating mb-3 form-check">
+                      <input name="jobtimer" class="form-check-input" type="checkbox" id="jobtimer">
+                      <label class="form-check-label" for="jobtimer">
+                        Đặt Lịch crawl
+                      </label>
+                    </div>
+                    <div id="jobtimer_time" class="mb-3 form-floating" style="display: none;">
+                      <input type="datetime-local" id="datetimeInput" name="datetimeInput" class="form-control col-4">
+                    </div>
+                    <button class="btn btn-sm btn-primary" type="submit">cập nhật</button>
+                </form>
+            </div>
+            <!-- form start -->
+          <!-- /.card -->
+          </div>
+        <!--/.col (left) -->
+        <!-- right column -->
+        <div class="col-md-6">
+
+        </div>
+        <!--/.col (right) -->
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+    <script>
+      let render_list = "";
+      let render_list_store = "";
+      const get_list_category = () => {
+        $.blockUI({
+          message: '<h4><i class="fa fa-spinner fa-spin"></i></h4>',
+          css: {
+            border: "none",
+            backgroundColor: "none",
+          },
+          overlayCSS: {
+            backgroundColor: "grey",
+            opacity: 0.5,
+            cursor: "wait",
+          },
+        });
+    
+        $.ajax({
+          type: "GET",
+          url: '/api/category/list',
+          success: function (response) {
+            render_list = "";
+            let category_id = '{{item.category_id}}'
+            for (let i = 0; i < response.length; i++) {
+              render_list += `<option value="${response[i]["_id"]}" ${response[i]["_id"] == category_id ? 'selected':''}>${ response[i]["name"] }</option>`;
+            }
+            $("#first_category").html(render_list);
+            $.unblockUI();
+          },
+          error: function (error) {
+            $.unblockUI();
+          },
+        });
+      }
+      const get_list_store = () => {
+        $.blockUI({
+          message: '<h4><i class="fa fa-spinner fa-spin"></i></h4>',
+          css: {
+            border: "none",
+            backgroundColor: "none",
+          },
+          overlayCSS: {
+            backgroundColor: "grey",
+            opacity: 0.5,
+            cursor: "wait",
+          },
+        });
+    
+        $.ajax({
+          type: "GET",
+          url: '/api/shop/list',
+          success: function (response) {
+            render_list_store = "";
+            let store_id = '{{item.store_id}}'
+            for (let i = 0; i < response.length; i++) {
+              render_list_store += `<option value=${response[i]["_id"]} ${response[i]["_id"] == store_id ? 'selected':''}>${ response[i]["name"] }</option>`;
+            }
+            $("#store_list").html(render_list_store);
+            $.unblockUI();
+          },
+          error: function (error) {
+            $.unblockUI();
+          },
+        });
+      }
+      $(document).ready(function () {
+        get_list_category()
+        get_list_store()
+      });
+      $("#loadcategory").click(function () {
+        get_list_category()
+      })
+      $("#loadstore").click(function () {
+        get_list_store()
+      })
+    </script>
+    <script>
+    const myCheckbox = document.getElementById("defaultCheck1");
+    const myDiv = document.getElementById("selector");
+    myCheckbox.addEventListener("change", () => {
+      myDiv.style.display = myCheckbox.checked ? "none" : "block";
+    }); 
+    const myCheckbox1 = document.getElementById("jobtimer");
+    const myDiv1 = document.getElementById("jobtimer_time");
+    myCheckbox1.addEventListener("change", () => {
+      myDiv1.style.display = myCheckbox1.checked ? "block" : "none";
+    }); 
+    </script>
+{% endblock %}

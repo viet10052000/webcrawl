@@ -18,16 +18,30 @@
                                       <div class="shop-w">
                                           <div class="shop-w__intro-wrap">
                                               <h1 class="shop-w__h">Danh Mục</h1>
-
                                               <span class="fas fa-minus shop-w__toggle" data-target="#s-category" data-toggle="collapse"></span>
                                           </div>
                                           <div class="shop-w__wrap collapse show" id="s-category">
                                               <ul class="shop-w__category-list gl-scroll">
                                                 {% for item in categories %}
-                                                  <li>
-
-                                                      <a href="/home/product?category={{item.name}}">{{item.name}}</a>
-
+                                                {% if not item.parent_id %}
+                                                <li class="has-list">
+                                                  {% set query_params = request.args.to_dict() %}
+                                                  {% set _ = query_params.update({'category': item.name }) %}
+                                                  <a href="{{ url_for(request.endpoint, **query_params) }}">{{item.name}}</a> 
+                                                  <span class="js-shop-category-span fas fa-plus u-s-m-l-6"></span>
+                                                  <ul style="display:none">
+                                                    {% for ca in categories %}
+                                                      {% if ca.parent_id and ca.parent_id == item._id  %}
+                                                      <li>
+                                                        {% set query_params = request.args.to_dict() %}
+                                                        {% set _ = query_params.update({'category': ca.name }) %}
+                                                        <a href="{{ url_for(request.endpoint, **query_params) }}">{{ca.name}}</a> 
+                                                      </li>   
+                                                      {% endif %}
+                                                      {% endfor %}
+                                                  </ul>
+                                                </li>
+                                                {% endif %}
                                                 {% endfor %}
                                               </ul>
                                           </div>
@@ -44,9 +58,7 @@
                                             <ul class="shop-w__category-list gl-scroll">
                                               {% for item in stores %}
                                                 <li>
-
-                                                    <a href="/home/product?store={{item.name}}">{{item.name}}</a>
-
+                                                    <a href="{{ url_for('home_product',store=item.name) }}">{{item.name}}</a>
                                               {% endfor %}
                                             </ul>
                                         </div>
@@ -66,12 +78,12 @@
 
                                                         <label for="price-min"></label>
 
-                                                        <input class="input-text input-text--primary-style" type="text" id="price-min" placeholder="Min"></div>
+                                                        <input class="input-text input-text--primary-style" type="text" id="price-min" placeholder="Từ"></div>
                                                     <div>
 
                                                         <label for="price-max"></label>
 
-                                                        <input class="input-text input-text--primary-style" type="text" id="price-max" placeholder="Max"></div>
+                                                        <input class="input-text input-text--primary-style" type="text" id="price-max" placeholder="Đến"></div>
                                                     <div>
 
                                                         <button class="btn btn--icon fas fa-angle-right btn--e-transparent-platinum-b-2" type="submit"></button></div>
@@ -80,72 +92,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                  <div class="u-s-m-b-30">
-                                      <div class="shop-w">
-                                          <div class="shop-w__intro-wrap">
-                                              <h1 class="shop-w__h">RATING</h1>
-
-                                              <span class="fas fa-minus shop-w__toggle" data-target="#s-rating" data-toggle="collapse"></span>
-                                          </div>
-                                          <div class="shop-w__wrap collapse show" id="s-rating">
-                                              <ul class="shop-w__list gl-scroll">
-                                                  <li>
-                                                      <div class="rating__check">
-
-                                                          <input type="checkbox">
-                                                          <div class="rating__check-star-wrap"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                                                      </div>
-
-                                                      <span class="shop-w__total-text">(2)</span>
-                                                  </li>
-                                                  <li>
-                                                      <div class="rating__check">
-
-                                                          <input type="checkbox">
-                                                          <div class="rating__check-star-wrap"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
-
-                                                              <span>& Up</span></div>
-                                                      </div>
-
-                                                      <span class="shop-w__total-text">(8)</span>
-                                                  </li>
-                                                  <li>
-                                                      <div class="rating__check">
-
-                                                          <input type="checkbox">
-                                                          <div class="rating__check-star-wrap"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
-
-                                                              <span>& Up</span></div>
-                                                      </div>
-
-                                                      <span class="shop-w__total-text">(10)</span>
-                                                  </li>
-                                                  <li>
-                                                      <div class="rating__check">
-
-                                                          <input type="checkbox">
-                                                          <div class="rating__check-star-wrap"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
-
-                                                              <span>& Up</span></div>
-                                                      </div>
-
-                                                      <span class="shop-w__total-text">(12)</span>
-                                                  </li>
-                                                  <li>
-                                                      <div class="rating__check">
-
-                                                          <input type="checkbox">
-                                                          <div class="rating__check-star-wrap"><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
-
-                                                              <span>& Up</span></div>
-                                                      </div>
-
-                                                      <span class="shop-w__total-text">(1)</span>
-                                                  </li>
-                                              </ul>
-                                          </div>
-                                      </div>
-                                  </div>
                               </div>
                           </div>
                       </div>
@@ -182,7 +128,7 @@
                                               <div class="product-m__content" style="height: 100px;">
                                                   <div class="product-m__category">
                                                     <div class="product-m__name" style="height: 58px;">
-                                                        <a href="/home/product/detail{{item._id}}" style="margin-top: 5px;font-weight: bold;">{{item.name}}</a>
+                                                        <a href="/home/product/detail/{{item._id}}" style="margin-top: 5px;font-weight: bold;">{{item.name}}</a>
                                                     </div>
                                                     <div class="product-m__price" style="margin-top: 5px;color: red;">
                                                       {{item.price}} VNĐ
@@ -197,12 +143,15 @@
                               <div class="u-s-p-y-60">
 
                                   <!--====== Pagination ======-->
+                                  {% if pages %}
                                   <ul class="shop-p__pagination">
                                     {% if current_page > 1 %}
                                       <li class="page-item">
+                                        {% set query_params = request.args.to_dict() %}
+                                        {% set _ = query_params.update({'page': current_page - 1}) %}
                                         <a
                                           class="page-link"
-                                          href="/product/list/page/{{current_page-1}}"
+                                          href="{{ url_for(request.endpoint, **query_params) }}"
                                           tabindex="-1"
                                         >
                                           <span aria-hidden="true">&laquo;</span>
@@ -213,7 +162,6 @@
                                       <li class="page-item disabled">
                                         <a
                                           class="page-link"
-                                          href="/home/product/page/{{current_page-1}}"
                                           tabindex="-1"
                                         >
                                           <span aria-hidden="true">&laquo;</span>
@@ -236,15 +184,16 @@
                                       </li>
                                       {% else %}
                                       <li class="page-item">
-                                        <a class="page-link" href="/home/product/page/{{page}}">
-                                          {{ page }}
-                                        </a>
+                                        {% set query_params = request.args.to_dict() %}
+                                        {% set _ = query_params.update({'page': page}) %}
+                                        <a class="page-link" href="{{ url_for(request.endpoint, **query_params) }}">{{ page }}</a>
                                       </li>
-                                      {% endif %} {% endfor %} {% if current_page == pages %}
+                                      {% endif %} 
+                                      {% endfor %} 
+                                      {% if current_page == pages %}
                                       <li class="page-item diabled">
                                         <a
                                           class="page-link"
-                                          href="/home/product/page/{{current_page+1}}"
                                           tabindex="-1"
                                         >
                                           <span aria-hidden="true">&raquo;</span>
@@ -253,9 +202,11 @@
                                       </li>
                                       {% else %}
                                       <li class="page-item">
+                                        {% set query_params = request.args.to_dict() %}
+                                        {% set _ = query_params.update({'page': current_page + 1}) %}
                                         <a
                                           class="page-link"
-                                          href="/home/product/page/{{current_page+1}}"
+                                          href="{{ url_for(request.endpoint, **query_params) }}"
                                           tabindex="-1"
                                         >
                                           <span aria-hidden="true">&raquo;</span>
@@ -264,6 +215,11 @@
                                       </li>
                                       {% endif %}
                                   </ul>
+                                  {% else %}
+                                  <div class="shop-p__pagination">
+                                    Không có sản phẩm nào!
+                                  </div>
+                                  {% endif %}
                                   <!--====== End - Pagination ======-->
                               </div>
                           </div>

@@ -103,7 +103,7 @@
               render_list += `
               <tr>
                 <td><a href="${response[i].link_url}" target="_blank">${response[i].name}</a></td>
-                <td><img width="75" ="75" src="${response[i].link_image}" /></td>
+                <td><img width="75" ="75" src="${response[i].link_image ? response[i].link_image : '/static/image_default.jpg'}" /></td>
                 <td>${response[i].price}</td>
               </tr>`;
             }

@@ -11,8 +11,6 @@ def createtool():
     if request.method == 'GET':
         return render_template('adminv2/tool/create.html')
     elif request.method == 'POST':
-        links = request.form.getlist('link[]')
-        request.form.getlist('category_id[]')
         crawl = CrawlProduct().create()
         CrawlProductDetail().create(crawl["_id"])
         return redirect('/tool/list')
@@ -33,7 +31,7 @@ def edittool(id):
         stores = list(db.stores.find())
         item = db.crawlproducts.find_one({'_id': id})
         detail = db.crawlproductdetails.find_one({'crawlproduct_id': id})
-        return render_template('adminv2/tool/edit.html',item=item,detail=detail,categories=categories,stores=stores)
+        return render_template('adminv2/tool/edittool.html',item=item,detail=detail,categories=categories,stores=stores)
     elif request.method == 'POST':
         data = {
             "name": request.values.get('name'),

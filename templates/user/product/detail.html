@@ -175,13 +175,12 @@
                               <div class="u-s-m-b-30">
                                   <a href="/home/product/detail/{{item._id}}" class="product-o">
                                       <div class="product-o__wrap">
-
                                           <a class="aspect aspect--square u-d-block" >
-                                              <img class="aspect__img" src="{{item.link_image}}" alt="">
+                                              <img width="300" height="200" class="aspect__img" src="{{item.link_image}}" alt="">
                                           </a>
                                       </div>
-                                      <span class="product-o__name"><a href="/home/product/detail/{{item._id}}">{{item.name}}</a></span>
-                                      <span class="product-o__price">{{item.price}} VNĐ</span>
+                                      <div style="color: black;"><a href="/home/product/detail/{{item._id}}" style="color: black;height: 100px;">{{item.name}}</a></div>
+                                      <span class="product-o__price" style="color: red;">{{item.price}} VNĐ</span>
                                     </a>
                               </div>
                             {% endfor %}

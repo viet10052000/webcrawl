@@ -100,7 +100,7 @@ def crawlselenium(id):
             'category_id': category["_id"],
             'store_id': store["_id"],
             'name': title,
-            'link_image': link_image,
+            'link_image': link_image if not link_image else '/static/image_default.jpg',
             'price': int(''.join(re.findall(r'\d+', price))),
             'link_url': link_url,
         }
@@ -148,22 +148,7 @@ def crawlselenium(id):
                 "introduction": introduction,
                 "rating": rating,
                 "total_rating": total_rating,
-            }
-            if link_image == '':
-                string = str(item.select_one('.js--slide--full .swiper-slide.swiper-slide-active img'))
-                start_index = string.find('data-src="')
-                start_index_src = string.find('src="')
-                if start_index != -1:
-                    start_index += len('data-src="')
-                    end_index = string.find('"', start_index)
-                    data["link_image"] = string[start_index:end_index]
-                elif start_index_src != -1:
-                    start_index_src += len('src="')
-                    end_index = string.find('"', start_index_src)
-                    data["link_image"] = string[start_index_src:end_index]
-                else:
-                    data["link_image"] = ''
-                    
+            }       
             data["detail"] = detail
         except:
             data["detail"] = {}

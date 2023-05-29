@@ -8,40 +8,45 @@ collection = db['products']
 # Dữ liệu ban đầu
 import re
 
-keyword = "iphone"
+products = collection.find().limit(150)
 
-# Sử dụng biểu thức chính quy để tìm kiếm theo từ khóa
-regex = re.compile(keyword, re.IGNORECASE)
-query = {"name": {"$regex": regex}}
-data = list(collection.find(query))
-print(data)
-datas = []
-for item in data:
-  datas.append(item["name"])
-# # Gom dữ liệu theo tên gần giống
-clusters = []
+collection.update_many({}, [{'$set': {'price': {'$toInt': '$price'}}}])
 
-for item in datas:
-    # Kiểm tra xem item có thuộc vào một cluster hiện có hay không
-    is_added = False
+
+# keyword = "iphone"
+
+# # Sử dụng biểu thức chính quy để tìm kiếm theo từ khóa
+# regex = re.compile(keyword, re.IGNORECASE)
+# query = {"name": {"$regex": regex}}
+# data = list(collection.find(query))
+# print(data)
+# datas = []
+# for item in data:
+#   datas.append(item["name"])
+# # # Gom dữ liệu theo tên gần giống
+# clusters = []
+
+# for item in datas:
+#     # Kiểm tra xem item có thuộc vào một cluster hiện có hay không
+#     is_added = False
     
-    for cluster in clusters:
-        for cluster_item in cluster:
-            similarity = difflib.SequenceMatcher(None, item, cluster_item).ratio()
+#     for cluster in clusters:
+#         for cluster_item in cluster:
+#             similarity = difflib.SequenceMatcher(None, item, cluster_item).ratio()
             
-            # Nếu độ tương đồng lớn hơn ngưỡng, thêm item vào cluster
-            if similarity >= 0.8:
-                cluster.append(item)
-                is_added = True
-                break
+#             # Nếu độ tương đồng lớn hơn ngưỡng, thêm item vào cluster
+#             if similarity >= 0.8:
+#                 cluster.append(item)
+#                 is_added = True
+#                 break
         
-        if is_added:
-            break
+#         if is_added:
+#             break
     
-    # Nếu item không thuộc vào bất kỳ cluster nào, tạo một cluster mới chứa item
-    if not is_added:
-        clusters.append([item])
+#     # Nếu item không thuộc vào bất kỳ cluster nào, tạo một cluster mới chứa item
+#     if not is_added:
+#         clusters.append([item])
 
-# In ra kết quả
-for cluster in clusters:
-    print(cluster)
+# # In ra kết quả
+# for cluster in clusters:
+#     print(cluster)

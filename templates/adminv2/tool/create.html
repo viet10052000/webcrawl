@@ -24,20 +24,14 @@
                       </div>
                     </div>
                     <div id="nameContainer">
-                      <div class="d-flex">
-                        <div class="form-floating mb-3" style="width:70%;margin-right:10px">
+                      <div class="row">
+                        <div class="form-floating mb-3 col-6">
                           <div class="mb-2">Đường Dẫn</div>
-                          <div>
-                            <input type="text" name="link[]" class="form-control" required>
-                          </div>
+                          <input type="text" name="link" class="form-control" >
                         </div>
-                        <div class="form-floating mb-3" style="margin-right: 10px;width:20%">
+                        <div class="form-floating mb-3 col-6">
                           <div>Danh Mục (<a href="/category/create" target="_blank">Thêm</a>) <span class="btn btn-sm" style="cursor: pointer;" id="loadcategory"><i class="fa-solid fa-rotate-right"></i></span></div>
-                          <select id="first_category" name="category_id[]" class="form-control select2" style="width: 100%;"></select>
-                        </div>
-                        <div class="form-floating mb-3 me-1">
-                          <div class="mb-4" style="margin-top: 10px;"></div>
-                          <div style="padding: 6px;margin-top:9px" class="btn btn-sm btn-success" onclick="addInput()">+</div>
+                          <select id="first_category" name="category_id" class="form-control select2" style="width: 100%;"></select>
                         </div>
                       </div>
                     </div>
@@ -217,39 +211,6 @@
   $("#loadstore").click(function () {
     get_list_store()
   })
-    let counter = 0;
-
-    const addInput = () => {
-      const container = document.getElementById("nameContainer");
-    
-      const inputContainer = document.createElement("div");
-      inputContainer.id = `inputContainer${counter}`;
-    
-      const inputHTML = `
-          <div class="d-flex">
-            <div class="form-floating mb-3" style="width:70%;margin-right:10px">
-              <div>
-                <input type="text" name="link[]" class="form-control" required>
-              </div>
-            </div>
-            <div class="form-floating mb-3" style="margin-right: 10px;width:20%">
-              <select name="category_id[]" class="form-control select2" style="width: 100%;">${render_list}</select>
-            </div>
-            <div class="form-floating mb-3 me-1">
-              <div style="padding: 6px;" class="btn btn-sm btn-danger" onclick="deleteInput(${counter})">-</div>
-            </div>
-          </div>
-      `;
-      inputContainer.innerHTML = inputHTML;
-      container.appendChild(inputContainer);
-    
-      counter++;
-    };
-    const deleteInput = (index) => {
-      const container = document.getElementById("nameContainer");
-      const inputContainer = document.getElementById(`inputContainer${index}`);
-      container.removeChild(inputContainer);
-    };
 </script>
 <script>
 const myCheckbox = document.getElementById("defaultCheck1");
