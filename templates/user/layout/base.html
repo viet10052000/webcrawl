@@ -60,11 +60,11 @@
 
 
                         <!--====== Search Form ======-->
-                        <form class="main-form">
+                        <form class="main-form" action="/home/product" method="get">
 
                             <label for="main-search"></label>
 
-                            <input class="input-text input-text--border-radius input-text--style-2" type="text" id="main-search" placeholder="Tìm Kiếm Sản Phẩm">
+                            <input name="name" class="input-text input-text--border-radius input-text--style-2" type="text" id="main-search" placeholder="Tìm Kiếm Sản Phẩm">
 
                             <button class="btn btn--icon fas fa-search main-search-button" type="submit"></button></form>
                         <!--====== End - Search Form ======-->
@@ -82,7 +82,7 @@
                                         {{ session['user']['email'] }}
                                     {% endif %}
                                 </li>
-                                {% if session['user'] and session['user']['role'] == 'admin' %}
+                                {% if session['user'] and session['user']['role'] != 'user' %}
                                 <li data-tooltip="tooltip" data-placement="left" title="Trang Admin">
 
                                     <a href="/dashboard"><i class="fas fa-bars"></i></a>
@@ -177,7 +177,7 @@
                                             {% for item in category %}
                                             <li class="has-dropdown has-dropdown--ul-left-100">
 
-                                                <a href="/home" >{{item.name}}
+                                                <a href="/home/product?category={{item.name}}" >{{item.name}}
                                                     {% if item.child %}
                                                     <i class="fas fa-angle-down i-state-right u-s-m-l-6"></i>
                                                     {% endif %}
@@ -190,7 +190,7 @@
                                                 <ul style="width:118px">
                                                     <li>                                                
                                                         {% for item in item.child %}
-                                                            <a href="/home">{{ item.name }}</a>
+                                                            <a href="/home/product?category={{item.name}}">{{ item.name }}</a>
                                                         {% endfor %}
                                                     </li>
                                                 </ul>
