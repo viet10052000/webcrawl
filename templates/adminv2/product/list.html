@@ -3,14 +3,39 @@
   <!-- Page Heading -->
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Sản Phẩm</h1>
-    <a
-      href="/category/create"
-      class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"
-    >
-      <i class="fa-solid fa-circle-plus"></i>
-      Thêm Sản Phẩm</a
-    >
   </div>
+  <form action="/product/list" method="get" class="row">
+    <div class="form-floating mb-3 col-4">
+      <div>Tên</div>
+      <input type="text" value="{% if request.args.get('name') %}request.args.get('name'){% endif %}" name="name" style="width: 100%;" >
+    </div>
+    <div class="form-floating mb-3 col-3">
+      <div>Danh mục</div>
+      <select name="category" class="form-control js-example-basic-single" style="width: 100%;">
+        {% if not request.args.get('category') %}
+        <option value="">Tất cả</option>
+        {% endif %}
+        {% for category in categories %}
+          <option value="{{category.name}}" {% if request.args.get('category') == category.name %}selected{% endif %}>{{ category.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-floating mb-3 col-3">
+      <div>Cửa hàng</div>
+      <select name="store" class="form-control js-example-basic-single" style="width: 100%;">
+        {% if not request.args.get('store') %}
+          <option value="">Tất cả</option>
+        {% endif %}
+        {% for store in stores %}
+          <option value="{{store.name}}" {% if request.args.get('store') == store.name %}selected{% endif %}>{{ store.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-floating col-2">
+      <div style="height:22px"></div>
+      <button type="submit" class="btn btn-sm btn-success">Tìm kiếm</button>
+    </div>
+  </form>
   <div class="row">
     <!-- left column -->
     <div class="col-md-12">
@@ -21,15 +46,20 @@
             <thead>
               <tr>
                 <th>Tên Sản Phẩm</th>
+                <th>Cửa hàng</th>
                 <th>Ảnh</th>
                 <th>Giá</th>
                 <th class="col-2"></th>
               </tr>
             </thead>
             <tbody>
+              {% if not lists %}
+                <div>Không có sản phẩm</div>
+              {% endif %}
               {% for item in lists %}
               <tr>
-                <td><a href="/home/product/detail/{{item._id}}" target="_blank">{{ item.name }}</a></td>
+                <td style="white-space: pre-line;"><a style="display: block;width:300px;" href="/home/product/detail/{{item._id}}" target="_blank">{{ item.name }}</a></td>
+                <td><img src="{{ item.store.link_image }}" width="50" height="20" />{{ item.store.name }}</td>
                 <td><img src="{{ item.link_image }}" width="75" height="75" /></td>
                 <td>{{ item.price }}</td>
                 <td class="col-2">
@@ -104,10 +134,12 @@
         <nav>
           <ul class="pagination justify-content-center m-2">
             {% if current_page > 1 %}
+            {% set query_params = request.args.to_dict() %} {% set _ =
+              query_params.update({'page': current_page - 1}) %}
             <li class="page-item">
               <a
                 class="page-link"
-                href="/product/list/page/{{current_page-1}}"
+                href="{{ url_for(request.endpoint, **query_params) }}"
                 tabindex="-1"
               >
                 <span aria-hidden="true">&laquo;</span>
@@ -118,7 +150,6 @@
             <li class="page-item disabled">
               <a
                 class="page-link"
-                href="/product/list/page/{{current_page-1}}"
                 tabindex="-1"
               >
                 <span aria-hidden="true">&laquo;</span>
@@ -141,7 +172,9 @@
             </li>
             {% else %}
             <li class="page-item">
-              <a class="page-link" href="/product/list/page/{{page}}">
+              {% set query_params = request.args.to_dict() %} {% set _ =
+                query_params.update({'page': page}) %}
+              <a class="page-link" href="{{ url_for(request.endpoint, **query_params) }}">
                 {{ page }}
               </a>
             </li>
@@ -149,7 +182,6 @@
             <li class="page-item diabled">
               <a
                 class="page-link"
-                href="/product/list/page/{{current_page+1}}"
                 tabindex="-1"
               >
                 <span aria-hidden="true">&raquo;</span>
@@ -157,10 +189,12 @@
               </a>
             </li>
             {% else %}
+            {% set query_params = request.args.to_dict() %} {% set _ =
+              query_params.update({'page': current_page + 1}) %}
             <li class="page-item">
               <a
                 class="page-link"
-                href="/product/list/page/{{current_page+1}}"
+                href="{{ url_for(request.endpoint, **query_params) }}"
                 tabindex="-1"
               >
                 <span aria-hidden="true">&raquo;</span>

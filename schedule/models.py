@@ -6,13 +6,11 @@ class Schedule:
     def create(self):
         schedule = {
             "_id": uuid.uuid4().hex,
-            "name": request.values.get('name'),
             "crawlproduct_id": request.values.get('crawlproduct_id'),       
             "message": "",
             "status": "",
             "total": "",
-            "time_crawl_old": "",
-            "time_crawl_next": "",
+            "time_crawl_start": "",
             "time_repeat": "",
             "updated_at": datetime.utcnow(),
             "created_at": datetime.utcnow()
@@ -22,7 +20,10 @@ class Schedule:
     
     def index(self):
         schedules = list(db.schedules.find())
-        return schedules
+        if schedules:
+            return schedules
+        else:
+            return []
     
     def update(self, id, data):
         schedule = db.schedules.update_one({ '_id': id }, { '$set': data })
