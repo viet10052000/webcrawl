@@ -1,30 +1,18 @@
-from flask import Flask, render_template, request, redirect, jsonify
+from flask import render_template, request, redirect, jsonify
 from app import app, login_required, roles_required, db
-import asyncio, aiohttp, re, json, uuid, requests, os
-from scrapy import Selector
+import re, json, uuid, os
 from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 import uuid
 import time, json, math
-import os
-DEFAULT_REQUEST_HEADERS = {
-   "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-   "Accept-Language": "en",
-   "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
-}
-async def get_crawl_category(url):
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url, headers=DEFAULT_REQUEST_HEADERS) as response:
-            html = await response.text()
-            sel = Selector(text=html)
-            datas = sel.response.css('.list-brand>a.list-brand__item')
-            results = []
-            for data in datas:
-                link_url =  data.css('a::attr(href)').get(),
-                results.append(link_url)
-            return results
+from dotenv import load_dotenv
+load_dotenv()
+
+if os.getenv('LOCAL_DRIVER'):
+    from selenium.webdriver.chrome.options import Options
+else:
+    from selenium.webdriver.firefox.options import Options
 
 @app.route('/crawl/<id>', methods=['GET'])
 @login_required
@@ -50,9 +38,14 @@ def crawlselenium(id):
   crawlproductdetail = db.crawlproductdetails.find_one({"crawlproduct_id":id})
   store = db.stores.find_one({'_id': crawlproduct['store_id']})
   category = db.categories.find_one({'_id': crawlproduct['category_id']})
-  options = Options()
-  options.headless = True
-  driver = webdriver.Firefox(options=options)
+  if os.getenv('LOCAL_DRIVER'):
+    options = Options()
+    options.headless = True
+    driver = webdriver.Chrome(options=options)
+  else:
+    options = Options()
+    options.headless = True
+    driver = webdriver.Firefox(options=options)
   try:
     driver.get(crawlproduct['link_url'])
     while True:
