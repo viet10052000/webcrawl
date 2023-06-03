@@ -54,8 +54,9 @@
                               <div>
                                   <div class="pd-detail__inline">
 
-                                      <span class="pd-detail__price">{{product.price}} VNĐ</span>
+                                      <span class="pd-detail__price">{% if product.price != '0' %}{{product.price}} VNĐ{% else %}Sắp về hàng{% endif %}</span>
                               </div>
+                              {% if productdetail.total_rating != 0 %}
                               <div class="u-s-m-b-15">
                                   <div class="pd-detail__rating gl-rating-style"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
 
@@ -63,6 +64,7 @@
 
                                           <a data-click-scroll="#view-review">{{productdetail.rating}} | {{productdetail.total_rating}}</a></span></div>
                               </div>
+                              {% endif %}
                               <div>
                                 <img width="50" height="20" src="{{product.store.link_image}}" />
                                 <span style="color:grey">{{ product.store.name }}</span>
@@ -166,7 +168,7 @@
           <!--====== End - Product Detail Tab ======-->
           <div class="row">
             <!-- Area Chart -->
-            <div class="col-xl-8 col-lg-7">
+            <div class="col-12">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div
@@ -182,7 +184,7 @@
                 </div>
               </div>
             </div>
-          <div>
+          <div class="col-12">
 
               <!--====== Section Intro ======-->
               <div class="section__intro u-s-m-t-46">
@@ -221,7 +223,9 @@
                                         <span style="color:grey">{{ item.store.name }}</span>
                                       </div>
                                       <div style="color: black;"><a href="/home/product/detail/{{item._id}}" style="color: black;height: 100px;">{{item.name}}</a></div>
-                                      <span class="product-o__price" style="color: red;">{{item.price}} VNĐ</span>
+                                      <span class="product-o__price" style="color: red;">
+                                        {% if item.price != '0' %}{{item.price}} VNĐ{% else %}Sắp về hàng{% endif %}
+                                      </span>
                                     </a>
                               </div>
                             {% endfor %}

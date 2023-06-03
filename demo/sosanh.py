@@ -7,9 +7,9 @@ db = client['shops']
 collection = db['products']
 # Dữ liệu ban đầu
 import re
-products = list(collection.find({"category_id": "bbf6afaa42ab42eeb01f9975c7802bed"}))
+products = list(collection.find({"price": ""}))
 for item in products:
-  collection.update_one({"category_id": "bbb4280aeb2943cda2c1c7a6cbc36a05"}, {'$set': {'category_id': "e721fbcb8abc4e06968ee08b54dbc12d"}})
+  collection.update_one({"price": ""}, {'$set': {'price': 0}})
 
 
 # keyword = "iphone"

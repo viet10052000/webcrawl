@@ -85,19 +85,21 @@ def crawlselenium(id):
         except:
             link_image = ''
         try:
-            price = item.select_one(crawlproduct['selector_price']).text
+            string = item.select_one(crawlproduct['selector_price']).text
+            price = int(''.join(re.findall(r'\d+', string)))
         except:
-            price = ''
+            price = 0
         data = {
             '_id': uuid.uuid4().hex,
             'category_id': category["_id"],
             'store_id': store["_id"],
             'name': title,
             'link_image': link_image if link_image else '/static/image_default.jpg',
-            'price': int(''.join(re.findall(r'\d+', price))),
+            'price': price,
             'link_url': link_url,
         }
-        datas.append(data)
+        if link_url:
+            datas.append(data)
     for data in datas:
         try:
             driver.get(data["link_url"])
@@ -152,19 +154,19 @@ def crawlselenium(id):
         json.dump(datas, json_file)
     with open('geckodriver.log', 'w') as json_file:
         json.dump({}, json_file)
-    driver.quit()    
-    return jsonify(datas), 200
-  except:
     driver.quit()
-    return jsonify('crawl error'), 400
+    if not datas:
+        jsonify('crawl error'), 400 
+    return jsonify(datas), 200
+  except Exception as e:
+    driver.quit()
+    return jsonify(e), 400
 
 @app.route('/crawl/selenium/save/<id>', methods=['GET'])
 @login_required
 @roles_required('admin','collector')
 def crawlsave(id):
     crawlproduct = db.crawlproducts.find_one({'_id': id})
-    store = db.stores.find_one({'_id': crawlproduct['store_id']})
-    category = db.categories.find_one({'_id': crawlproduct['category_id']})
     with open('data.json', 'r') as file:
         data = json.load(file)
 
