@@ -29,7 +29,7 @@ def productlist():
             query = {'category_id': {'$in': cate}}
         else:
             query = {'category_id': category["_id"]}
-    elif request.args.get('store') and request.args.get('category'):
+    elif request.args.get('store'):
         store = db.stores.find_one({"name": request.args.get('store')})
         query = {'store_id': store["_id"]}
     elif request.args.get('name'):
@@ -73,7 +73,7 @@ def home_product():
             query = {'category_id': {'$in': cate}}
         else:
             query = {'category_id': category["_id"]}
-    elif request.args.get('store') and request.args.get('category'):
+    elif request.args.get('store'):
         store = db.stores.find_one({"name": request.args.get('store')})
         query = {'store_id': store["_id"]}
     elif request.args.get('name'):
