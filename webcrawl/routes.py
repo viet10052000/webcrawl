@@ -156,7 +156,7 @@ def crawlselenium(id):
         json.dump({}, json_file)
     driver.quit()
     if not datas:
-        jsonify('crawl error'), 400 
+        return jsonify('crawl error'), 400 
     return jsonify(datas), 200
   except Exception as e:
     driver.quit()

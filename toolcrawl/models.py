@@ -1,6 +1,9 @@
 from flask import Flask, jsonify, request, session, redirect
 from app import db
 import uuid
+from schedule.models import Schedule
+from datetime import datetime
+from dateutil.parser import isoparse
 class CrawlProductDetail:
     def create(self, crawlproduct_id):
         crawl = {
@@ -72,6 +75,19 @@ class CrawlProduct:
                 "selector_load_page": request.values.get('selector_load_page'),
             }
             db.crawlproducts.insert_one(crawl)
+            db.crawlproductdetails.insert_one(crawlproductdetail)
+        if 'checkjobtimer' in request.form:
+            schedule = {
+                "_id": uuid.uuid4().hex,
+                "crawlproduct_id": crawl['_id'],       
+                "message": "",
+                "status": False,
+                "total": 0,
+                "time_repeat": int(request.values.get('time_repeat')),
+                "updated_at": datetime.now(),
+                "created_at": datetime.now()
+            }
+            schedule = db.schedules.insert_one(schedule)
         return crawl
     
     def index(self):

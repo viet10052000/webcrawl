@@ -1,12 +1,15 @@
 from flask import Flask, render_template, request, redirect, jsonify
 from app import app, login_required, roles_required, db
 from schedule.models import Schedule
-
+from datetime import datetime
 @app.route('/schedule/list')
 @login_required
 @roles_required('admin','collector')
 def schedule_list():
     lists = Schedule().index()
+    for item in lists:
+        item["tool"] = db.crawlproducts.find_one({"_id": item["crawlproduct_id"]})
+        item["updated_at"] = item["updated_at"].strftime('%Y-%m-%d %H:%M')
     return render_template('/adminv2/schedule/list.html',lists=lists)
 
 @app.route('/schedule/create', methods=['GET','POST'])
@@ -14,23 +17,20 @@ def schedule_list():
 @roles_required('admin','collector')
 def schedule_create():
     if request.method == 'GET':
-        categories = list(db.categories.find())
+        categories = list(db.crawlproducts.find())
         return render_template('adminv2/schedule/create.html',categories=categories)
     elif request.method == 'POST':
         data = Schedule().create()
-        return redirect('/category/list')
+        return redirect('/schedule/list')
 
 @app.route('/schedule/edit/<id>', methods=['GET','POST'])
 @login_required
 @roles_required('admin','collector')
 def schedule_edit(id):
     if request.method == 'GET':
-        category = db.categories.find_one({ '_id' : id })
-        if "image" in category:
-            image_base64 = base64.b64encode(category['image']).decode('utf-8')
-            category["image"] = image_base64
-        categories = list(db.categories.find())
-        return render_template('adminv2/category/edit.html', category=category, categories=categories)
+        category = db.schedules.find_one({ '_id' : id })
+        categories = list(db.crawlproducts.find())
+        return render_template('adminv2/schedule/edit.html', category=category, categories=categories)
     elif request.method == 'POST':
         data = {
             "_id" : id,

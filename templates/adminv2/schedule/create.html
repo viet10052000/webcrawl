@@ -10,20 +10,14 @@
         <div class="card-body">
           <form action="/schedule/create" method="post">
             <h1 class="h3 mb-3 fw-normal">Thêm lịch thu thập tự động</h1>
-
-            <div class="form-floating mb-3">
-              <label for="floatingInput">Tên</label>
-              <input type="text" name="name" class="form-control" required/>
-            </div>
-            <div class="form-floating mb-3">
+            <div class="form-floating mb-3 col-6">
               <label for="floatingPassword">Tên Tool</label>
               <select
-                name="parent_id"
-                class="form-control select2"
+                name="crawlproduct_id"
+                class="form-control js-example-basic-single"
                 style="width: 100%"
                 required
               >
-                <option value="">Danh mục cha</option>
                 {% if categories %} 
                   {% for category in categories %}
                     <option value="{{category._id}}">{{ category.name }}</option>
@@ -31,6 +25,10 @@
                 {% endif %}
               </select>
             </div>
+              <div class="form-floating mb-3 col-6">
+                <label for="floatingInput">Khoảng cách ngày thu thập : </label>
+                <input type="number" min="0" name="time_repeat" class="form-control" required>
+              </div>
             <button class="btn btn-sm btn-primary" type="submit">Thêm</button>
           </form>
         </div>
@@ -45,5 +43,27 @@
     <!-- /.row -->
   </div>
 </div>
-  <!-- /.container-fluid -->
 {% endblock %}
+{% block script %}
+<link
+  href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+  rel="stylesheet"
+/>
+<script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"
+  integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+<script>
+  $(document).ready(function () {
+    $(".js-example-basic-single").select2();
+  });
+</script>
+{% endblock %}
+

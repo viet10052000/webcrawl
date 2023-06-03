@@ -41,15 +41,6 @@
                         Sử dụng selector cửa hàng đã chọn
                       </label>
                     </div>
-                    <div class="form-floating mb-3 form-check">
-                      <input name="jobtimer" class="form-check-input" type="checkbox" id="jobtimer">
-                      <label class="form-check-label" for="jobtimer">
-                        Đặt Lịch crawl
-                      </label>
-                    </div>
-                    <div id="jobtimer_time" class="mb-3 form-floating" style="display: none;">
-                      <input type="datetime-local" id="datetimeInput" name="datetimeInput" class="form-control col-4">
-                    </div>
                     <div id="selector">
                       <div class="row">
                         <div class="form-floating mb-3 col-6">
@@ -115,6 +106,18 @@
                           <label for="floatingPassword">Selector Total Rating</label>
                           <input type="text" name="selector_total_rating" class="form-control" >
                         </div>
+                      </div>
+                    </div>
+                    <div class="form-floating mb-3 form-check">
+                      <input name="checkjobtimer" class="form-check-input" type="checkbox" id="jobtimer">
+                      <label class="form-check-label" for="jobtimer">
+                        Đặt Lịch crawl
+                      </label>
+                    </div>
+                    <div id="jobtimer_time" class="mb-3 form-floating" style="display: none;">
+                      <div class="form-floating mb-3 col-6">
+                        <label for="floatingInput">Khoảng cách ngày thu thập : </label>
+                        <input type="number" min="0" name="time_repeat" required>
                       </div>
                     </div>
                     <button class="btn btn-sm btn-primary" type="submit">Thêm</button>
