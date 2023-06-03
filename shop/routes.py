@@ -7,6 +7,8 @@ from shop.models import Store
 @roles_required('admin','collector')
 def index():
     lists = Store().index()
+    for item in lists:
+        item["count"] = db.products.count_documents({"store_id": item["_id"]})
     return render_template('/adminv2/store/list.html',lists=lists)
 
 @app.route('/api/shop/list')

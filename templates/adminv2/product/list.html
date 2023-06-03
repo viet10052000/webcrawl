@@ -7,7 +7,7 @@
   <form action="/product/list" method="get" class="row">
     <div class="form-floating mb-3 col-4">
       <div>Tên</div>
-      <input type="text" value="{% if request.args.get('name') %}request.args.get('name'){% endif %}" name="name" style="width: 100%;" >
+      <input type="text" value="{% if request.args.get('name') %}{{request.args.get('name')}}{% endif %}" name="name" style="width: 100%;" >
     </div>
     <div class="form-floating mb-3 col-3">
       <div>Danh mục</div>
@@ -41,6 +41,9 @@
     <div class="col-md-12">
       <div class="card mt-3">
         <div class="card-body table-responsive p-0" style="height: 80%">
+          {% if not lists %}
+          <div style="text-align:center">Không có sản phẩm</div>
+          {% else %}
           <table class="table table-head-fixed text-nowrap">
             <caption></caption>
             <thead>
@@ -53,9 +56,6 @@
               </tr>
             </thead>
             <tbody>
-              {% if not lists %}
-                <div>Không có sản phẩm</div>
-              {% endif %}
               {% for item in lists %}
               <tr>
                 <td style="white-space: pre-line;"><a style="display: block;width:300px;" href="/home/product/detail/{{item._id}}" target="_blank">{{ item.name }}</a></td>
@@ -130,8 +130,10 @@
               {% endfor %}
             </tbody>
           </table>
+          {% endif %}
         </div>
         <nav>
+          {% if pages %}
           <ul class="pagination justify-content-center m-2">
             {% if current_page > 1 %}
             {% set query_params = request.args.to_dict() %} {% set _ =
@@ -203,6 +205,7 @@
             </li>
             {% endif %}
           </ul>
+          {% endif %}
         </nav>
         <!-- form start -->
         <!-- /.card -->

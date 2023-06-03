@@ -29,7 +29,7 @@ def productlist():
             query = {'category_id': {'$in': cate}}
         else:
             query = {'category_id': category["_id"]}
-    elif request.args.get('store') and request.args.get('category'):
+    elif request.args.get('store'):
         store = db.stores.find_one({"name": request.args.get('store')})
         query = {'store_id': store["_id"]}
     elif request.args.get('name'):
@@ -42,7 +42,8 @@ def productlist():
     lists = list(db.products.find(query).skip(skip).limit(per_page))
     for item in lists:
         item["store"] = db.stores.find_one({"_id": item["store_id"]})
-        item["price"] = locale.format_string("%.0f", int(item["price"]), grouping=True)
+        if item["price"]:
+            item["price"] = locale.format_string("%.0f", int(item["price"]), grouping=True)
     displayed_page_nums = Product().get_displayed_pages(page,int(ceil(total / per_page)),5)
     
     stores = list(db.stores.find())
@@ -73,7 +74,7 @@ def home_product():
             query = {'category_id': {'$in': cate}}
         else:
             query = {'category_id': category["_id"]}
-    elif request.args.get('store') and request.args.get('category'):
+    elif request.args.get('store'):
         store = db.stores.find_one({"name": request.args.get('store')})
         query = {'store_id': store["_id"]}
     elif request.args.get('name'):

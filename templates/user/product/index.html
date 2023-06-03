@@ -194,7 +194,7 @@
                           class="product-m__price"
                           style="margin-top: 5px; color: red"
                         >
-                          {{item.price}} VNĐ
+                          {% if item.price != '0' %}{{item.price}} VNĐ{% else %}Sắp về hàng{% endif %}
                         </div>
                       </div>
                     </div>

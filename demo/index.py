@@ -3,11 +3,10 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 import json, time
-DRIVER_PATH='path/to/chrome'
 options = Options()
 options.headless = True
-driver = webdriver.Chrome(options=options, executable_path=DRIVER_PATH)
-driver.get("https://hoanghamobile.com/dien-thoai-di-dong/iphone")
+driver = webdriver.Chrome(options=options)
+driver.get("https://cellphones.com.vn/mobile/realme.html")
 while True:
   try:
     btn = driver.find_element(By.CSS_SELECTOR,'.more-product')
@@ -16,6 +15,7 @@ while True:
   except:
     break
 soup = BeautifulSoup(driver.page_source, 'html.parser')
+print(soup)
 items = soup.select('.lts-product>.item')
 datas=[]
 comment = 0

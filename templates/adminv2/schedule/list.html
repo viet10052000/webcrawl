@@ -5,7 +5,7 @@
     <h1 class="h3 mb-0 text-gray-800">Tool Crawl</h1>
     <div>
       <a
-      href="/tool/create"
+      href="/schedule/create"
       class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"
       >
         <i class="fa-solid fa-circle-plus"></i>
@@ -25,24 +25,19 @@
             <thead>
               <tr>
                 <th>Tên Tool</th>
-                <th>Đường Dẫn</th>
+                <th>Ngày lặp lại</th>
+                <th>Ngày cập nhật</th>
                 <th class="col-2"></th>
               </tr>
             </thead>
             <tbody>
-              {% for item in listtool %}
+              {% for item in lists %}
               <tr>
-                <td>{{ item.name }}</td>
-                <td>{{ item.link_url }}</td>
+                <td>{{ item.tool.name }}</td>
+                <td>{{ item.time_repeat }}</td>
+                <td>{{ item.updated_at }}</td>
                 <td class="col-2">
-                  <a class="btn" href="/crawl/{{item._id}}">
-                    <i
-                      class="fa-solid text-success fa-spider"
-                      data-bs-toggle="tooltip"
-                      title="crawl"
-                    ></i>
-                  </a>
-                  <a class="btn" href="/tool/edit/{{item._id}}">
+                  <a class="btn" href="/schedule/edit/{{item._id}}">
                     <i
                       class="fa-solid text-primary fa-pen-to-square"
                       data-bs-toggle="toopltip"
@@ -78,13 +73,13 @@
                         &times;
                       </button>
                     </div>
-                    <form action="/tool/delete/{{item._id}}" method="get">
+                    <form action="/schedule/delete/{{item._id}}" method="get">
                       <div class="modal-body">
                         <div class="form-group row">
                           <label class="col-sm-12 col-form-label"
                             >Bạn muốn xóa
                             <span style="font-weight: bold; color: red"
-                              >{{item.name}}</span
+                              >{{item.crawlproduct_id}}</span
                             >
                             ?</label
                           >

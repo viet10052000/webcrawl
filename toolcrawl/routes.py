@@ -12,7 +12,6 @@ def createtool():
         return render_template('adminv2/tool/create.html')
     elif request.method == 'POST':
         crawl = CrawlProduct().create()
-        CrawlProductDetail().create(crawl["_id"])
         return redirect('/tool/list')
 
 @app.route('/tool/list')
@@ -69,4 +68,6 @@ def deletetool(id):
     CrawlProduct().delete(id)
     detail = db.crawlproductdetails.find_one({'crawlproduct_id': id})
     CrawlProductDetail().delete(detail["_id"])
+    schedule = db.schedules.find_one({'crawlproduct_id': id})
+    db.schedules.delete_one({"_id": schedule["_id"]})
     return redirect('/tool/list')
