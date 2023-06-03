@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, jsonify, session
+from flask import Flask, render_template, request, redirect, jsonify, session, g
 from app import app, login_required, roles_required, db
 from passlib.hash import pbkdf2_sha256
 from user.models import User
@@ -33,14 +33,14 @@ def userdelete(id):
 @login_required
 def profile():
     user = db.users.find_one({'_id': session['user']['_id']})
-    return render_template('user/auth/myprofile.html',user=user)
+    return render_template('user/auth/myprofile.html',user=user,category=g.categories)
 
 @app.route('/profile/edit', methods=['GET','POST'])
 @login_required
 def profileEdit():
     if request.method == 'GET':
         user = db.users.find_one({'_id': session['user']['_id']})
-        return render_template('user/auth/editprofile.html',user=user)
+        return render_template('user/auth/editprofile.html',user=user,category=g.categories)
     elif request.method == 'POST':
         user = db.users.find_one({'_id': session['user']['_id']})
         data = {
@@ -56,7 +56,7 @@ def profileEdit():
 @login_required
 def changePassword():
     if request.method == 'GET':
-        return render_template('user/auth/changepassword.html')
+        return render_template('user/auth/changepassword.html',category=g.categories)
     elif request.method == 'POST':
         user = db.users.find_one({'_id': session['user']['_id']})
         checkpass = pbkdf2_sha256.verify(request.values.get('old_password'), user['password'])

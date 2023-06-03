@@ -100,7 +100,7 @@ def crawlselenium(id):
             'category_id': category["_id"],
             'store_id': store["_id"],
             'name': title,
-            'link_image': link_image if not link_image else '/static/image_default.jpg',
+            'link_image': link_image if link_image else '/static/image_default.jpg',
             'price': int(''.join(re.findall(r'\d+', price))),
             'link_url': link_url,
         }

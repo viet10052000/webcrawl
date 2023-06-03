@@ -1,4 +1,4 @@
-from flask import Flask, session, render_template, redirect
+from flask import Flask, session, render_template, redirect, g
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from functools import wraps
@@ -45,11 +45,41 @@ def roles_required(*role_names):
                 return original_route(*args, **kwargs)
         return decorated_route
     return decorator
+
+@app.teardown_appcontext
+def close_connection(exception):
+    db = getattr(g, '_database', None)
+    if db is not None:
+        db.client.close()
+
+def fetch_categories_from_db():
+    categories = list(db.categories.find())
+    cate = []
+    category = []
+    for item in categories:
+        if not item["parent_id"]:
+            cate.append(item)
+    for ca in cate:
+        child = list(db.categories.find({"parent_id": ca["_id"]}))
+        category_item = {
+            "_id": ca["_id"],
+            "name": ca["name"],
+            "image": ca["image"],
+            "child": child
+        }
+        category.append(category_item)
+    return category
+
+@app.before_request
+def before_request():
+    g.categories = fetch_categories_from_db()
+
 from user import routes
 from webcrawl import routes
 from toolcrawl import routes
 from shop import routes
 from category import routes
 from product import routes
+from schedule import routes
 if __name__ == '__main__':
     app.run(debug = True)
