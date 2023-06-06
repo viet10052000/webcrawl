@@ -9,7 +9,7 @@ def schedule_list():
     lists = Schedule().index()
     for item in lists:
         item["tool"] = db.crawlproducts.find_one({"_id": item["crawlproduct_id"]})
-        item["updated_at"] = item["updated_at"].strftime('%Y-%m-%d %H:%M')
+        item["updated_at"] = datetime.strptime(item["updated_at"]['$date'], '%Y-%m-%dT%H:%M:%S.%fZ').strftime('%Y-%m-%d %H:%M')
     return render_template('/adminv2/schedule/list.html',lists=lists)
 
 @app.route('/schedule/create', methods=['GET','POST'])
