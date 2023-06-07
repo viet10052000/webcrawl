@@ -1,0 +1,57 @@
+{% extends 'adminv2/layout/base.html' %} 
+
+{% block content %}
+    <div class="container-fluid">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+          <!-- jquery validation -->
+          <div class="card card-primary mt-3">
+            <div class="card-header"></div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <form action="" method="post">
+                    <h1 class="h3 mb-3 fw-normal">Chi tiết sản phẩm</h1>
+                
+                    <div class="form-floating mb-3">
+                        <label for="floatingInput">Tên</label>
+                        <input type="text" value="{{product.name}}" class="form-control" disabled>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <label for="floatingPassword">Giá</label>
+                        <input type="text" value="{{product.price}}" class="form-control" disabled>
+                    </div>
+                    <div class="form-floating mb-3">
+                      <label for="floatingPassword">Giới thiệu sản phẩm</label>
+                      <textarea rows="12" cols="100" class="form-control">{{product.detail.description}}</textarea>
+                    </div>
+                    <div class="form-floating mb-3">
+                      <label for="floatingPassword">Thông số</label>
+                      <div style="overflow-y: scroll;height:400px">
+                        <table class="table table-responsive" >
+                          <tbody>
+                              {% for key, value in product.detail.introduction.items()  %}
+                              <tr>
+                                  <td>{{key}}</td>
+                                  <td>{{value}}</td>
+                              </tr>
+                              {% endfor %}
+                          </tbody>
+                        </table>
+                      </div>
+                  </div>
+                </form>
+            </div>
+            <!-- form start -->
+          <!-- /.card -->
+          </div>
+        <!--/.col (left) -->
+        <!-- right column -->
+        <div class="col-md-6">
+
+        </div>
+        <!--/.col (right) -->
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+{% endblock %}

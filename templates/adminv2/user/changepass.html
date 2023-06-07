@@ -1,0 +1,47 @@
+{% extends 'adminv2/layout/base.html' %} 
+
+{% block content %}
+    <div class="container-fluid">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+          <!-- jquery validation -->
+          <div class="card card-primary mt-3">
+            <div class="card-header"></div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <form action="/changepassword/admin" method="post">
+                    <h1 class="h3 mb-3 fw-normal">Đổi Mật Khẩu</h1>
+                    {% if user %}
+                      {% if user.error %}
+                          <div style="margin-bottom: 8px;color: red;text-align: center;">{{user.error}}</div>
+                      {% endif %}
+                    {% endif %}
+                    <div class="form-floating mb-3">
+                        <label for="floatingPassword">Mật khẩu cũ</label>
+                        <input type="text" name="new_password" class="form-control" >
+                    </div>
+                    <div class="form-floating mb-3">
+                      <label for="floatingPassword">Mật khẩu mới</label>
+                      <input type="text" name="old_password" class="form-control" >
+                  </div>
+                  <div class="form-floating mb-3">
+                    <label for="floatingPassword">Nhập lại mật khẩu</label>
+                    <input type="text" name="confirm_password" class="form-control" >
+                </div>
+                    <button class="btn btn-sm btn-primary" type="submit">Thêm</button>
+                </form>
+            </div>
+            <!-- form start -->
+          <!-- /.card -->
+          </div>
+        <!--/.col (left) -->
+        <!-- right column -->
+        <div class="col-md-6">
+
+        </div>
+        <!--/.col (right) -->
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+{% endblock %}

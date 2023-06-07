@@ -58,75 +58,11 @@
             <tbody>
               {% for item in lists %}
               <tr>
-                <td style="white-space: pre-line;"><a style="display: block;width:300px;" href="/home/product/detail/{{item._id}}" target="_blank">{{ item.name }}</a></td>
+                <td style="white-space: pre-line;"><a style="display: block;width:300px;" href="/product/detail/{{item._id}}" target="_blank">{{ item.name }}</a></td>
                 <td><img src="{{ item.store.link_image }}" width="50" height="20" />{{ item.store.name }}</td>
                 <td><img src="{{ item.link_image }}" width="75" height="75" /></td>
                 <td>{{ item.price }}</td>
-                <td class="col-2">
-                  <a class="btn" href="/product/edit/{{item._id}}"
-                    ><i
-                      class="fa-solid text-primary fa-pen-to-square"
-                      data-bs-toggle="toopltip"
-                      title="edit"
-                    ></i
-                  ></a>
-                  <a class="btn" href="#" data-toggle="modal" data-target="#delete_{{item._id}}">
-                    <i
-                      data-bs-toggle="tooltip"
-                      title="delete"
-                      class="fa-solid fa-trash-can text-danger"
-                    ></i>
-                  </a>
-                </td>
               </tr>
-              <div
-                class="modal fade"
-                id="delete_{{item._id}}"
-                tabindex="-1"
-                role="dialog"
-                aria-labelledby="basicModal"
-                aria-hidden="true"
-              >
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <button
-                        type="button"
-                        class="close"
-                        data-dismiss="modal"
-                        aria-hidden="true"
-                      >
-                        &times;
-                      </button>
-                    </div>
-                    <form action="/shop/delete/{{item._id}}" method="get">
-                      <div class="modal-body">
-                        <div class="form-group row">
-                          <label class="col-sm-12 col-form-label"
-                            >Bạn muốn xóa
-                            <span style="font-weight: bold; color: red"
-                              >{{item.name}}</span
-                            >
-                            ?</label
-                          >
-                        </div>
-                      </div>
-                      <div class="modal-footer">
-                        <button
-                          type="button"
-                          class="btn btn-secondary"
-                          data-dismiss="modal"
-                        >
-                          Đóng
-                        </button>
-                        <button type="submit" class="btn btn-danger">
-                          Xóa
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
               {% endfor %}
             </tbody>
           </table>
