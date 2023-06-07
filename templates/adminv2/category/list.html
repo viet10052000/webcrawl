@@ -31,9 +31,9 @@
             <thead>
               <tr>
                 <th>Tên</th>
-                <th>Thông tin</th>
                 <th>Ảnh</th>
                 <th>Danh mục cha</th>
+                <th>Số lượng sản phẩm</th>
                 <th class="col-2"></th>
               </tr>
             </thead>
@@ -41,7 +41,6 @@
               {% for item in lists %}
               <tr>
                 <td>{{ item.name }}</td>
-                <td>{{ item.description }}</td>
                 <td>
                   {% if item.image %}
                     <img src="data:image;base64,{{ item.image }}" width="75" height="75" />
@@ -57,6 +56,7 @@
                   <span style="font-weight: 400">Không có</span>
                   {% endif %}
                 </td>
+                <td>{{ item.count }}</td>
                 <td class="col-2">
                   <a class="btn" href="/category/edit/{{item._id}}"
                     ><i
