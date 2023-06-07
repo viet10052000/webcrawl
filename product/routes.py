@@ -51,9 +51,11 @@ def productlist():
     return render_template('adminv2/product/list.html',lists=lists,pages=displayed_page_nums,current_page=page,stores=stores,categories=categories,search=search)
 
 @app.route('/product/detail/<id>', methods=['GET'])
+@login_required
+@roles_required('admin','collector')
 def get_product_detail(id):
     product = db.products.find_one({"_id":id})
-    product['category'] = db.stores.find_one({"_id": product["category_id"]},{"name":1})
+    product['category'] = db.categories.find_one({"_id": product["category_id"]},{"name":1})
     product["store"] = db.stores.find_one({"_id": product["store_id"]},{"name":1})
     product["detail"] = db.productdetails.find_one({"product_id": id})
     return render_template("adminv2/product/detail.html",product=product)
