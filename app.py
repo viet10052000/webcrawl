@@ -101,7 +101,7 @@ from shop import routes
 from category import routes
 from product import routes
 from schedule import routes
-from demo import job
+from schedule import job
 
 if __name__ == '__main__':
     app.run(debug=True)

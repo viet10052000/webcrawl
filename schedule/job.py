@@ -128,17 +128,16 @@ def my_job(jobtimer):
     #     if not item["detail"]: continue
     #     detail = item["detail"]
     #     del item["detail"]
-        # db.products.insert_one(item)
-        # db.productdetails.insert_one(detail)
-        # schedule = {
-        #     "message": "success",
-        #     "status": True,
-        #     "total": jobtimer["total"] + 1,
-        #     "updated_at": datetime.now(),
-        #     "created_at": datetime.now()
-        # }
-        # db.schedules.update(jobtimer["_id"], { '$set': schedule })
+    #     db.products.insert_one(item)
+    #     db.productdetails.insert_one(detail)
     driver.quit()
+    # schedule = {
+    #     "message": "success",
+    #     "status": True,
+    #     "total": jobtimer["total"] + 1,
+    #     "updated_at": datetime.now(),
+    # }
+    # db.schedules.update(jobtimer["_id"], { '$set': schedule })
   except:
     driver.quit()
     # schedule = {
@@ -146,7 +145,6 @@ def my_job(jobtimer):
     #     "status": False,
     #     "total": jobtimer["total"] + 1,
     #     "updated_at": datetime.now(),
-    #     "created_at": datetime.now()
     # }
     # db.schedules.update(jobtimer["_id"], { '$set': schedule })
 
@@ -158,6 +156,6 @@ def start_job():
         except:
             continue
 
-scheduler.add_job(start_job, 'cron', hour=13, minute=40, second=0)
+scheduler.add_job(start_job, 'cron', hour=15, minute=2, second=30)
 scheduler.start()
 scheduler.print_jobs()
