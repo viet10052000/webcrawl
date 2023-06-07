@@ -35,7 +35,7 @@ def categoryedit(id):
     if request.method == 'GET':
         category = db.categories.find_one({ '_id' : id })
         if "image" in category:
-            image_base64 = base64.b64encode(category['image']).decode('utf-8')
+            image_base64 = base64.b64encode(category['image']).decode('ascii')
             category["image"] = image_base64
         categories = list(db.categories.find())
         return render_template('adminv2/category/edit.html', category=category, categories=categories)

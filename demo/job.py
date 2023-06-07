@@ -1,48 +1,26 @@
 from datetime import datetime
-from pymongo.mongo_client import MongoClient
-from pymongo.server_api import ServerApi
-from flask import Flask, session, render_template, redirect, g
-from pymongo.mongo_client import MongoClient
-from pymongo.server_api import ServerApi
 from functools import wraps
-from dotenv import load_dotenv
+from app import db
 import os, re, json
 import uuid
 from apscheduler.schedulers.background import BackgroundScheduler
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 import time, math
-app = Flask(__name__)
+from dotenv import load_dotenv
 load_dotenv()
-app.secret_key = b"\x8d\x17Jw\x02\xcbY\xb8\xdb8\xe7\x02\xd4'\xef\xf0"
-# database
-# Create a new client and connect to the server
-client = MongoClient(os.getenv('MONGODB_URI'), server_api=ServerApi('1'))
-# Send a ping to confirm a successful connection
-try:
-    client.admin.command('ping')
-    print("Pinged your deployment. You successfully connected to MongoDB!")
-except Exception as e:
-    print(e)
-    
-db = client[os.getenv('DATABASE_NAME')]
 scheduler = BackgroundScheduler()
-
 def my_job(jobtimer):
   crawlproduct = db.crawlproducts.find_one({'_id': jobtimer["crawlproduct_id"]})
   crawlproductdetail = db.crawlproductdetails.find_one({"crawlproduct_id": crawlproduct["_id"]})
   store = db.stores.find_one({'_id': crawlproduct['store_id']})
   category = db.categories.find_one({'_id': crawlproduct['category_id']})
-  if os.getenv('LOCAL_DRIVER'):
-    options = Options()
-    options.headless = True
-    driver = webdriver.Chrome(options=options)
-  else:
-    options = Options()
-    options.headless = True
-    driver = webdriver.Firefox(options=options)
+  options = Options()
+  options.headless = True
+  driver = webdriver.Firefox(options=options)
   try:
     driver.get(crawlproduct['link_url'])
     while True:
@@ -112,7 +90,7 @@ def my_job(jobtimer):
                     name = item.select_one(crawlproductdetail['selector_specification_name']).text
                     detail = item.select_one(crawlproductdetail['selector_specification_detail']).text
                     introduction[name] = detail
-                except AttributeError:
+                except:
                     continue
             try:
                 rating = 0
@@ -145,12 +123,7 @@ def my_job(jobtimer):
         except:
             data["detail"] = {}
             continue
-    # with open('data.json', 'w') as json_file:
-    #     json.dump({}, json_file)
-    # with open('data.json', 'w') as json_file:
-    #     json.dump(datas, json_file)
-    # with open('geckodriver.log', 'w') as json_file:
-    #     json.dump({}, json_file)
+    print(datas)
     # for item in datas:
     #     if not item["detail"]: continue
     #     detail = item["detail"]
@@ -166,7 +139,7 @@ def my_job(jobtimer):
         # }
         # db.schedules.update(jobtimer["_id"], { '$set': schedule })
     driver.quit()
-  except Exception as e:
+  except:
     driver.quit()
     # schedule = {
     #     "message": "error",
@@ -178,17 +151,13 @@ def my_job(jobtimer):
     # db.schedules.update(jobtimer["_id"], { '$set': schedule })
 
 def start_job():
-    schedules = db.schedules.find()
+    schedules = list(db.schedules.find())
     for item in schedules:
         try:
             my_job(item)
         except:
             continue
-@app.route('/')
-def test():
-    return '123123123'
 
-if __name__ == '__main__':
-    scheduler.add_job(start_job, 'cron', hour=17, minute=24, second=0)
-    scheduler.start()
-    app.run()
+scheduler.add_job(start_job, 'cron', hour=13, minute=40, second=0)
+scheduler.start()
+scheduler.print_jobs()
