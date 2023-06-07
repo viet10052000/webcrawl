@@ -6248,7 +6248,7 @@ input::-ms-clear {
   background-color: #ffffff;
   margin: auto 0;
   transition: opacity .6s ease-in,background-color .6s ease-in;
-  opacity: 0; }
+  opacity: 1; }
   .p-prev > i, .p-next > i {
     font-size: 14px;
     color: #333333;

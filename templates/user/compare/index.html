@@ -96,24 +96,23 @@
                       {% endif %}
                     </a>
                     </div>
-                    <div class="product-m__content" style="height: 110px">
+                    <div class="product-m__content" style="height: 120px">
                       <div class="product-m__category">
                         <div class="product-m__name" style="height: 55px">
                           <a
-                            href="/home/product/detail/{{item._id}}"
+                            href="/home/product/compare/detail/{{item._id}}"
                             style="margin-top: 5px; font-weight: bold"
                             >{{item.name}}</a
                           >
-                        </div>
-                        <div>
-                          <img width="50" height="20" src="{{item.store.link_image}}" />
-                          <span style="color:grey">{{ item.store.name }}</span>
                         </div>
                         <div
                           class="product-m__price"
                           style="margin-top: 5px; color: red"
                         >
-                          {% if item.price != '0' %}{{item.price}} VNĐ{% else %}Sắp về hàng{% endif %}
+                          {% if item.price != '0' %} từ 18.000.000 - 22.000.000 VNĐ{% else %}Sắp về hàng{% endif %}
+                        </div>
+                        <div style="height:40px;line-height:40px;">
+                          <a href="/home/product/compare/detail/{{item._id}}" style="color: white;font-size:15px;padding:5px;background:rgb(119, 158, 11);border-radius: 13px;">So sánh giá</a>
                         </div>
                       </div>
                     </div>

@@ -63,8 +63,12 @@ def get_product_detail(id):
 @app.route('/', methods=['GET'])
 @app.route('/home', methods=['GET'])
 def home():
+    similar_product = list(db.products.find().limit(10))
+    for item in similar_product:
+        item["store"] = db.stores.find_one({"_id": item["store_id"]})
+        item["price"] = locale.format_string("%.0f", int(item["price"]), grouping=True)
     stores = list(db.stores.find())
-    return render_template("user/home/index.html",category=g.categories,stores=stores)
+    return render_template("user/home/index.html",category=g.categories,stores=stores,similar_product=similar_product)
 
 @app.route('/home/product/compare')
 def home_product_compare():
@@ -170,7 +174,7 @@ def product_compare_detail(id):
     product["price"] = locale.format_string("%.0f", int(product["price"]), grouping=True)
     product["store"] = db.stores.find_one({"_id": product["store_id"]})
     productdetail = db.productdetails.find_one({"product_id": id})
-    return render_template("user/product/detail.html",productdetail=productdetail,product=product,similar_product=similar_product,category=g.categories)
+    return render_template("user/compare/detail.html",productdetail=productdetail,product=product,similar_product=similar_product,category=g.categories)
 
 @app.route('/home/product/detail/<id>',methods=['GET'])
 def product_detail(id):
