@@ -3,6 +3,8 @@ from app import app, login_required, roles_required, db
 from category.models import Category
 import uuid, base64
 from bson.binary import Binary
+from dotenv import load_dotenv
+load_dotenv()
 @app.route('/category/list')
 @login_required
 @roles_required('admin','collector')
