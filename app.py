@@ -6,7 +6,7 @@ from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from functools import wraps
 from dotenv import load_dotenv
-import os, re, json
+import os, re, json, base64
 import uuid
 from apscheduler.schedulers.background import BackgroundScheduler
 from selenium import webdriver
@@ -72,6 +72,15 @@ def fetch_categories_from_db():
             cate.append(item)
     for ca in cate:
         child = list(db.categories.find({"parent_id": ca["_id"]}))
+        for i in child:
+            try:
+                image_base64 = base64.b64decode(i['image']["$binary"]["base64"])
+                encoded_image_base64 = base64.b64encode(image_base64).decode('ascii')
+                i["image"] = encoded_image_base64
+            except:
+                image_base64 = base64.b64encode(i['image']).decode('ascii')
+                i["image"] = image_base64
+
         category_item = {
             "_id": ca["_id"],
             "name": ca["name"],
