@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, redirect, jsonify
 from app import app, login_required, roles_required, db
 from category.models import Category
-import uuid, base64
+import uuid, base64, locale
+from math import ceil
 from bson.binary import Binary
 from dotenv import load_dotenv
 load_dotenv()
@@ -9,8 +10,29 @@ load_dotenv()
 @login_required
 @roles_required('admin','collector')
 def categorylist():
-    lists = Category().index()
-    return render_template('adminv2/category/list.html',lists=lists)
+    # lists = Category().index()
+    query = {}
+    search = dict(request.args)
+    page = request.args.get('page', default=1, type=int)
+    if request.args.get('name'):
+        query['name'] = {'$regex': request.args.get('name'), '$options': 'i'}
+    else:
+        query = {}
+    per_page = 10
+    skip = (page - 1) * per_page
+    total = db.categories.count_documents(query)
+    lists = list(db.categories.find(query).skip(skip).limit(per_page))
+    for item in lists:
+        if "image" in item:
+            try:
+                image_base64 = base64.b64decode(item['image']["$binary"]["base64"])
+                encoded_image_base64 = base64.b64encode(image_base64).decode('ascii')
+                item["image"] = encoded_image_base64
+            except:
+                image_base64 = base64.b64encode(item['image']).decode('ascii')
+                item["image"] = image_base64
+    displayed_page_nums = Category().get_displayed_pages(page,int(ceil(total / per_page)),5)
+    return render_template('adminv2/category/list.html',lists=lists,pages=displayed_page_nums,current_page=page)
 
 @app.route('/api/category/list')
 @login_required
