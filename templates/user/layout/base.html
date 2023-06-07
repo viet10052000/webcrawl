@@ -12,13 +12,13 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet">
 
     <!--====== Vendor Css ======-->
-    <link rel="stylesheet" href="../../../static/template_user/css/vendor.css">
+    <link rel="stylesheet" href="{{ url_for('static',filename='/template_user/css/vendor.css') }}">
 
     <!--====== Utility-Spacing ======-->
-    <link rel="stylesheet" href="../../../static/template_user/css/utility.css">
+    <link rel="stylesheet" href="{{ url_for('static',filename='/template_user/css/utility.css')}}">
 
     <!--====== App ======-->
-    <link rel="stylesheet" href="../../../static/template_user/css/app.css">
+    <link rel="stylesheet" href="{{ url_for('static',filename='/template_user/css/app.css')}}">
     <link
     href="https://code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css"
     rel="stylesheet"
@@ -261,13 +261,13 @@
     <script src="https://www.google-analytics.com/analytics.js" async defer></script>
 
     <!--====== Vendor Js ======-->
-    <script src="../../../static/template_user/js/vendor.js"></script>
+    <script src="{{ url_for('static',filename='/template_user/js/vendor.js')}}"></script>
 
     <!--====== jQuery Shopnav plugin ======-->
-    <script src="../../../static/template_user/js/jquery.shopnav.js"></script>
+    <script src="{{ url_for('static',filename='/template_user/js/jquery.shopnav.js')}}"></script>
 
     <!--====== App ======-->
-    <script src="../../../static/template_user/js/app.js"></script>
+    <script src="{{ url_for('static',filename='/template_user/js/app.js')}}"></script>
 
     <!--====== Noscript ======-->
     <noscript>
