@@ -108,7 +108,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="form-floating mb-3 form-check">
+                    <!-- <div class="form-floating mb-3 form-check">
                       <input name="jobtimer" class="form-check-input" type="checkbox" id="jobtimer">
                       <label class="form-check-label" for="jobtimer">
                         Đặt Lịch crawl
@@ -116,7 +116,7 @@
                     </div>
                     <div id="jobtimer_time" class="mb-3 form-floating" style="display: none;">
                       <input type="datetime-local" id="datetimeInput" name="datetimeInput" class="form-control col-4">
-                    </div>
+                    </div> -->
                     <button class="btn btn-sm btn-primary" type="submit">cập nhật</button>
                 </form>
             </div>
@@ -213,11 +213,6 @@
     const myDiv = document.getElementById("selector");
     myCheckbox.addEventListener("change", () => {
       myDiv.style.display = myCheckbox.checked ? "none" : "block";
-    }); 
-    const myCheckbox1 = document.getElementById("jobtimer");
-    const myDiv1 = document.getElementById("jobtimer_time");
-    myCheckbox1.addEventListener("change", () => {
-      myDiv1.style.display = myCheckbox1.checked ? "block" : "none";
     }); 
     </script>
 {% endblock %}
