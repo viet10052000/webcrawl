@@ -106,19 +106,29 @@
                     {% for item in item.child %}
                   <div class="u-s-m-b-30">
                     <div class="product-o__wrap">
-                      <a href="{{item.link_url}}" target="_blank">
+                      <a href="/" target="_blank">
+                        {% if item.image %}
                         <img
                           width="100"
                           height="75"
                           style="padding: 0 10px"
-                          src="{{ url_for('static',filename='/image_default.jpg') }}"
+                          src="data:image;base64,{{ item.image }}"
                           alt=""
                         />
+                        {% else %}
+                        <img
+                        width="100"
+                        height="75"
+                        style="padding: 0 10px"
+                        src="{{ url_for('static',filename='/image_default.jpg') }}"
+                        alt=""
+                        />
+                        {% endif %}
                       </a>
                     </div>
                     <div style="color: black">
                       <a
-                        href="{{item.link_url}}"
+                        href="/"
                         style="color: black; height: 100px"
                         target="_blank"
                         >{{item.name}}</a

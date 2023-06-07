@@ -23,7 +23,7 @@
             </div>
             <div class="form-floating mb-3" style="position: relative;">
               <div class="mb-2">Ảnh</div>
-              <input type="file" name="image" id="uploadInput" required>
+              <input type="file" name="image" id="uploadInput">
               {% if category.image %}
                 <img width="150" height="150" id="previewImage" src="data:image;base64,{{ category.image }}">     
               {% else %}

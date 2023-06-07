@@ -3,6 +3,8 @@ from app import app, login_required, roles_required, db
 from category.models import Category
 import uuid, base64
 from bson.binary import Binary
+from dotenv import load_dotenv
+load_dotenv()
 @app.route('/category/list')
 @login_required
 @roles_required('admin','collector')
@@ -35,8 +37,13 @@ def categoryedit(id):
     if request.method == 'GET':
         category = db.categories.find_one({ '_id' : id })
         if "image" in category:
-            image_base64 = base64.b64encode(category['image']).decode('ascii')
-            category["image"] = image_base64
+            try:
+                image_base64 = base64.b64decode(category['image']["$binary"]["base64"])
+                encoded_image_base64 = base64.b64encode(image_base64).decode('ascii')
+                category["image"] = encoded_image_base64
+            except:
+                image_base64 = base64.b64encode(category['image']).decode('ascii')
+                category["image"] = image_base64
         categories = list(db.categories.find())
         return render_template('adminv2/category/edit.html', category=category, categories=categories)
     elif request.method == 'POST':
