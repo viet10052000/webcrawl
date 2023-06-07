@@ -10,7 +10,7 @@ load_dotenv()
 @login_required
 @roles_required('admin','collector')
 def categorylist():
-    # lists = Category().index()
+    lists = Category().index()
     query = {}
     search = dict(request.args)
     page = request.args.get('page', default=1, type=int)
@@ -31,6 +31,12 @@ def categorylist():
             except:
                 image_base64 = base64.b64encode(item['image']).decode('ascii')
                 item["image"] = image_base64
+        if item["parent_id"]:
+            item["count"] = db.products.count_documents({"category_id": item["_id"]})
+        else:
+            cate = list(db.categories.find({"parent_id": item["_id"]},{"_id":1}))
+            ids = [doc['_id'] for doc in cate]
+            item["count"] = db.products.count_documents({"category_id": {"$in": ids}})
     displayed_page_nums = Category().get_displayed_pages(page,int(ceil(total / per_page)),5)
     return render_template('adminv2/category/list.html',lists=lists,pages=displayed_page_nums,current_page=page)
 
