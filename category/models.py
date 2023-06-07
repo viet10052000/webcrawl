@@ -24,8 +24,13 @@ class Category:
         lists = list(db.categories.find())
         for item in lists:
             if "image" in item:
-                image_base64 = base64.b64encode(item['image']).decode('ascii')
-                item["image"] = image_base64
+                try:
+                    image_base64 = base64.b64decode(item['image']["$binary"]["base64"])
+                    encoded_image_base64 = base64.b64encode(image_base64).decode('ascii')
+                    item["image"] = encoded_image_base64
+                except:
+                    image_base64 = base64.b64encode(item['image']).decode('ascii')
+                    item["image"] = image_base64
         return lists
     
     def update(self, id, data):
