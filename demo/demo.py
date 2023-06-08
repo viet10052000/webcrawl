@@ -1,48 +1,66 @@
-import difflib
-import pymongo
+def build_failure_table(pattern):
+    m = len(pattern)
+    failure = [0] * m
+    j = 0
 
-# Kết nối tới MongoDB
-client = pymongo.MongoClient('mongodb+srv://user:123456Aa@cluster0.t3aqomt.mongodb.net')
-db = client['shops']
+    for i in range(1, m):
+        if pattern[i] == pattern[j]:
+            j += 1
+            failure[i] = j
+        else:
+            if j != 0:
+                j = failure[j - 1]
+                i -= 1
+            else:
+                failure[i] = 0
 
-categories = db.categories.find_one({"name": "iphone"},{'_id':1,'name':1})
-products = list(db.products.find({"category_id": categories["_id"]},{"name":1}))
-list_ip = []
-for item in products:
-  list_ip.append(item["name"])
+    return failure
+
+
+def longest_common_substring(str1, str2):
+    n = len(str1)
+    m = len(str2)
+    failure = build_failure_table(str2)
+    i = 0
+    j = 0
+    longest = ""
+
+    while i < n:
+        if str1[i] == str2[j]:
+            i += 1
+            j += 1
+            if j == m:
+                longest = str2
+                break
+        else:
+            if j != 0:
+                j = failure[j - 1]
+            else:
+                i += 1
+
+    return longest
+
+
+def find_longest_substring(string, strings):
+    longest_substring = ""
+    max_length = 0
+
+    for s in strings:
+        substring = longest_common_substring(string, s)
+        if len(substring) > max_length:
+            max_length = len(substring)
+            longest_substring = substring
+
+    return longest_substring
+
 
 iphone_list = [
+    "iPhone 14 Pro Max 128gb",
+    "điện thoại iPhone 14 Pro Max 128GB",
     "iPhone 14 Pro Max 128GB",
-    "iPhone 14 Pro Max 512GB",
-    "iPhone 14 Pro Max 256GB",
-    "iPhone 14 Pro 128GB",
-    "iPhone 14 Pro 256GB",
-    "iPhone 14 Pro 512GB",
-    "iPhone 14 128GB",
-    "iPhone 14 256GB",
-    "iPhone 14 Plus 128GB",
-    "iPhone 14 Plus 256GB",
-    "iPhone 14 Plus 512GB",
-    "iPhone 13 128GB",
-    "iPhone 12 64GB",
-    "iPhone 12 128GB",
-    "iPhone 11 64GB",
-    "iPhone 11 128GB",
-    "iPhone SE (2022) 128GB",
-    "iPhone SE (2022) 64GB"
+    "iPhone 14 Pro Max 128GB 123",
 ]
+longest_substring = find_longest_substring("iPhone 14 Pro Max 128GB | Chính hãng VN/A", iphone_list)
 
-grouped_iphones = {}
+print("Chuỗi con lớn nhất:", longest_substring)
 
-for iphone in iphone_list:
-    name = " ".join(iphone.split()[:-1])  # Lấy tên iPhone bằng cách loại bỏ thông tin về dung lượng
-    if name in grouped_iphones:
-        grouped_iphones[name].append(iphone)
-    else:
-        grouped_iphones[name] = [iphone]
-
-# # In kết quả
-# for name, models in grouped_iphones.items():
-#     print(name + ":")
-#     for model in models:
-#         print("  - " + model)
