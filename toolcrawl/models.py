@@ -75,6 +75,17 @@ class CrawlProduct:
                 "selector_load_page": request.values.get('selector_load_page'),
             }
             db.crawlproducts.insert_one(crawl)
+            crawlproductdetail = {
+                "_id": uuid.uuid4().hex,
+                "selector_specification_frame": request.values.get('selector_specification_frame'),
+                "selector_specification_name": request.values.get('selector_specification_name'),
+                "selector_specification_detail": request.values.get('selector_specification_detail'),
+                "selector_specification_button": request.values.get('selector_specification_button'),
+                "selector_rating": request.values.get('selector_rating'),
+                "selector_total_rating": request.values.get('selector_total_rating'),
+                "selector_description": request.values.get('selector_description'),
+                "crawlproduct_id": crawl['_id'],
+            }
             db.crawlproductdetails.insert_one(crawlproductdetail)
         # if 'checkjobtimer' in request.form:
         #     schedule = {
