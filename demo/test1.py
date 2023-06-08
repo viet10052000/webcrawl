@@ -46,10 +46,13 @@ def find_longest_substring(string, strings):
     max_length = 0
 
     for s in strings:
+        # print(s)
         substring = longest_common_substring(string, s)
+        print(substring)
         if len(substring) > max_length:
             max_length = len(substring)
             longest_substring = substring
+            # print(longest_substring)
 
     return longest_substring
 
@@ -57,12 +60,15 @@ import pymongo
 import re
 client = pymongo.MongoClient('mongodb+srv://user:123456Aa@cluster0.t3aqomt.mongodb.net')
 db = client['shops']
-category = db.categories.find_one({"name": 'iphone'})
+category = db.categories.find_one({"name": 'macboook'})
 
-iphone = "iPhone 12 128GB | Chính hãng VN/A".replace("(", "").replace(")", "")
+iphone = "Apple MacBook Air M1 256GB 2020 I Chính hãng Apple Việt Nam".replace("(", "").replace(")", "")
 store_id = "4883128f5159462fa63340991805885b"
+print(iphone)
 datas = list(db.products.find({"category_id": category["_id"],"store_id": {"$nin": [store_id]} }).distinct("name"))
+# print(datas)
 longest_string = find_longest_substring(iphone,datas)
+print("longest_string: ",longest_string)
 datas = list(db.products.find({"category_id": category["_id"],"store_id": {"$nin": [store_id]}},{"name":1,"price":1,"store_id":1}))
 price = []
 list_data = []
@@ -72,30 +78,30 @@ for item in datas:
     list_data.append(item)
     price.append(item["price"])
   del item["store_id"]
-print(list_data)
+# print(list_data)
 group = {
   "name" : longest_string,
   "min_price" : min(price),
   "max_price" : max(price)
 }
 print(group)
-list_store = list(db.products.find({},{"store_id":1}).distinct("store_id"))
-for item in list_store:
-    datas = list(db.products.find({"category_id": category["_id"]}).distinct("name"))
-    longest_string = find_longest_string(iphone,datas)
-    datas = list(db.products.find({"category_id": category["_id"]},{"name":1,"price":1,"store_id":1}))
-    price = []
-    list_data = []
-    for item in datas:
-        name = item["name"].replace("(", "").replace(")","")
-        item["store_name"] = db.stores.find_one({"_id":item["store_id"]})["name"]
-        if longest_string in name:
-            list_data.append(item)
-            price.append(item["price"])
-        del item["store_id"]
-    group = {
-    "name" : longest_string,
-    "min_price" : min(price),
-    "max_price" : max(price)
-    }
-    print(group)
+# list_store = list(db.products.find({},{"store_id":1}).distinct("store_id"))
+# for item in list_store:
+#     datas = list(db.products.find({"category_id": category["_id"]}).distinct("name"))
+#     longest_string = find_longest_string(iphone,datas)
+#     datas = list(db.products.find({"category_id": category["_id"]},{"name":1,"price":1,"store_id":1}))
+#     price = []
+#     list_data = []
+#     for item in datas:
+#         name = item["name"].replace("(", "").replace(")","")
+#         item["store_name"] = db.stores.find_one({"_id":item["store_id"]})["name"]
+#         if longest_string in name:
+#             list_data.append(item)
+#             price.append(item["price"])
+#         del item["store_id"]
+#     group = {
+#     "name" : longest_string,
+#     "min_price" : min(price),
+#     "max_price" : max(price)
+#     }
+#     print(group)
