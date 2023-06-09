@@ -150,16 +150,68 @@ def home_product():
     categories = list(db.categories.find())
     return render_template("user/product/index.html",category=g.categories,lists=lists,pages=displayed_page_nums,current_page=page,stores=stores,categories=categories)
 
+def find_common_subarrays(string1, string2):
+    word_array1 = string1.split()
+    word_array2 = string2.split()
+    common_subarrays = []
+
+    for word1 in word_array1:
+        if word1 in word_array2 and word1 not in common_subarrays:
+            common_subarrays.append(word1)
+
+    return common_subarrays
+
+
+def find_longest_common_subarray(string, string_list):
+    longest_subarray = []
+    max_common_count = 0
+
+    for s in string_list:
+        common_subarrays = find_common_subarrays(string, s)
+        common_count = len(common_subarrays)
+        if common_count > max_common_count:
+            max_common_count = common_count
+            longest_subarray = common_subarrays
+
+    return longest_subarray
+
+def is_subarray_in_string(subarray, string):
+    subarray_set = set(subarray)
+    string_set = set(string.split())
+
+    return subarray_set.issubset(string_set)
+
 @app.route('/home/product/compare/detail/<id>',methods=['GET'])
 def product_compare_detail(id):
     product = db.products.find_one({"_id":id})
+    name_product = product["name"].replace("(", "").replace(")", "").replace("Chính hãng","").replace("VN/A","").strip()
+    datas = list(db.products.find({"category_id": product["category_id"],"store_id": {"$nin": [product["store_id"]]} }).distinct("name"))
+    longest_substring = find_longest_common_subarray(name_product, datas)
+    print(longest_substring)
+    price = []
+    list_data = []
+    min_product = {}
+    if longest_substring:
+        datas = list(db.products.find({"category_id": product["category_id"]},{"name":1,"price":1,"store_id":1,"link_image":1}))
+        for item in datas:
+            item["price"] = locale.format_string("%.0f", int(item["price"]), grouping=True)
+            name = item["name"].replace("(", "").replace(")","")
+            data = is_subarray_in_string(longest_substring,name)
+            if data:
+                item["store"] = db.stores.find_one({"_id": item["store_id"]},{"name":1,"link_image":1})
+                list_data.append(item)
+                price.append(item["price"])
+        for item in list_data:
+            price_data = item["price"]
+            if price_data == min(price):
+                min_product = item
+        list_data.remove(min_product)   
+    else:
+        min_product = product
+        min_product["store"] = db.stores.find_one({"_id": min_product["store_id"]},{"name":1,"link_image":1})
     price = product["price"]
-    category = db.categories.find_one({"_id": product["category_id"]},{"_id":1,"name":1,"parent_id":1})
-    cate = []
-    if category["parent_id"]:
-        cate = list(db.categories.find({"parent_id": category["parent_id"]}).distinct('_id'))
     similar_product = list(db.products.find({
-        'category_id': {'$in': cate},
+        "category_id" : {"$nin": [product["category_id"]]},
         "price": {"$gte": price - 500000, "$lt": price + 500000}
     },{
         "_id":1,
@@ -171,10 +223,7 @@ def product_compare_detail(id):
     for item in similar_product:
         item["store"] = db.stores.find_one({"_id": item["store_id"]})
         item["price"] = locale.format_string("%.0f", int(item["price"]), grouping=True)
-    product["price"] = locale.format_string("%.0f", int(product["price"]), grouping=True)
-    product["store"] = db.stores.find_one({"_id": product["store_id"]})
-    productdetail = db.productdetails.find_one({"product_id": id})
-    return render_template("user/compare/detail.html",productdetail=productdetail,product=product,similar_product=similar_product,category=g.categories)
+    return render_template("user/compare/detail.html",min_product=min_product,list_data=list_data,similar_product=similar_product,category=g.categories)
 
 @app.route('/home/product/detail/<id>',methods=['GET'])
 def product_detail(id):

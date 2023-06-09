@@ -13,7 +13,7 @@
                         <li class="has-separator">
                             <a href="/home/product" style="font-size:18px">Sản Phẩm</a></li>
                         <li class="is-marked">
-                        <a style="font-size:18px">{{product.name}}</a></li>
+                        <a style="font-size:18px">{{min_product.name}}</a></li>
                     </ul>
                 </div>
                   <div class="row">
@@ -23,10 +23,10 @@
                               <div class="pd-wrap">
                                   <div id="pd-o-initiate">
                                       <div class="pd-o-img-wrap">
-                                        {% if product.link_image %}
+                                        {% if min_product.link_image %}
                                         <img
                                           class="u-img-fluid"
-                                          src="{{product.link_image}}"
+                                          src="{{min_product.link_image}}"
                                           style="height: 300px;object-fit:contain;"
                                           alt=""
                                       />
@@ -50,23 +50,23 @@
                           <div class="pd-detail" style="margin-top: 75px;">
                               <div>
 
-                                  <span class="pd-detail__name">{{product.name}}</span></div>
+                                  <span class="pd-detail__name">{{min_product.name}}</span></div>
                               <div>
                                   <div class="pd-detail__inline">
 
-                                      <span class="pd-detail__price">{% if product.price != '0' %}{{product.price}} VNĐ{% else %}Sắp về hàng{% endif %}</span>
+                                      <span class="pd-detail__price">{% if min_product.price != '0' %}{{min_product.price}} VNĐ{% else %}Sắp về hàng{% endif %}</span>
                               </div>
                               <div>
                                 <span>Giá rẻ nhất tại : </span>
-                                <img width="50" height="20" src="{{product.store.link_image}}" />
-                                <span style="color:grey">{{ product.store.name }}</span>
+                                <img width="50" height="20" src="{{min_product.store.link_image}}" />
+                                <span style="color:grey">{{ min_product.store.name }}</span>
                               </div>
                               <div class="u-s-m-b-15" style="margin-top:10px">
                                   <div class="pd-detail__inline">
 
                                       <span class="pd-detail__click-wrap"><svg style="width:14px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M364.2 83.8c-24.4-24.4-64-24.4-88.4 0l-184 184c-42.1 42.1-42.1 110.3 0 152.4s110.3 42.1 152.4 0l152-152c10.9-10.9 28.7-10.9 39.6 0s10.9 28.7 0 39.6l-152 152c-64 64-167.6 64-231.6 0s-64-167.6 0-231.6l184-184c46.3-46.3 121.3-46.3 167.6 0s46.3 121.3 0 167.6l-176 176c-28.6 28.6-75 28.6-103.6 0s-28.6-75 0-103.6l144-144c10.9-10.9 28.7-10.9 39.6 0s10.9 28.7 0 39.6l-144 144c-6.7 6.7-6.7 17.7 0 24.4s17.7 6.7 24.4 0l176-176c24.4-24.4 24.4-64 0-88.4z"/></svg></i>
 
-                                          <a href="/home/product/detail/{{product._id}}" style="font-size:18px" target="_blank">Đi đến chi tiết sản phẩm</a>
+                                          <a href="/home/product/detail/{{min_product._id}}" style="font-size:18px" target="_blank">Đi đến chi tiết sản phẩm</a>
 
                               </div>
                           </div>
@@ -87,53 +87,15 @@
                                       <li class="nav-item">
 
                                           <a class="nav-link active" data-toggle="tab" href="#pd-desc">So sánh giá</a></li>
-                                      <li class="nav-item">
-
-                                          <a class="nav-link" data-toggle="tab" href="#pd-tag">Thông Số Kỹ Thuật</a></li>
-                                          <li class="nav-item">
-
-                                            <a class="nav-link" data-toggle="tab" href="#pd-compare">Thông Tin Sản Phẩm</a></li>
                                   </ul>
                               </div>
                               <div class="tab-content">
-
-                                  <!--====== Tab 1 ======-->
-                                  <div class="tab-pane fade" id="pd-compare">
-                                      <div>
-                                          <div class="u-s-m-b-15">
-                                            <p style="font-size:18px;height: 400px;overflow-y: scroll;">{{productdetail.description}}</p>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <!--====== End - Tab 1 ======-->
-
-
-                                  <!--====== Tab 2 ======-->
-                                  <div class="tab-pane" id="pd-tag">
-                                      <div>
-                                          <div class="u-s-m-b-15">
-                                            <div class="pd-table gl-scroll" style="height: 400px;overflow-y: scroll;">
-                                                <table>
-                                                    <tbody>
-                                                        {% if productdetail.introduction %}
-                                                        {% for key, value in productdetail.introduction.items()  %}
-                                                        <tr>
-                                                            <td>{{key}}</td>
-                                                            <td>{{value}}</td>
-                                                        </tr>
-                                                        {% endfor %}
-                                                        {% endif %}
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                      </div>
-                                  </div>
                                   <!--====== End - Tab 2 ======-->
                                   <div class="tab-pane fade show active" id="pd-desc">
                                     <div class="container">
+                                                {% if list_data %}
                                                 <div class="owl-carousel product-slider" data-item="4">
-                                                  {% for item in similar_product %}
+                                                  {% for item in list_data %}
                                                     <div class="u-s-m-b-30">
                                                         <a href="/home/product/detail/{{item._id}}" class="product-o">
                                                             <div class="product-o__wrap">
@@ -147,9 +109,9 @@
                                                             </div>
                                                             <div style="display:flex;margin-top:10px">
                                                               <img style="width:50px;height:20px;" src="{{item.store.link_image}}" />
-                                                              <span style="color:grey">{{ item.store.name }}</span>
+                                                              <span style="color:grey;padding:0 2px">{{ item.store.name }}</span>
                                                             </div>
-                                                            <div style="color: black;"><a href="/home/product/detail/{{item._id}}" style="color: black;height: 100px;">{{item.name}}</a></div>
+                                                            <div title="{{item.name}}" style="color: black;height:55px;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;word-wrap: break-word;"><a href="/home/product/detail/{{item._id}}" style="color: black;height: 100px;">{{item.name}}</a></div>
                                                             <span class="product-o__price" style="color: red;">
                                                               {% if item.price != '0' %}{{item.price}} VNĐ{% else %}Sắp về hàng{% endif %}
                                                             </span>
@@ -157,6 +119,9 @@
                                                     </div>
                                                   {% endfor %}
                                                 </div>
+                                                {% else %}
+                                                    <div style="text-align: center;padding: 100px">Không có sản phẩm nào để so sánh</div>
+                                                {% endif %}
                                     </div>
                                 </div>
                                 <!--====== End - Tab 1 ======-->
@@ -174,7 +139,7 @@
                       <div class="row">
                           <div class="col-lg-12">
                               <div class="section__text-wrap">
-                                  <h1 class="section__heading u-c-secondary u-s-m-b-12">Sản phẩm khác cùng tầm giá</h1>
+                                  <h1 class="section__heading u-c-secondary u-s-m-b-12">Sản phẩm cùng tầm giá</h1>
                               </div>
                           </div>
                       </div>
@@ -202,9 +167,9 @@
                                       </div>
                                       <div style="display:flex;margin-top:10px">
                                         <img style="width:50px;height:20px;" src="{{item.store.link_image}}" />
-                                        <span style="color:grey">{{ item.store.name }}</span>
+                                        <span style="color:grey;padding:0 2px">{{ item.store.name }}</span>
                                       </div>
-                                      <div style="color: black;"><a href="/home/product/detail/{{item._id}}" style="color: black;height: 100px;">{{item.name}}</a></div>
+                                      <div title="{{item.name}}" style="color: black;height:55px;  display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;word-wrap: break-word;"><a href="/home/product/detail/{{item._id}}" style="color: black;height: 100px;">{{item.name}}</a></div>
                                       <span class="product-o__price" style="color: red;">
                                         {% if item.price != '0' %}{{item.price}} VNĐ{% else %}Sắp về hàng{% endif %}
                                       </span>

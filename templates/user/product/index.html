@@ -28,11 +28,8 @@
                     <ul class="shop-w__category-list gl-scroll">
                       {% for item in categories %} {% if not item.parent_id %}
                       <li class="has-list">
-                        {% set query_params = request.args.to_dict() %} {% set _
-                        = query_params.update({'category': item.name }) %}
-                        <a
-                          href="{{ url_for(request.endpoint, **query_params) }}"
-                          >{{item.name}}</a
+                        <span
+                          >{{item.name}}</span
                         >
                         <span
                           class="js-shop-category-span fas fa-plus u-s-m-l-6"
@@ -160,7 +157,6 @@
                     <div class="product-m__thumb">
                       <a
                         class="aspect aspect--bg-grey aspect--square u-d-block"
-                        href="/home/product/detail/{{item._id}}"
                       >
                       {% if item.link_image %}
                         <img
@@ -177,12 +173,17 @@
                       {% endif %}
                     </a>
                     </div>
-                    <div class="product-m__content" style="height: 110px">
+                    <div style="height: 140px;padding:0 5px">
                       <div class="product-m__category">
                         <div class="product-m__name" style="height: 55px">
                           <a
                             href="/home/product/detail/{{item._id}}"
-                            style="margin-top: 5px; font-weight: bold"
+                            title="{{item.name}}"
+                            style="margin-top: 5px; font-weight: bold;display: -webkit-box;
+                            -webkit-line-clamp: 3;
+                            -webkit-box-orient: vertical;
+                            overflow: hidden;
+                            word-wrap: break-word;"
                             >{{item.name}}</a
                           >
                         </div>
@@ -194,7 +195,11 @@
                           class="product-m__price"
                           style="margin-top: 5px; color: red"
                         >
-                          {% if item.price != '0' %}{{item.price}} VNĐ{% else %}Sắp về hàng{% endif %}
+                          {% if item.price != '0' %} {{ item.price }} VNĐ {% else %}Sắp về hàng{% endif %}
+                        </div>
+                        <div style="height:40px;line-height:40px;">
+                          <a href="/home/product/detail/{{item._id}}" style="color: white;font-size:15px;padding:5px;background:rgb(207, 194, 15);border-radius: 13px;">Chi tiết</a>
+                          <a href="/home/product/compare/detail/{{item._id}}" style="color: white;font-size:15px;padding:5px;background:rgb(119, 158, 11);border-radius: 13px;">So sánh giá</a>
                         </div>
                       </div>
                     </div>
