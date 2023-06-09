@@ -204,9 +204,21 @@
                                   </div>
                                   <div style="display:flex;margin-top:10px">
                                     <img style="width:50px;height:20px;" src="{{item.store.link_image}}" />
-                                    <span style="color:grey">{{ item.store.name }}</span>
+                                    <span style="color:grey;padding:0 2px">{{ item.store.name }}</span>
                                   </div>
-                                  <div style="color: black;"><a href="/home/product/detail/{{item._id}}" style="color: black;height: 100px;">{{item.name}}</a></div>
+                                  <div>
+                                    <a href="/home/product/detail/{{item._id}}" style="
+                                      color: black;
+                                      height:55px;
+                                      display: -webkit-box;
+                                      -webkit-line-clamp: 3;
+                                      -webkit-box-orient: vertical;
+                                      overflow: hidden;
+                                      word-wrap: break-word;"
+                                    >
+                                      {{item.name}}
+                                    </a>
+                                  </div>
                                   <span class="product-o__price" style="color: red;">
                                     {% if item.price != '0' %}{{item.price}} VNĐ{% else %}Sắp về hàng{% endif %}
                                   </span>
