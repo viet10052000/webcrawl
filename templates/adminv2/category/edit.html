@@ -24,11 +24,13 @@
             <div class="form-floating mb-3" style="position: relative;">
               <div class="mb-2">Ảnh</div>
               <input type="file" name="image" id="uploadInput">
-              {% if category.image %}
+              <div>
+                {% if category.image %}
                 <img width="150" height="150" id="previewImage" src="data:image;base64,{{ category.image }}">     
-              {% else %}
-                <img width="150" height="150" id="previewImage" style="display: none;">     
-              {% endif %}
+                {% else %}
+                  <img width="150" height="150" id="previewImage" style="display: none;">     
+                {% endif %}
+              </div>
               <span id="deleteButton" style="color: red;display: none;cursor: pointer;position: absolute;left: 145px;top: 50px;font-weight: bold">x</span> 
             </div>
             <div class="form-floating mb-3">
@@ -49,10 +51,13 @@
                 style="width: 100%"
               >
                 <option value="">Danh mục cha</option>
-                {% if categories %} {% for item in categories %} {% if
-                category._id != item._id %}
-                <option value="{{item._id}}">{{ item.name }}</option>
-                {% endif %} {% endfor %} {% endif %}
+                {% if categories %} 
+                  {% for item in categories %}
+                    {% if category._id != item._id %}
+                      <option value="{{item._id}}" {% if category.parent_id == item._id %}selected{% endif %}>{{ item.name }}</option>
+                    {% endif %} 
+                  {% endfor %} 
+                {% endif %}
               </select>
             </div>
             <button class="btn btn-sm btn-primary" type="submit">
