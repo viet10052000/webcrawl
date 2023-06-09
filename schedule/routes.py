@@ -39,11 +39,11 @@ def schedule_edit(id):
         data = {
             "_id" : id,
             "name": request.values.get('name'),
-            "description": request.values.get('description'),
-            "parent_id": request.values.get('parent_id'),    
+            "time_repeat": request.values.get('time_repeat'),
+            "updated_at": datetime.now()
         }
         Schedule().update(id,data)
-        return redirect('/category/list')
+        return redirect('/schedule/list')
     
 @app.route('/schedule/delete/<id>', methods=['GET'])
 @login_required
