@@ -6,6 +6,11 @@ from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 import uuid
 import time, json, math
+import requests
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36',
+    'Content-Type': 'application/json'
+}
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -29,6 +34,48 @@ def crawl(id):
 def crawldetail():
     if request.method == 'GET':
         return render_template('adminv2/crawl/crawlproductdetail/crawl.html')
+
+@app.route('/crawl/api', methods=['GET','POST'])
+@login_required
+@roles_required('admin','collector') 
+def crawl_api():
+    if request.method == 'GET':
+        return render_template('adminv2/crawl/crawlproductapi/index.html')
+    elif request.method == 'POST':
+        datas = []
+        error = ""
+        ids = []
+        i=0
+        for page in range(1,9):
+            response = requests.get('https://tiki.vn/api/personalish/v1/blocks/listings?limit=40&include=advertisement&aggregations=2&trackity_id=b5d3ba57-f3a6-fc01-a24e-355a8b7b86f4&category=1789&sort=price,desc&urlKey=dien-thoai-may-tinh-bang&brand=18802&page='+ str(page),headers=headers)
+            if response.status_code == 200:
+                data = response.json()
+                for item in data["data"]:
+                    ids.append(str(item["id"]))
+                    item = {
+                        "_id": item["id"],
+                        "name": item["name"],
+                        'link_image': item["thumbnail_url"] if item["thumbnail_url"] else '/static/image_default.jpg',
+                        'price': item["price"],
+                        'link_url': "https://tiki.vn/" + item["url_path"],
+                        'detail': {
+                            'description': '',
+                            'information': {},
+                            'rating': item["rating_average"],
+                            'total_rating': item["review_count"]
+                        }
+                    }
+                    i = i + 1
+                    datas.append(item)
+            else:
+                error = response.status_code
+                print('status code:', response.status_code)
+                continue
+        if datas:
+            return jsonify(ids), 200
+        else:
+            return jsonify("status code:" + error), 403
+
 
 @app.route('/crawl/selenium/<id>', methods=['POST'])
 @login_required
