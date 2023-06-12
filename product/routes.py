@@ -72,43 +72,41 @@ def home():
 
 @app.route('/home/product/compare')
 def home_product_compare():
-    query = {}
-    page = request.args.get('page', default=1, type=int)
-    if request.args.get('category') and request.args.get('store'):
-        category = db.categories.find_one({"name": request.args.get('category')},{"_id":1,"name":1,"parent_id":1})
-        store = db.stores.find_one({"name": request.args.get('store')})
-        if not category["parent_id"]:
-            cate = list(db.categories.find({"parent_id": category["_id"]}).distinct('_id'))
-            query = {'category_id': {'$in': cate},'store_id': store["_id"]}
+    category = db.categories.find_one({"name": request.args.get('category')},{"_id": 1 })
+    ids = list(db.products.find({"category_id": category["_id"]}).distinct("store_id"))
+    products = list(db.products.find({"category_id":category["_id"]}))
+    tmp = []
+    datas = []
+    for id in ids:
+        list3 = []
+        list1 = [obj for obj in products if obj["store_id"] == id]
+        if tmp:
+            list3 = [a for a in list3 if a in tmp]
         else:
-            query = {'category_id': category["_id"],'store_id': store["_id"]}  
-    elif request.args.get('category') and not request.args.get('store'):
-        category = db.categories.find_one({"name": request.args.get('category')},{"_id":1,"name":1,"parent_id":1})
-        if not category["parent_id"]:
-            cate = list(db.categories.find({"parent_id": category["_id"]}).distinct('_id'))
-            query = {'category_id': {'$in': cate}}
-        else:
-            query = {'category_id': category["_id"]}
-    elif request.args.get('store'):
-        store = db.stores.find_one({"name": request.args.get('store')})
-        query = {'store_id': store["_id"]}
-    elif request.args.get('name'):
-        query['name'] = {'$regex': request.args.get('name'), '$options': 'i'}
-    else:
-        query = {}        
-    per_page = 12
-    skip = (page - 1) * per_page
-    total = db.products.count_documents(query)
-    lists = db.products.find(query)
-    lists = list(lists.skip(skip).limit(per_page))
-    for item in lists:
-        item["store"] = db.stores.find_one({"_id": item["store_id"]})
-        item["price"] = locale.format_string("%.0f", int(item["price"]), grouping=True)
-    displayed_page_nums = Product().get_displayed_pages(page,int(ceil(total / per_page)),5)
-    
-    stores = list(db.stores.find())
+            list3 = list1
+        for item in list3:
+            data = []
+            price = []
+            list2 = [obj["name"] for obj in products if obj["store_id"] != id]
+            name_compare = item["name"].replace("(", "").replace(")", "").replace("Chính hãng","").replace("VN/A","").replace("-","").strip()
+            result = find_longest_common_subarray(name_compare, list2)
+            if result:
+                for ilist in products:
+                    name = is_subarray_in_string(result,ilist["name"])
+                    if name:
+                        data.append(ilist)
+                        tmp.append(ilist["name"])
+                        price.append(ilist["price"])
+            if data:
+                data_compare = {
+                    "_id": data[0]["_id"],
+                    "name": data[0]["name"],
+                    "link_image": data[0]["link_image"],
+                    "price": locale.format_string("%.0f", min(price), grouping=True)
+                }
+                datas.append(data_compare)
     categories = list(db.categories.find())
-    return render_template("user/compare/index.html",category=g.categories,lists=lists,pages=displayed_page_nums,current_page=page,stores=stores,categories=categories)
+    return render_template("user/compare/index.html",category=g.categories,lists=datas,categories=categories)
 
 @app.route('/home/product')
 def home_product():
@@ -184,7 +182,7 @@ def is_subarray_in_string(subarray, string):
 @app.route('/home/product/compare/detail/<id>',methods=['GET'])
 def product_compare_detail(id):
     product = db.products.find_one({"_id":id})
-    name_product = product["name"].replace("(", "").replace(")", "").replace("Chính hãng","").replace("VN/A","").strip()
+    name_product = product["name"].replace("(", "").replace(")", "").replace("Chính hãng","").replace("VN/A","").replace("-","").strip()
     datas = list(db.products.find({"category_id": product["category_id"],"store_id": {"$nin": [product["store_id"]]} }).distinct("name"))
     longest_substring = find_longest_common_subarray(name_product, datas)
     print(longest_substring)
