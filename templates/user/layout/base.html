@@ -204,7 +204,11 @@
                                     <li>
                                         <a href="/home/product">Sản Phẩm</a></li>
                                     <li>
-                                            <a href="/home/product/compare">So sánh Giá</a></li>
+                                        {% if category %}
+                                            {% if category[0].child %}
+                                                <a href="/home/product/compare?category={{category[0].child[0].name}}">So sánh Giá</a>
+                                            {% endif %}
+                                        {% endif %}
                                     <li>
                                         <a href="shop-side-version-2.html">Thông tin về trang web</a></li>
                                 </ul>
