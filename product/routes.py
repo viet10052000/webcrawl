@@ -192,6 +192,7 @@ def product_compare_detail(id):
     if longest_substring:
         datas = list(db.products.find({"category_id": product["category_id"]},{"name":1,"price":1,"store_id":1,"link_image":1}))
         for item in datas:
+            item["price_int"] = item["price"]
             item["price"] = locale.format_string("%.0f", int(item["price"]), grouping=True)
             name = item["name"].replace("(", "").replace(")","")
             data = is_subarray_in_string(longest_substring,name)
