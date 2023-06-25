@@ -115,9 +115,6 @@
                                       <li class="nav-item">
 
                                           <a class="nav-link" data-toggle="tab" href="#pd-tag">Thông Số Kỹ Thuật</a></li>
-                                      <li class="nav-item">
-
-                                            <a class="nav-link" data-toggle="tab" href="#pd-price">Biểu đồ giá</a></li>
                                   </ul>
                               </div>
                               <div class="tab-content">
@@ -154,13 +151,6 @@
                                   </div>
                                   <!--====== End - Tab 2 ======-->
                                                                     <!--====== Tab 2 ======-->
-                                  <div class="tab-pane" id="pd-price">
-                                      <div>
-                                          <div class="u-s-m-b-15">
-                                            <canvas id="myChart"></canvas>
-                                        </div>
-                                      </div>
-                                  </div>
                                   <!--====== End - Tab 2 ======-->
                               </div>
                           </div>
@@ -221,29 +211,4 @@
           </div>
           <!--====== End - Section 1 ======-->
       </div>
-      <!--====== End - App Content ======-->
-      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-      <script>
-        const ctx = document.getElementById('myChart');
-      
-        new Chart(ctx, {
-          type: 'line',
-          data: {
-            labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-            datasets: [{
-              label: 'biểu đồ giá',
-              data: [12000000, 11000000, 11000000, 11000000, 11000000, 10800000, 10800000, 10800000, 10800000, 10800000, 10800000, 10700000],
-              borderWidth: 1
-            }]
-          },
-          options: {
-            scales: {
-              y: {
-                beginAtZero: true
-              }
-            }
-          }
-        });
-      </script>
 {% endblock %}
