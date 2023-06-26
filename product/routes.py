@@ -4,7 +4,7 @@ from product.models import Product
 from category.models import Category
 from math import ceil
 from pymongo import ASCENDING, DESCENDING
-import locale
+import locale, re
 locale.setlocale(locale.LC_ALL, '')
 
 @app.route('/product/list')
@@ -185,7 +185,6 @@ def product_compare_detail(id):
     name_product = product["name"].replace("(", "").replace(")", "").replace("Chính hãng","").replace("VN/A","").replace("-","").strip()
     datas = list(db.products.find({"category_id": product["category_id"],"store_id": {"$nin": [product["store_id"]]} }).distinct("name"))
     longest_substring = find_longest_common_subarray(name_product, datas)
-    print(longest_substring)
     price = []
     list_data = []
     min_product = {}
@@ -223,6 +222,68 @@ def product_compare_detail(id):
         item["store"] = db.stores.find_one({"_id": item["store_id"]})
         item["price"] = locale.format_string("%.0f", int(item["price"]), grouping=True)
     return render_template("user/compare/detail.html",min_product=min_product,list_data=list_data,similar_product=similar_product,category=g.categories)
+
+@app.route('/home/product/compare/rating/<id>',methods=['GET'])
+def product_compare_rating(id):
+    product = db.products.find_one({"_id":id})
+    name_product = product["name"].replace("(", "").replace(")", "").replace("Chính hãng","").replace("VN/A","").replace("-","").strip()
+    datas = list(db.products.find({"category_id": product["category_id"],"store_id": {"$nin": [product["store_id"]]} }).distinct("name"))
+    longest_substring = find_longest_common_subarray(name_product, datas)
+    price = []
+    rating = []
+    list_data = []
+    min_product = {}
+    if longest_substring:
+        datas = list(db.products.find({"category_id": product["category_id"]},{"name":1,"price":1,"store_id":1,"link_image":1}))
+        for item in datas:
+            item["price_int"] = item["price"]
+            item["price"] = locale.format_string("%.0f", int(item["price"]), grouping=True)
+            name = item["name"].replace("(", "").replace(")","")
+            data = is_subarray_in_string(longest_substring,name)
+            if data:
+                item["store"] = db.stores.find_one({"_id": item["store_id"]},{"name":1,"link_image":1})
+                item["rating"] = db.productdetails.find_one({"product_id": item["_id"]},{"rating":1,"total_rating":1})
+                print(item["rating"])
+                rating_data = item["rating"]["rating"]
+                if type(rating_data) == str:
+                    if "/" in rating_data:
+                        rating_data = rating_data.split("/")[0]
+                rating_data = float(rating_data)
+                item["rating"]["rating"] = rating_data
+                rating.append(rating_data)
+                total_rating = item["rating"]["total_rating"]
+                if type(total_rating) == str:
+                    total_rating = re.findall(r'\d+', total_rating)[0]
+                total_rating = int(total_rating)
+                item["rating"]["total_rating"] = total_rating
+                list_data.append(item)
+                price.append(item["price"])
+        print(rating)
+        for item in list_data:
+            price_data = item["rating"]["rating"]
+            total_rating = item["rating"]["total_rating"]
+            if price_data == max(rating):
+                min_product = item
+        print(list_data)
+        list_data.remove(min_product)  
+    else:
+        min_product = product
+        min_product["store"] = db.stores.find_one({"_id": min_product["store_id"]},{"name":1,"link_image":1})
+    price = product["price"]
+    similar_product = list(db.products.find({
+        "category_id" : {"$nin": [product["category_id"]]},
+        "price": {"$gte": price - 500000, "$lt": price + 500000}
+    },{
+        "_id":1,
+        "name":1,
+        "price":1,
+        "link_image":1,
+        "store_id":1
+    }))
+    for item in similar_product:
+        item["store"] = db.stores.find_one({"_id": item["store_id"]})
+        item["price"] = locale.format_string("%.0f", int(item["price"]), grouping=True)
+    return render_template("user/compare/rating.html",min_product=min_product,list_data=list_data,similar_product=similar_product,category=g.categories)
 
 @app.route('/home/product/detail/<id>',methods=['GET'])
 def product_detail(id):
