@@ -1,4 +1,12 @@
-{% extends 'user/layout/base.html' %} 
+{% if session['user']['role'] == 'user' %}
+{% extends 'user/layout/base.html' %}
+{% else %}
+{% if "home" in request.path %}
+{% extends 'user/layout/base.html' %}
+{% else %}
+{% extends 'adminv2/layout/base.html' %}
+{% endif %}
+{% endif %}
 {% block content %}
         <!--====== App Content ======-->
         <div class="app-content">

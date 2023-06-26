@@ -1,4 +1,12 @@
-{% extends 'user/layout/base.html' %} 
+{% if session['user']['role'] == 'user' %}
+{% extends 'user/layout/base.html' %}
+{% else %}
+{% if "home" in request.path %}
+{% extends 'user/layout/base.html' %}
+{% else %}
+{% extends 'adminv2/layout/base.html' %}
+{% endif %}
+{% endif %}
 {% block content %}
         <!--====== App Content ======-->
         <div class="app-content">
@@ -13,12 +21,23 @@
                           <div class="col-lg-12 col-md-12 u-s-m-b-30">
                               <div class="empty">
                                   <div class="empty__wrap">
+                                    {{ request.path }}
+                                    {% if session['user']['role'] == 'user' %}
 
                                       <span class="empty__big-text">404</span>
 
                                       <span class="empty__text-1">Trang Web không tồn tại!</span>
 
                                       <a class="empty__redirect-link btn--e-brand" href="/">Quay Lại</a></div>
+                                    {% else %}
+                                    <div style="text-align:center">
+                                        <div class="empty__big-text" style="font-size:5rem">404</div>
+
+                                        <span class="empty__text-1">Trang Web không tồn tại!</span>
+
+                                        <a class="empty__redirect-link btn--e-brand" href="/dashboard">Quay Lại</a></div>
+                                    </div>
+                                    {% endif %}
                               </div>
                           </div>
                       </div>
