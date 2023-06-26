@@ -213,7 +213,6 @@ def crawlselenium(id):
 @login_required
 @roles_required('admin','collector')
 def crawlsave(id):
-    crawlproduct = db.crawlproducts.find_one({'_id': id})
     with open('data.json', 'r') as file:
         data = json.load(file)
 
@@ -221,8 +220,15 @@ def crawlsave(id):
         if not item["detail"]: continue
         detail = item["detail"]
         del item["detail"]
-        db.products.insert_one(item)
-        db.productdetails.insert_one(detail)
+        check_duplicate = db.products.find_one({"name": item["name"]})
+        if check_duplicate:
+            del item["_id"]
+            del detail["_id"]
+            db.products.update_one({ '_id': check_duplicate['_id'] }, { '$set': item })
+            db.productdetails.update_one({'product_id': check_duplicate["_id"]},{ '$set': detail })
+        else:
+            db.products.insert_one(item)
+            db.productdetails.insert_one(detail)
     
     with open('data.json', 'w') as json_file:
         json.dump({}, json_file)
