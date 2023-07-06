@@ -57,12 +57,11 @@
                                       <span class="pd-detail__price">{% if product.price != '0' %}{{product.price}} VNĐ{% else %}Sắp về hàng{% endif %}</span>
                               </div>
                               {% if productdetail.total_rating != 0 %}
-                              <div class="u-s-m-b-15">
-                                  <div class="pd-detail__rating gl-rating-style"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                              <div class="pd-detail__inline">
 
-                                      <span class="pd-detail__review u-s-m-l-4">
-
-                                          <a data-click-scroll="#view-review">{{productdetail.rating}} | {{productdetail.total_rating}}</a></span></div>
+                                <span class="product-o__price" style="color: #c99c18;">
+                                  rating: {{productdetail.rating}} | {{productdetail.total_rating}}
+                                </span>
                               </div>
                               {% endif %}
                               <div>
@@ -115,6 +114,9 @@
                                       <li class="nav-item">
 
                                           <a class="nav-link" data-toggle="tab" href="#pd-tag">Thông Số Kỹ Thuật</a></li>
+                                      <li class="nav-item">
+
+                                            <a class="nav-link" data-toggle="tab" href="#pd-price">Lịch sử giá</a></li>
                                   </ul>
                               </div>
                               <div class="tab-content">
@@ -150,8 +152,13 @@
                                       </div>
                                   </div>
                                   <!--====== End - Tab 2 ======-->
-                                                                    <!--====== Tab 2 ======-->
-                                  <!--====== End - Tab 2 ======-->
+                                  <div class="tab-pane" id="pd-price">
+                                    <div>
+                                        <div class="u-s-m-b-15">
+                                          <canvas id="myChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
                               </div>
                           </div>
                       </div>
@@ -211,4 +218,63 @@
           </div>
           <!--====== End - Section 1 ======-->
       </div>
+      <script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"
+      ></script>
+      <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
+      integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+      ></script>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.9/dayjs.min.js" integrity="sha512-q4Xn+ZU2K+dqJPL8a3TiyGsDa31IkR/rLt/w+fy8jLrx8TdXj0dLM1Aq4aPXnOOKxHEya/bD9DePDB2DHm4jJQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+      <script>
+        let data = []
+        const api_get_price_history = async () => {
+            await $.ajax({
+              type: "GET",
+              url: '/api/product/detail/{{product._id}}',
+              success: function (response) {
+                data = response
+              },
+              error: function (error) {
+                console.log(error)
+              },
+            });
+            let price = []
+            let labels = []
+            data.map(item => {
+                price.push(item.price)
+                time = dayjs(item.created_at).format('MM/DD')
+                labels.push(time)
+            })
+            const ctx = document.getElementById('myChart');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels.reverse(),
+                    datasets: [{
+                    label: 'biểu đồ lịch sử giá',
+                    data: price.reverse(),
+                    borderWidth: 1,
+                    borderColor: 'rgb(75, 192, 192)',
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+              });
+            }
+        $(document).ready(function () {
+            api_get_price_history() 
+        });
+      </script>
 {% endblock %}

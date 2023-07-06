@@ -7,6 +7,11 @@ from pymongo import ASCENDING, DESCENDING
 import locale, re
 locale.setlocale(locale.LC_ALL, '')
 
+@app.route('/api/product/detail/<id>')
+def api_get_price_history(id):
+    product = db.products.find_one({"_id":id})
+    return jsonify(product["price_history"]), 200
+
 @app.route('/product/list')
 @login_required
 @roles_required('admin','collector')

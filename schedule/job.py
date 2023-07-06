@@ -124,29 +124,54 @@ def my_job(jobtimer):
             data["detail"] = {}
             continue
     print(datas)
-    # for item in datas:
-    #     if not item["detail"]: continue
-    #     detail = item["detail"]
-    #     del item["detail"]
-    #     db.products.insert_one(item)
-    #     db.productdetails.insert_one(detail)
+    for item in data:
+        if not item["detail"]: continue
+        detail = item["detail"]
+        del item["detail"]
+        item["price_history"] = [
+            {
+                "price": item["price"],
+                "created_at": datetime.now()
+            }
+        ]
+        item["updated_at"] = datetime.now()
+        check_duplicate = db.products.find_one({"name": item["name"]})
+        if check_duplicate:
+            del item["_id"]
+            del detail["_id"]
+            date_object = check_duplicate["price_history"][0]["created_at"]
+            try:
+                date_object = datetime.strptime(date_object['$date'], '%Y-%m-%dT%H:%M:%S.%fZ')
+                date_object = date_object.strftime('%Y-%m-%d')
+            except:
+                date_object = date_object.strftime('%Y-%m-%d')
+            if datetime.now().strftime('%Y-%m-%d') == date_object:
+                item["price_history"] = check_duplicate["price_history"]
+            else:
+                item["price_history"] = item["price_history"] + check_duplicate["price_history"]
+            db.products.update_one({ '_id': check_duplicate['_id'] }, { '$set': item })
+            db.productdetails.update_one({'product_id': check_duplicate["_id"]},{ '$set': detail })
+        else:
+            item["created_at"] = datetime.now()
+            db.products.insert_one(item)
+            db.productdetails.insert_one(detail)
+    schedule = {
+        "message": "success",
+        "status": True,
+        "total": jobtimer["total"] + 1,
+        "updated_at": datetime.now(),
+    }
+    db.schedules.update(jobtimer["_id"], { '$set': schedule })
     driver.quit()
-    # schedule = {
-    #     "message": "success",
-    #     "status": True,
-    #     "total": jobtimer["total"] + 1,
-    #     "updated_at": datetime.now(),
-    # }
-    # db.schedules.update(jobtimer["_id"], { '$set': schedule })
   except:
     driver.quit()
-    # schedule = {
-    #     "message": "error",
-    #     "status": False,
-    #     "total": jobtimer["total"] + 1,
-    #     "updated_at": datetime.now(),
-    # }
-    # db.schedules.update(jobtimer["_id"], { '$set': schedule })
+    schedule = {
+        "message": "error",
+        "status": False,
+        "total": jobtimer["total"] + 1,
+        "updated_at": datetime.now(),
+    }
+    db.schedules.update(jobtimer["_id"], { '$set': schedule })
 
 def start_job():
     schedules = list(db.schedules.find())
