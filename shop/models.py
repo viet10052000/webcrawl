@@ -10,12 +10,14 @@ class Store:
             "link_image": request.values.get('link_image'),
             "link_url": request.values.get('link_url')
         }
+        if not request.values.get('name') or not request.values.get('link_image') or not request.values.get('link_url'):
+            return 'Dữ liệu không được để trống'
         if db.stores.find_one({'name': store['name'] }):
-            return jsonify({'error' : 'Tên cửa hàng đã tồn tại'}), 400
+            return 'Tên cửa hàng đã tồn tại'
         if db.stores.find_one({'link_url': store['link_url'] }):
-            return jsonify({'error' : 'Đường dẫn cửa hàng đã tồn tại'}), 400
-        store = db.stores.insert_one(store)
-        return store
+            return 'Đường dẫn cửa hàng đã tồn tại'
+        if db.stores.insert_one(store):
+            return 'success'
     
     def index(self):
         stores = list(db.stores.find())

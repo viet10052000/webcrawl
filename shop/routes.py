@@ -24,7 +24,10 @@ def create():
         return render_template('/adminv2/store/create.html')
     elif request.method == 'POST':
         data = Store().create()
-        return redirect('/shop/list')
+        if data == 'success':
+            return redirect('/shop/list')
+        else:
+            return render_template('/adminv2/store/create.html',data=data)
     
 @app.route('/shop/edit/<id>', methods=['GET','POST'])
 @login_required
