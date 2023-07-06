@@ -181,6 +181,6 @@ def start_job():
         except:
             continue
 
-scheduler.add_job(start_job, 'cron', hour=15, minute=2, second=30)
+scheduler.add_job(start_job, 'cron', hour=0, minute=0, second=0)
 scheduler.start()
 scheduler.print_jobs()
