@@ -6,7 +6,12 @@
     <div class="col-md-12">
       <!-- jquery validation -->
       <div class="card card-primary mt-3">
-        <div class="card-header"></div>
+        <div class="card-header">
+          {% if data %}
+          <div style="color: red;">Thêm cửa hàng không thành công</div>
+          <div style="color: red;">- {{ data }}</div>
+          {% endif %}
+        </div>
         <!-- /.card-header -->
         <div class="card-body">
           <form action="/shop/create" method="post">
