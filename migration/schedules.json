@@ -1,0 +1,29 @@
+[{
+  "_id": "798a45031bba4983976487bef91a1639",
+  "crawlproduct_id": "e6deb014cc4342768fbd55a17e9a5af1",
+  "message": "",
+  "status": false,
+  "total": 0,
+  "time_repeat": "1",
+  "updated_at": {
+    "$date": "2023-07-10T02:36:32.869Z"
+  },
+  "created_at": {
+    "$date": "2023-06-05T13:06:25.681Z"
+  },
+  "name": null
+},{
+  "_id": "e5e7743c4e69489daedcfa2b9bbca532",
+  "crawlproduct_id": "c010630f0a2847fcb79c671f7b47dac1",
+  "message": "",
+  "status": false,
+  "total": 0,
+  "time_repeat": "1",
+  "updated_at": {
+    "$date": "2023-07-10T02:36:39.832Z"
+  },
+  "created_at": {
+    "$date": "2023-06-09T15:53:45.186Z"
+  },
+  "name": null
+}]

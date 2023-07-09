@@ -1,0 +1,431 @@
+[{
+  "_id": "19cd6f92dbc34fac905b8eda0ff117fb",
+  "selector_specification_frame": ".technical-content-modal-item .modal-item-description .is-justify-content-space-between",
+  "selector_specification_name": "p",
+  "selector_specification_detail": "div",
+  "selector_specification_button": "button.button__show-modal-technical",
+  "selector_rating": ".boxReview-score p",
+  "selector_total_rating": ".boxReview-score strong",
+  "selector_description": ".cps-block-content div p",
+  "crawlproduct_id": "6a5edffdeeeb4869b4d9b6ac4f747b0c"
+},{
+  "_id": "a6f33a144f624632a7d5facb9b8417ed",
+  "selector_specification_frame": ".technical-content-modal-item .modal-item-description .is-justify-content-space-between",
+  "selector_specification_name": "p",
+  "selector_specification_detail": "div",
+  "selector_specification_button": "button.button__show-modal-technical",
+  "selector_rating": ".boxReview-score p",
+  "selector_total_rating": ".boxReview-score strong",
+  "selector_description": ".cps-block-content div p",
+  "crawlproduct_id": "675267530ba44029aaf3299fcd182a89"
+},{
+  "_id": "584dcca7787a467db9faf93a415c114f",
+  "selector_specification_frame": ".parameter__list li",
+  "selector_specification_name": ".lileft",
+  "selector_specification_detail": ".liright",
+  "selector_specification_button": "",
+  "selector_rating": ".rating-top p.point",
+  "selector_total_rating": ".rating-total",
+  "selector_description": ".content-article p",
+  "crawlproduct_id": "1a81dac8d7a548beb2924b192b33b170"
+},{
+  "_id": "2409b58b84c849a7a45ea42c0d5bebef",
+  "selector_specification_frame": ".st-pd-table tr",
+  "selector_specification_name": "td:nth-child(1)",
+  "selector_specification_detail": "td:nth-child(2)",
+  "selector_specification_button": "",
+  "selector_rating": ".star div.f-s-ui-44",
+  "selector_total_rating": ".star div.m-t-4.text",
+  "selector_description": ".st-pd-content p",
+  "crawlproduct_id": "9db147be742942f491a57bcbd6bf916e"
+},{
+  "_id": "23a91a4e96564d0a89c3e956930dd8c2",
+  "selector_specification_frame": ".st-pd-table tr",
+  "selector_specification_name": "td:nth-child(1)",
+  "selector_specification_detail": "td:nth-child(2)",
+  "selector_specification_button": "",
+  "selector_rating": ".star div.f-s-ui-44",
+  "selector_total_rating": ".star div.m-t-4.text",
+  "selector_description": ".st-pd-content p",
+  "crawlproduct_id": "b1738d0018b241079199701f6209bb11"
+},{
+  "_id": "c1ccc14d5aab49ae84a9a3f6e0169cc0",
+  "selector_specification_frame": "#panel-cau-hinh table tbody .row_item",
+  "selector_specification_name": ".left_row_item",
+  "selector_specification_detail": ".right_row_item",
+  "selector_specification_button": "",
+  "selector_rating": ".rating-counter",
+  "selector_total_rating": "",
+  "selector_description": "#owl-feature p",
+  "crawlproduct_id": "1b8b8ec8c8ca4502983844b1dcbd9c05"
+},{
+  "_id": "021da497a9b64f00baebc08eadd0cae3",
+  "selector_specification_frame": "",
+  "selector_specification_name": "",
+  "selector_specification_detail": "",
+  "selector_specification_button": "",
+  "selector_rating": "",
+  "selector_total_rating": "",
+  "selector_description": "",
+  "crawlproduct_id": "ac291b2df45e48b39d83f1ca29080f43"
+},{
+  "_id": "0e23b8bab19c4328a0a3630b4ed2ee5f",
+  "selector_specification_frame": "",
+  "selector_specification_name": "",
+  "selector_specification_detail": "",
+  "selector_specification_button": "",
+  "selector_rating": "",
+  "selector_total_rating": "",
+  "selector_description": "",
+  "crawlproduct_id": "e9bf7c497708471090b81cb907202f07"
+},{
+  "_id": "5a0244738cee43869f9ea5ae00be30d6",
+  "selector_specification_frame": ".technical-content-modal-item .modal-item-description .is-justify-content-space-between",
+  "selector_specification_name": "p",
+  "selector_specification_detail": "div",
+  "selector_specification_button": "button.button__show-modal-technical",
+  "selector_rating": ".boxReview-score p",
+  "selector_total_rating": ".boxReview-score strong",
+  "selector_description": ".cps-block-content div p",
+  "crawlproduct_id": "ffaef1f01798462189947a5d2e13d082"
+},{
+  "_id": "66e234e6e77b4b318f04aa5ba1c1f3fe",
+  "selector_specification_frame": "",
+  "selector_specification_name": "",
+  "selector_specification_detail": "",
+  "selector_specification_button": "",
+  "selector_rating": "",
+  "selector_total_rating": "",
+  "selector_description": "",
+  "crawlproduct_id": "ffaef1f01798462189947a5d2e13d082"
+},{
+  "_id": "e35d306331ed44f68fd5f8c36abf1bcf",
+  "selector_specification_frame": "#panel-cau-hinh table tbody .row_item",
+  "selector_specification_name": ".left_row_item",
+  "selector_specification_detail": ".right_row_item",
+  "selector_specification_button": "",
+  "selector_rating": ".rating-counter",
+  "selector_total_rating": "",
+  "selector_description": "#owl-feature p",
+  "crawlproduct_id": "3e13d8b0d19540db8cdde8acda70e553"
+},{
+  "_id": "88b5416cc99244ed892106a5faf2b83c",
+  "selector_specification_frame": "",
+  "selector_specification_name": "",
+  "selector_specification_detail": "",
+  "selector_specification_button": "",
+  "selector_rating": "",
+  "selector_total_rating": "",
+  "selector_description": "",
+  "crawlproduct_id": "3e13d8b0d19540db8cdde8acda70e553"
+},{
+  "_id": "8e59e9b7660f4cae8d3ab1c8e7cdeaa9",
+  "selector_specification_frame": ".specs-special ol li",
+  "selector_specification_name": "strong",
+  "selector_specification_detail": "span",
+  "selector_specification_button": "",
+  "selector_rating": "",
+  "selector_total_rating": "",
+  "selector_description": ".product-text p",
+  "crawlproduct_id": "058af368dd85490682c6145eed12f260"
+},{
+  "_id": "8a77a55e89a442c0afbbf03dc5ae78e9",
+  "selector_specification_frame": ".tb-product-spec tbody tr",
+  "selector_specification_name": ".spec-key",
+  "selector_specification_detail": ".spec-value",
+  "selector_specification_button": "",
+  "selector_rating": "",
+  "selector_total_rating": "",
+  "selector_description": ".nd p",
+  "crawlproduct_id": "be5e450236184b2489786cc17c28c567"
+},{
+  "_id": "e9ec017040494981849c8459cbd4c72e",
+  "selector_specification_frame": "",
+  "selector_specification_name": "",
+  "selector_specification_detail": "",
+  "selector_specification_button": "",
+  "selector_rating": "",
+  "selector_total_rating": "",
+  "selector_description": "",
+  "crawlproduct_id": "271c858cf208446b9f85ecfa217133ae"
+},{
+  "_id": "9c5beed366f84f968234e7acc1f4e87c",
+  "selector_specification_frame": ".technical-content-modal-item .modal-item-description .is-justify-content-space-between",
+  "selector_specification_name": "p",
+  "selector_specification_detail": "div",
+  "selector_specification_button": "button.button__show-modal-technical",
+  "selector_rating": ".boxReview-score p",
+  "selector_total_rating": ".boxReview-score strong",
+  "selector_description": ".cps-block-content div p",
+  "crawlproduct_id": "821c7538ade34fb4a6f8a5646bb4d7e2"
+},{
+  "_id": "c608a559a705495cb3d1e2bd6ab20c89",
+  "selector_specification_frame": "",
+  "selector_specification_name": "",
+  "selector_specification_detail": "",
+  "selector_specification_button": "",
+  "selector_rating": "",
+  "selector_total_rating": "",
+  "selector_description": "",
+  "crawlproduct_id": "821c7538ade34fb4a6f8a5646bb4d7e2"
+},{
+  "_id": "bf4c6e473e0e4414af1b98944bb82295",
+  "selector_specification_frame": "",
+  "selector_specification_name": "",
+  "selector_specification_detail": "",
+  "selector_specification_button": "",
+  "selector_rating": "",
+  "selector_total_rating": "",
+  "selector_description": "",
+  "crawlproduct_id": "14e14267845f467ebe7695e246a662e8"
+},{
+  "_id": "7b3e5efa3fe646b2ae0c0db19a8c8c3b",
+  "selector_specification_frame": ".parameter__list li",
+  "selector_specification_name": ".lileft",
+  "selector_specification_detail": ".liright",
+  "selector_specification_button": "",
+  "selector_rating": ".rating-top p.point",
+  "selector_total_rating": ".rating-total",
+  "selector_description": ".content-article p",
+  "crawlproduct_id": "ff7fdcb217cd46dbb9cebf286f03561f"
+},{
+  "_id": "8c9723a6960149148de1ffac071b272a",
+  "selector_specification_frame": "",
+  "selector_specification_name": "",
+  "selector_specification_detail": "",
+  "selector_specification_button": "",
+  "selector_rating": "",
+  "selector_total_rating": "",
+  "selector_description": "",
+  "crawlproduct_id": "ff7fdcb217cd46dbb9cebf286f03561f"
+},{
+  "_id": "de818a8b113549ac846fa573624d23bf",
+  "selector_specification_frame": ".parameter__list li",
+  "selector_specification_name": ".lileft",
+  "selector_specification_detail": ".liright",
+  "selector_specification_button": "",
+  "selector_rating": ".rating-top p.point",
+  "selector_total_rating": ".rating-total",
+  "selector_description": ".content-article p",
+  "crawlproduct_id": "35fbb21dd04b4cfd82c0851190ad97b7"
+},{
+  "_id": "3bb3b56f9a2f4f4f81db98f64a22cf07",
+  "selector_specification_frame": "",
+  "selector_specification_name": "",
+  "selector_specification_detail": "",
+  "selector_specification_button": "",
+  "selector_rating": "",
+  "selector_total_rating": "",
+  "selector_description": "",
+  "crawlproduct_id": "35fbb21dd04b4cfd82c0851190ad97b7"
+},{
+  "_id": "8672dd5d919e41978a9bfcd8302b7912",
+  "selector_specification_frame": "",
+  "selector_specification_name": "",
+  "selector_specification_detail": "",
+  "selector_specification_button": "",
+  "selector_rating": "",
+  "selector_total_rating": "",
+  "selector_description": "",
+  "crawlproduct_id": "ce5c1a8d6237488f9dfa46629d78d736"
+},{
+  "_id": "772f100feebb4e548eb10828ce080bf2",
+  "selector_specification_frame": ".st-pd-table tr",
+  "selector_specification_name": "td:nth-child(1)",
+  "selector_specification_detail": "td:nth-child(2)",
+  "selector_specification_button": "",
+  "selector_rating": ".star div.f-s-ui-44",
+  "selector_total_rating": ".star div.m-t-4.text",
+  "selector_description": ".st-pd-content p",
+  "crawlproduct_id": "c129a976ff9d4f989f764860f943ca50"
+},{
+  "_id": "db0346b26a774cbba2cec593a2167910",
+  "selector_specification_frame": "",
+  "selector_specification_name": "",
+  "selector_specification_detail": "",
+  "selector_specification_button": "",
+  "selector_rating": "",
+  "selector_total_rating": "",
+  "selector_description": "",
+  "crawlproduct_id": "c129a976ff9d4f989f764860f943ca50"
+},{
+  "_id": "9e8806732f9948e2a13ac6936ae9d779",
+  "selector_specification_frame": ".technical-content-modal-item .modal-item-description .is-justify-content-space-between",
+  "selector_specification_name": "p",
+  "selector_specification_detail": "div",
+  "selector_specification_button": "button.button__show-modal-technical",
+  "selector_rating": ".boxReview-score p",
+  "selector_total_rating": ".boxReview-score strong",
+  "selector_description": ".cps-block-content div p",
+  "crawlproduct_id": "4dd4ffb46e41496690bd51f0439869bd"
+},{
+  "_id": "04e084d49fc64eca85ce5274950e6ea2",
+  "selector_specification_frame": "",
+  "selector_specification_name": "",
+  "selector_specification_detail": "",
+  "selector_specification_button": "",
+  "selector_rating": "",
+  "selector_total_rating": "",
+  "selector_description": "",
+  "crawlproduct_id": "4dd4ffb46e41496690bd51f0439869bd"
+},{
+  "_id": "210e86d2dc95423592eb127475423615",
+  "selector_specification_frame": ".technical-content-modal-item .modal-item-description .is-justify-content-space-between",
+  "selector_specification_name": "p",
+  "selector_specification_detail": "div",
+  "selector_specification_button": "button.button__show-modal-technical",
+  "selector_rating": ".boxReview-score p",
+  "selector_total_rating": ".boxReview-score strong",
+  "selector_description": ".cps-block-content div p",
+  "crawlproduct_id": "e6deb014cc4342768fbd55a17e9a5af1"
+},{
+  "_id": "15038f0bd03e434ca9da2d40c2c6c20c",
+  "selector_specification_frame": "",
+  "selector_specification_name": "",
+  "selector_specification_detail": "",
+  "selector_specification_button": "",
+  "selector_rating": "",
+  "selector_total_rating": "",
+  "selector_description": "",
+  "crawlproduct_id": "e6deb014cc4342768fbd55a17e9a5af1"
+},{
+  "_id": "403d6c523213436a80f6b2da2cacbe3a",
+  "selector_specification_frame": ".text-specifi li",
+  "selector_specification_name": "strong",
+  "selector_specification_detail": "span",
+  "selector_specification_button": "",
+  "selector_rating": "",
+  "selector_total_rating": "",
+  "selector_description": ".text-detail",
+  "crawlproduct_id": "c0666a8610d245fc8e00c26128afe6dc"
+},{
+  "_id": "3847dfa4fa5f4a688be9316cef7d1dfc",
+  "selector_specification_frame": "",
+  "selector_specification_name": "",
+  "selector_specification_detail": "",
+  "selector_specification_button": "",
+  "selector_rating": "",
+  "selector_total_rating": "",
+  "selector_description": "",
+  "crawlproduct_id": "c0666a8610d245fc8e00c26128afe6dc"
+},{
+  "_id": "d024d9cfc0f54d27bc31957d125607d4",
+  "selector_specification_frame": ".parameter__list li",
+  "selector_specification_name": ".lileft",
+  "selector_specification_detail": ".liright",
+  "selector_specification_button": "",
+  "selector_rating": ".rating-top p.point",
+  "selector_total_rating": ".rating-total",
+  "selector_description": ".content-article p",
+  "crawlproduct_id": "b5162f680e84425db614499b466a9fc5"
+},{
+  "_id": "c80d711f7086401f91ec346d33edd505",
+  "selector_specification_frame": "",
+  "selector_specification_name": "",
+  "selector_specification_detail": "",
+  "selector_specification_button": "",
+  "selector_rating": "",
+  "selector_total_rating": "",
+  "selector_description": "",
+  "crawlproduct_id": "b5162f680e84425db614499b466a9fc5"
+},{
+  "_id": "9c9fcd91984b46fa99fd4f225aed1282",
+  "selector_specification_frame": ".technical-content-modal-item .modal-item-description .is-justify-content-space-between",
+  "selector_specification_name": "p",
+  "selector_specification_detail": "div",
+  "selector_specification_button": "button.button__show-modal-technical",
+  "selector_rating": ".boxReview-score p",
+  "selector_total_rating": ".boxReview-score strong",
+  "selector_description": ".cps-block-content div p",
+  "crawlproduct_id": "044141ad3e3b47e58dadb847ae286a07"
+},{
+  "_id": "b718ba332e7c4cf7b8ff96c5f4a4404e",
+  "selector_specification_frame": "",
+  "selector_specification_name": "",
+  "selector_specification_detail": "",
+  "selector_specification_button": "",
+  "selector_rating": "",
+  "selector_total_rating": "",
+  "selector_description": "",
+  "crawlproduct_id": "044141ad3e3b47e58dadb847ae286a07"
+},{
+  "_id": "5373f67da1e94b929130dfbcc88a544c",
+  "selector_specification_frame": ".parameter__list li",
+  "selector_specification_name": ".lileft",
+  "selector_specification_detail": ".liright",
+  "selector_specification_button": "",
+  "selector_rating": ".rating-top p.point",
+  "selector_total_rating": ".rating-total",
+  "selector_description": ".content-article p",
+  "crawlproduct_id": "940d850b027c41e78cf434599d48ca77"
+},{
+  "_id": "1b1d044e535e40278dc2d1eb4b55a349",
+  "selector_specification_frame": ".parameter__list li",
+  "selector_specification_name": ".lileft",
+  "selector_specification_detail": ".liright",
+  "selector_specification_button": "",
+  "selector_rating": ".rating-top p.point",
+  "selector_total_rating": ".rating-total",
+  "selector_description": ".content-article p",
+  "crawlproduct_id": "d5afc878292240da9a42f4eeee2c6f6e"
+},{
+  "_id": "0166006ad0064210967a7ec5c53bfb40",
+  "selector_specification_frame": ".parameter__list li",
+  "selector_specification_name": ".lileft",
+  "selector_specification_detail": ".liright",
+  "selector_specification_button": "",
+  "selector_rating": ".rating-top p.point",
+  "selector_total_rating": ".rating-total",
+  "selector_description": ".content-article p",
+  "crawlproduct_id": "29f0841f9f984a699434c8c371a1f866"
+},{
+  "_id": "73a47603a8cc4528b32bf53bc492130c",
+  "selector_specification_frame": ".parameter__list li",
+  "selector_specification_name": ".lileft",
+  "selector_specification_detail": ".liright",
+  "selector_specification_button": "",
+  "selector_rating": ".rating-top p.point",
+  "selector_total_rating": ".rating-total",
+  "selector_description": ".content-article p",
+  "crawlproduct_id": "72501eafeae14ef09f42be7ef81ed8be"
+},{
+  "_id": "77ecfc2861cb4884925e7bcb7a0fcf47",
+  "selector_specification_frame": ".specs-special ol li",
+  "selector_specification_name": "strong",
+  "selector_specification_detail": "span",
+  "selector_specification_button": "",
+  "selector_rating": "",
+  "selector_total_rating": "",
+  "selector_description": ".product-text p",
+  "crawlproduct_id": "f8a7d0fb648f4c9a94ac1c8893a08a03"
+},{
+  "_id": "f4cd64622b754c52a551e509a932f54e",
+  "selector_specification_frame": "tr",
+  "selector_specification_name": ".spec-name",
+  "selector_specification_detail": ".spec-value",
+  "selector_specification_button": "",
+  "selector_rating": ".rating-review",
+  "selector_total_rating": ".number-reviews",
+  "selector_description": ".seo-description",
+  "crawlproduct_id": "573fb936a9a34cec8c13ea9acf85ce02"
+},{
+  "_id": "9164b77787c7461bb0972125deecef08",
+  "selector_specification_frame": "tr",
+  "selector_specification_name": ".spec-name",
+  "selector_specification_detail": ".spec-value",
+  "selector_specification_button": "",
+  "selector_rating": ".rating-review",
+  "selector_total_rating": ".number-reviews",
+  "selector_description": ".seo-description",
+  "crawlproduct_id": "105da866965d47f3bbf7946b0e3925bf"
+},{
+  "_id": "83915b10df4d4fedae4a2bd7fa958345",
+  "selector_specification_frame": ".text-specifi li",
+  "selector_specification_name": "strong",
+  "selector_specification_detail": "span",
+  "selector_specification_button": "",
+  "selector_rating": ".point p",
+  "selector_total_rating": ".point a",
+  "selector_description": ".text-detail",
+  "crawlproduct_id": "c010630f0a2847fcb79c671f7b47dac1"
+}]
