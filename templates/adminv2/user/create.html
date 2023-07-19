@@ -7,15 +7,35 @@
         <div class="col-md-12">
           <!-- jquery validation -->
           <div class="card card-primary mt-3">
-            <div class="card-header"></div>
+            <div class="card-header">
+              {% if data %}
+              <div style="color: red;">Thêm người dùng không thành công</div>
+              <div style="color: red;">- {{ data }}</div>
+              {% endif %}
+            </div>
             <!-- /.card-header -->
             <div class="card-body">
                 <form action="/user/create" method="post">
                     <h1 class="h3 mb-3 fw-normal">Thêm Người Dùng</h1>
                 
                     <div class="form-floating mb-3">
-                        <label for="floatingInput">Tên</label>
-                        <input type="text" name="name" class="form-control">
+                        <label for="floatingInput">Họ</label>
+                        <input type="text" name="firstname" class="form-control">
+                    </div>
+                    <div class="form-floating mb-3">
+                      <label for="floatingInput">Tên</label>
+                      <input type="text" name="lastname" class="form-control">
+                    </div>
+                    <div class="form-floating mb-3">
+                      <label for="floatingInput">Ngày tháng năm sinh</label>
+                      <input name="birthday" class="form-control" type="date" id="reg-lname">
+                    </div>
+                    <div class="form-floating mb-3">
+                      <label for="floatingInput">Giới tính</label>
+                      <select name="gender" class="form-control" id="gender">
+                        <option value="male" selected>Nam</option>
+                        <option value="female">Nữ</option>
+                      </select>
                     </div>
                     <div class="form-floating mb-3">
                         <label for="floatingPassword">Email</label>

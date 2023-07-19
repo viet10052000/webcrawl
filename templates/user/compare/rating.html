@@ -221,7 +221,7 @@
             {% endfor %}
         {% endif %}
         new Chart(ctx, {
-          type: 'line',
+          type: 'bar',
           data: {
             labels: labels,
             datasets: [{
@@ -229,6 +229,8 @@
               data: rating,
               borderWidth: 1,
               borderColor: 'rgb(75, 192, 192)',
+              barPercentage: 0.6, 
+              categoryPercentage: 0.7
             }]
           },
           options: {

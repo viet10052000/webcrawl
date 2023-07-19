@@ -15,11 +15,12 @@ def userlist():
 @roles_required('admin')
 def usercreate():
     if request.method == 'GET':
-        users = list(db.users.find())
-        return render_template('adminv2/user/create.html',users=users)
+        return render_template('adminv2/user/create.html')
     elif request.method == 'POST':
         data = User().create()
-        return redirect('/user/list')
+        if 'success' in data:
+            return redirect('/user/list')
+        return render_template('adminv2/user/create.html',data=data)
     
     
 @app.route('/user/delete/<id>', methods=['GET'])

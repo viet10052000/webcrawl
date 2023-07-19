@@ -17,8 +17,14 @@ class Category:
             "description": request.values.get('description'),
             "parent_id": request.values.get('parent_id'),
         }
-        category = db.categories.insert_one(category)
-        return category
+        if not request.values.get('name'):
+            return 'Tên không được để trống'
+        if not image:
+            return 'Ảnh không được để trống'
+        if db.stores.find_one({'name': category['name'] }):
+            return 'Tên danh mục đã tồn tại'
+        if db.categories.insert_one(category):
+            return 'success'
     
     def index(self):
         lists = list(db.categories.find())

@@ -51,12 +51,14 @@ def api_category_list():
 @login_required
 @roles_required('admin','collector')
 def categorycreate():
+    categories = list(db.categories.find())
     if request.method == 'GET':
-        categories = list(db.categories.find())
         return render_template('adminv2/category/create.html',categories=categories)
     elif request.method == 'POST':
         data = Category().create()
-        return redirect('/category/list')
+        if data == 'success':
+            redirect('/category/list')
+        return render_template('adminv2/category/create.html',categories=categories,data=data)
     
 @app.route('/category/edit/<id>', methods=['GET','POST'])
 @login_required

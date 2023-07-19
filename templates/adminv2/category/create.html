@@ -7,17 +7,23 @@
       <!-- jquery validation -->
       <div class="card card-primary mt-3">
         <!-- /.card-header -->
+        <div class="card-header">
+          {% if data %}
+          <div style="color: red;">Thêm danh mục không thành công</div>
+          <div style="color: red;">- {{ data }}</div>
+          {% endif %}
+        </div>
         <div class="card-body">
           <form action="/category/create" method="post" enctype="multipart/form-data">
             <h1 class="h3 mb-3 fw-normal">Thêm Danh mục</h1>
 
             <div class="form-floating mb-3">
               <label for="floatingInput">Tên</label>
-              <input type="text" name="name" class="form-control" required/>
+              <input type="text" name="name" class="form-control"/>
             </div>
             <div class="form-floating mb-3" style="position: relative;">
               <div class="mb-2">Ảnh</div>
-              <input type="file" name="image" id="uploadInput" required>
+              <input type="file" name="image" id="uploadInput">
               <img width="150" height="150" id="previewImage" style="display: none;">     
               <span id="deleteButton" style="color: red;display: none;cursor: pointer;position: absolute;left: 145px;top: 50px;font-weight: bold">x</span> 
             </div>

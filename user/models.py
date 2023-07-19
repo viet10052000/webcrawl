@@ -7,7 +7,10 @@ class User:
     def create(self):
         user = {
             "_id": uuid.uuid4().hex,
-            "name": request.values.get('name'),
+            "firstname": request.values.get('firstname'),
+            "lastname": request.values.get('lastname'),
+            "gender": request.values.get('gender'),
+            "birthday": request.values.get('birthday'),
             "email": request.values.get('email'),
             "password": request.values.get('password'),
             "role": request.values.get('is_admin')
@@ -15,10 +18,12 @@ class User:
         
         user['password'] = pbkdf2_sha256.encrypt(user['password'])
         
+        if not user['email'] or not user['password'] or not user['firstname'] or user['lastname'] or user['gender'] or user['birthday']:
+            return 'Dữ liệu không được để trống'
         if db.users.find_one({ "email": user['email'] }):
-            return jsonify({ "error": "Email address already in use" }), 400
-        db.users.insert_one(user)
-        return user
+            return 'email đã tồn tại'
+        if db.users.insert_one(user):
+            return 'success'
             
     def index(self):
         users = list(db.users.find())
