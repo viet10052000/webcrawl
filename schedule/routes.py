@@ -20,12 +20,14 @@ def schedule_list():
 @login_required
 @roles_required('admin','collector')
 def schedule_create():
+    categories = list(db.crawlproducts.find())
     if request.method == 'GET':
-        categories = list(db.crawlproducts.find())
         return render_template('adminv2/schedule/create.html',categories=categories)
     elif request.method == 'POST':
         data = Schedule().create()
-        return redirect('/schedule/list')
+        if 'success' in data:
+            return redirect('/schedule/list')
+        return render_template('adminv2/schedule/create.html',categories=categories,data=data)
 
 @app.route('/schedule/edit/<id>', methods=['GET','POST'])
 @login_required

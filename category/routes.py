@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, jsonify
+from flask import Flask, render_template, request, redirect, jsonify, session, url_for, flash
 from app import app, login_required, roles_required, db
 from category.models import Category
 import uuid, base64, locale
@@ -57,7 +57,7 @@ def categorycreate():
     elif request.method == 'POST':
         data = Category().create()
         if data == 'success':
-            redirect('/category/list')
+            return redirect('/category/list')
         return render_template('adminv2/category/create.html',categories=categories,data=data)
     
 @app.route('/category/edit/<id>', methods=['GET','POST'])
@@ -95,5 +95,9 @@ def categoryedit(id):
 @login_required
 @roles_required('admin','collector')
 def categorydelete(id):
+    if db.crawlproducts.find_one({'category_id': id}) or db.products.find_one({'category_id': id}):
+        data = 'Không thể xóa do còn sản phẩm và trình thu thập dữ liệu liên kết danh mục'
+        flash(data)
+        return redirect('/category/list')
     lists = Category().delete(id)
     return redirect('/category/list')

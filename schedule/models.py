@@ -5,6 +5,8 @@ from datetime import datetime
 from dateutil.parser import isoparse
 class Schedule:
     def create(self):
+        if not request.values.get('time_repeat'):
+            return 'Nhập khoảng cách ngày thu thập'
         schedule = {
             "_id": uuid.uuid4().hex,
             "crawlproduct_id": request.values.get('crawlproduct_id'),       
@@ -15,8 +17,10 @@ class Schedule:
             "updated_at": datetime.now(),
             "created_at": datetime.now()
         }
-        schedule = db.schedules.insert_one(schedule)
-        return schedule
+        if db.schedules.find_one({'crawlproduct_id': category['crawlproduct_id'] }):
+            return 'Trình thu thập tự động đã tồn tại'
+        if db.schedules.insert_one(schedule):
+            return 'success'
     
     def index(self):
         schedules = list(db.schedules.find())

@@ -13,15 +13,15 @@ class User:
             "birthday": request.values.get('birthday'),
             "email": request.values.get('email'),
             "password": request.values.get('password'),
-            "role": request.values.get('is_admin')
+            "role": request.values.get('role')
         }
         
         user['password'] = pbkdf2_sha256.encrypt(user['password'])
         
-        if not user['email'] or not user['password'] or not user['firstname'] or user['lastname'] or user['gender'] or user['birthday']:
+        if not user['email'] or not user['password'] or not user['firstname'] or not user['lastname'] or not user['gender'] or not user['birthday']:
             return 'Dữ liệu không được để trống'
         if db.users.find_one({ "email": user['email'] }):
-            return 'email đã tồn tại'
+            return 'Email đã tồn tại'
         if db.users.insert_one(user):
             return 'success'
             
@@ -35,7 +35,7 @@ class User:
             "_id": id,
             "name": request.values.get('name'),
             "email": request.values.get('email'),
-            "role": request.values.get('is_admin')
+            "role": request.values.get('role')
         }
         user = db.users.update_one({ '_id': id }, { '$set': data })
         

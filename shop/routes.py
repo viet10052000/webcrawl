@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, jsonify
+from flask import Flask, render_template, request, redirect, jsonify, flash
 from app import app, login_required, roles_required, db
 from shop.models import Store
 
@@ -50,6 +50,12 @@ def edit(id):
 @login_required
 @roles_required('admin','collector')
 def delete(id):
+    if db.crawlproducts.find_one({'store_id': id}) or db.products.find_one({'store_id': id}):
+        data = 'Không thể xóa do còn sản phẩm và trình thu thập dữ liệu liên kết cửa hàng'
+        flash(data)
+        return redirect('/shop/list')
+    lists = Store().delete(id)
+    return redirect('/shop/list')
     lists = Store().delete(id)
     return redirect('/shop/list')
 

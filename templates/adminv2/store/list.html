@@ -15,6 +15,17 @@
     <!-- left column -->
     <div class="col-md-12">
       <div class="card mt-3">
+        <div class="card-header">
+          {% with messages = get_flashed_messages() %}
+            {% if messages %}
+              <div>
+              {% for message in messages %}
+                <span style="color: red;">{{ message }}</span>
+              {% endfor %}
+              </div>
+            {% endif %}
+          {% endwith %}
+        </div>
         <!-- /.card-header -->
         <div class="card-body table-responsive p-0" style="height: 80%">
           <table class="table table-head-fixed text-nowrap">

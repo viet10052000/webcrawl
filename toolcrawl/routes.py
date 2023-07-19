@@ -11,8 +11,10 @@ def createtool():
     if request.method == 'GET':
         return render_template('adminv2/tool/create.html')
     elif request.method == 'POST':
-        crawl = CrawlProduct().create()
-        return redirect('/tool/list')
+        data = CrawlProduct().create()
+        if 'success' in data:
+            return redirect('/tool/list')
+        return render_template('adminv2/tool/create.html',data=data)
 
 @app.route('/tool/list')
 @login_required

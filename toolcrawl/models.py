@@ -31,8 +31,16 @@ class CrawlProductDetail:
         return crawlproductdetail  
 class CrawlProduct:
     def create(self):
+        if not  request.values.get('name') or not  request.values.get('link_url'):
+            return 'Dữ liệu không được để trống'
+        if db.crawlproducts.find_one({'name': request.values.get('name') }):
+            return 'Tên trình thu thập đã tồn tại'
+        if db.crawlproducts.find_one({'link_url': request.values.get('link_url') }):
+            return 'link thu thập đã tồn tại ở trình thu thập khác'
         if('check' in request.form):
             crawlproduct = db.crawlproducts.find_one({'store_id': request.values.get('store_id')})
+            if not crawlproduct:
+                return 'Cửa hàng chưa có selector có sẵn'
             crawlproductdetail = db.crawlproductdetails.find_one({'crawlproduct_id': crawlproduct['_id']})
             crawl = {
                 "_id": uuid.uuid4().hex,
@@ -60,7 +68,16 @@ class CrawlProduct:
             }
             db.crawlproducts.insert_one(crawl)
             db.crawlproductdetails.insert_one(crawlproductdetail)
+            return 'success'
         else:
+            if not request.values.get('selector_frame') or not request.values.get('selector_name') or not request.values.get('selector_url'):
+                return 'Dữ liệu không được để trống'
+            if not request.values.get('selector_price') or not request.values.get('selector_link_image') or not request.values.get('selector_specification_frame'):
+                return 'Dữ liệu không được để trống'
+            if not request.values.get('selector_specification_name') or not request.values.get('selector_specification_detail') or not request.values.get('selector_description'):
+                return 'Dữ liệu không được để trống'
+            if not request.values.get('selector_rating'):
+                return 'Dữ liệu không được để trống'
             crawl = {
                 "_id": uuid.uuid4().hex,
                 "name": request.values.get('name'),
@@ -74,7 +91,6 @@ class CrawlProduct:
                 "selector_link_image": request.values.get('selector_link_image'),
                 "selector_load_page": request.values.get('selector_load_page'),
             }
-            db.crawlproducts.insert_one(crawl)
             crawlproductdetail = {
                 "_id": uuid.uuid4().hex,
                 "selector_specification_frame": request.values.get('selector_specification_frame'),
@@ -86,20 +102,9 @@ class CrawlProduct:
                 "selector_description": request.values.get('selector_description'),
                 "crawlproduct_id": crawl['_id'],
             }
+            db.crawlproducts.insert_one(crawl)
             db.crawlproductdetails.insert_one(crawlproductdetail)
-        # if 'checkjobtimer' in request.form:
-        #     schedule = {
-        #         "_id": uuid.uuid4().hex,
-        #         "crawlproduct_id": crawl['_id'],       
-        #         "message": "",
-        #         "status": False,
-        #         "total": 0,
-        #         "time_repeat": int(request.values.get('time_repeat')),
-        #         "updated_at": datetime.now(),
-        #         "created_at": datetime.now()
-        #     }
-        #     schedule = db.schedules.insert_one(schedule)
-        return crawl
+            return 'success'
     
     def index(self):
         lists = list(db.crawlproducts.find())

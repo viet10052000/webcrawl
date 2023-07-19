@@ -6,6 +6,12 @@
     <div class="col-md-12">
       <!-- jquery validation -->
       <div class="card card-primary mt-3">
+        <div class="card-header">
+          {% if data %}
+          <div style="color: red;">Thêm trình thu thập tự động không thành công</div>
+          <div style="color: red;">- {{ data }}</div>
+          {% endif %}
+        </div>
         <!-- /.card-header -->
         <div class="card-body">
           <form action="/schedule/create" method="post">
@@ -27,7 +33,7 @@
             </div>
               <div class="form-floating mb-3 col-6">
                 <label for="floatingInput">Khoảng cách ngày thu thập : </label>
-                <input type="number" min="0" name="time_repeat" class="form-control" required>
+                <input type="number" min="0" name="time_repeat" class="form-control">
               </div>
             <button class="btn btn-sm btn-primary" type="submit">Thêm</button>
           </form>
