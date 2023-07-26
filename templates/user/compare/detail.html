@@ -195,31 +195,56 @@
           <!--====== End - Section 1 ======-->
       </div>
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.9/dayjs.min.js" integrity="sha512-q4Xn+ZU2K+dqJPL8a3TiyGsDa31IkR/rLt/w+fy8jLrx8TdXj0dLM1Aq4aPXnOOKxHEya/bD9DePDB2DHm4jJQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
       <script>
+        function randomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
         const ctx = document.getElementById('myChart');
         let price = []
         let labels = []
+        let bgcolor = []
+        let date = []
         price.push(parseInt("{{min_product.price}}".replace(/,/g, "")))
         labels.push("{{min_product.store.name}}")
         {% if list_data %}
             {% for item in list_data %}
+                {% if item.updated_at['$date'] %}
+                    date.push("{{item.updated_at['$date']}}")
+                {% else %}
+                    date.push("{{item.updated_at}}")
+                {% endif %}
                 price.push("{{item.price_int}}")
                 labels.push("{{item.store.name}}")
+                bgcolor.push(randomColor())
             {% endfor %}
         {% endif %}
+        datenew = date.map(item => {
+            let i = dayjs(item).format('MM/DD')
+            return dayjs(item).format('MM/DD')
+        })
         new Chart(ctx, {
           type: 'bar',
           data: {
             labels: labels,
-            datasets: [{
-              label: 'biểu đồ giá',
-              data: price,
-              borderWidth: 1,
-              borderColor: 'rgb(75, 192, 192)',
-              barPercentage: 0.5, 
-              categoryPercentage: 0.5
-            }]
+            datasets: [
+                {
+                    type: 'bar',
+                    label: 'biểu đồ giá',
+                    data: price,
+                    borderWidth: 1,
+                    backgroundColor: bgcolor,
+                    borderColor: 'rgb(75, 192, 192)',
+                    barPercentage: 0.5, 
+                    categoryPercentage: 0.5
+                }
+            ]
           },
           options: {
             scales: {

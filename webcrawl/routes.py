@@ -86,14 +86,14 @@ def crawlselenium(id):
   crawlproductdetail = db.crawlproductdetails.find_one({"crawlproduct_id":id})
   store = db.stores.find_one({'_id': crawlproduct['store_id']})
   category = db.categories.find_one({'_id': crawlproduct['category_id']})
-  if os.getenv('LOCAL_DRIVER'):
-    options = Options()
-    options.headless = True
-    driver = webdriver.Chrome(options=options)
-  else:
-    options = Options()
-    options.headless = True
-    driver = webdriver.Firefox(options=options)
+#   if os.getenv('LOCAL_DRIVER'):
+#     options = Options()
+#     options.headless = True
+#     driver = webdriver.Chrome(options=options)
+#   else:
+  options = Options()
+  options.headless = True
+  driver = webdriver.Firefox(options=options)
   try:
     driver.get(crawlproduct['link_url'])
     while True:

@@ -209,15 +209,25 @@
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
       <script>
+        function randomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
         const ctx = document.getElementById('myChart');
         let rating = []
         let labels = []
+        let bgcolor = []
         rating.push(parseInt("{{min_product.rating.rating}}".replace(/,/g, "")))
         labels.push("{{min_product.store.name}}")
         {% if list_data %}
             {% for item in list_data %}
                 rating.push("{{item.rating.rating}}")
                 labels.push("{{item.store.name}}")
+                bgcolor.push(randomColor())
             {% endfor %}
         {% endif %}
         new Chart(ctx, {
@@ -228,6 +238,7 @@
               label: 'biểu đồ rating',
               data: rating,
               borderWidth: 1,
+              backgroundColor: bgcolor,
               borderColor: 'rgb(75, 192, 192)',
               barPercentage: 0.5, 
               categoryPercentage: 0.5
