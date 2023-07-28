@@ -215,11 +215,6 @@
         labels.push("{{min_product.store.name}}")
         {% if list_data %}
             {% for item in list_data %}
-                {% if item.updated_at['$date'] %}
-                    date.push("{{item.updated_at['$date']}}")
-                {% else %}
-                    date.push("{{item.updated_at}}")
-                {% endif %}
                 price.push("{{item.price_int}}")
                 labels.push("{{item.store.name}}")
                 bgcolor.push(randomColor())
