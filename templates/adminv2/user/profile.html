@@ -14,9 +14,13 @@
                     <h1 class="h3 mb-3 fw-normal">Trang Cá Nhân</h1>
                 
                     <div class="form-floating mb-3">
-                        <label for="floatingInput">Tên</label>
-                        <input type="text" value="{{user.name}}" class="form-control" disabled>
+                        <label for="floatingInput">Họ</label>
+                        <input type="text" value="{{user.firstname}}" class="form-control" disabled>
                     </div>
+                    <div class="form-floating mb-3">
+                      <label for="floatingInput">Tên</label>
+                      <input type="text" value="{{user.lastname}}" class="form-control" disabled>
+                  </div>
                     <div class="form-floating mb-3">
                         <label for="floatingPassword">Email</label>
                         <input type="text" value="{{user.email}}" class="form-control" disabled>

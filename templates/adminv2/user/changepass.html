@@ -14,22 +14,22 @@
                     <h1 class="h3 mb-3 fw-normal">Đổi Mật Khẩu</h1>
                     {% if user %}
                       {% if user.error %}
-                          <div style="margin-bottom: 8px;color: red;text-align: center;">{{user.error}}</div>
+                          <div style="margin-bottom: 8px;color: red;">{{user.error}}</div>
                       {% endif %}
                     {% endif %}
                     <div class="form-floating mb-3">
                         <label for="floatingPassword">Mật khẩu cũ</label>
-                        <input type="text" name="new_password" class="form-control" >
+                        <input type="password" name="old_password" class="form-control" >
                     </div>
                     <div class="form-floating mb-3">
                       <label for="floatingPassword">Mật khẩu mới</label>
-                      <input type="text" name="old_password" class="form-control" >
+                      <input type="password" name="new_password" class="form-control" >
                   </div>
                   <div class="form-floating mb-3">
                     <label for="floatingPassword">Nhập lại mật khẩu</label>
-                    <input type="text" name="confirm_password" class="form-control" >
+                    <input type="password" name="confirm_password" class="form-control" >
                 </div>
-                    <button class="btn btn-sm btn-primary" type="submit">Thêm</button>
+                    <button onclick="return confirmSubmit()" class="btn btn-sm btn-primary" type="submit">Thêm</button>
                 </form>
             </div>
             <!-- form start -->
@@ -44,4 +44,14 @@
       </div>
       <!-- /.row -->
     </div><!-- /.container-fluid -->
+    <script>
+      function confirmSubmit() {
+          var result = confirm("Bạn có chắc chắn muốn đổi mật khẩu? \nSau khi đổi mật khẩu thì hệ thống tự động đăng xuất!");
+          if (result == true) {
+              document.forms["myForm"].submit();
+          } else {
+              return false
+          }
+      }
+    </script>
 {% endblock %}

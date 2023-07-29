@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, jsonify, session, g
+from flask import Flask, render_template, request, redirect, jsonify, session, g, flash
 from app import app, login_required, roles_required, db
 from passlib.hash import pbkdf2_sha256
 from user.models import User
@@ -19,15 +19,17 @@ def usercreate():
     elif request.method == 'POST':
         data = User().create()
         if 'success' in data:
+            flash('Thêm người dùng thành công!')
             return redirect('/user/list')
-        return render_template('adminv2/user/create.html',data=data)
-    
+        flash(data)
+        return redirect('/user/create')
     
 @app.route('/user/delete/<id>', methods=['GET'])
 @login_required
 @roles_required('admin')
 def userdelete(id):
     lists = User().delete(id)
+    flash('Xóa người dùng thành công!')
     return redirect('/user/list')
 
 @app.route('/profile/admin', methods=['GET'])
@@ -50,14 +52,14 @@ def profileEdit():
         user = db.users.find_one({'_id': session['user']['_id']})
         return render_template('user/auth/editprofile.html',user=user,category=g.categories)
     elif request.method == 'POST':
-        user = db.users.find_one({'_id': session['user']['_id']})
+        user = User().find(session['user']['_id'])
         data = {
             "firstname": request.values.get('firstname'),
             "lastname": request.values.get('lastname'),
             "gender": request.values.get('gender'),
             "birthday": request.values.get('birthday'),
         }
-        db.users.update_one({ '_id': user['_id'] }, { '$set': data })
+        user = User().update(user['_id'], data)
         return redirect('/profile')
 
 @app.route('/changepassword/admin', methods=['GET','POST'])
@@ -84,7 +86,7 @@ def changePassword_admin():
                 data = {
                     "error":"Mật khẩu xác nhận không chính xác"
                 }
-                return render_template('user/auth/changepassword.html',user=data) 
+                return render_template('adminv2/user/changepass.html',user=data) 
             else:
                 data = {
                     'old_password': request.values.get('old_password'),

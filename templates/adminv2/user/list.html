@@ -16,6 +16,20 @@
     <div class="col-md-12">
       <!-- jquery validation -->
       <div class="card mt-3">
+        <div class="card-header">
+          {% with messages = get_flashed_messages() %}
+            {% if messages %}
+              <div>
+              {% for message in messages %}
+              <div id="messagealert">
+                <span style="color: rgb(35, 167, 37);">{{ message }}</span>
+                <span id="closealert" style="cursor: pointer;margin-left:20px" >x</span>
+              </div>
+              {% endfor %}
+              </div>
+            {% endif %}
+          {% endwith %}
+          </div>
         <!-- /.card-header -->
         <div class="card-body table-responsive p-0" style="height: 80%">
           <table class="table table-head-fixed text-nowrap">
@@ -64,4 +78,12 @@
   </div>
   <!-- /.container-fluid -->
 </div>
-  {% endblock %}
+<script>
+  var element = document.getElementById('closealert');
+  if (element) {
+    element.addEventListener('click', function() {
+      document.getElementById("messagealert").style.display = 'none'
+    })
+  }
+</script>
+{% endblock %}

@@ -28,15 +28,12 @@ class User:
     def index(self):
         users = list(db.users.find())
         return users
+
+    def find(self, id):
+        user = db.users.find_one({'_id': id})
+        return user
     
-    def update(self):
-        id = session['user']['_id']
-        user = {
-            "_id": id,
-            "name": request.values.get('name'),
-            "email": request.values.get('email'),
-            "role": request.values.get('role')
-        }
+    def update(self, id, data):
         user = db.users.update_one({ '_id': id }, { '$set': data })
         
     def delete(self, id):
