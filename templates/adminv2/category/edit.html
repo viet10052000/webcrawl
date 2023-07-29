@@ -6,7 +6,20 @@
     <div class="col-md-12">
       <!-- jquery validation -->
       <div class="card card-primary mt-3">
-        <div class="card-header"></div>
+        <div class="card-header">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div>
+            {% for message in messages %}
+            <div id="messagealert">
+              <span style="color: red">{{ message }}</span>
+              <span id="closealert" style="cursor: pointer;margin-left:20px" >x</span>
+            </div>
+            {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+        </div>
         <!-- /.card-header -->
         <div class="card-body">
           <form action="/category/edit/{{category._id}}" method="post"  enctype="multipart/form-data">
@@ -101,4 +114,12 @@
     uploadInput.value = ''; // Clear the file input value
   });           
 </script> 
+<script>
+  var element = document.getElementById('closealert');
+  if (element) {
+    element.addEventListener('click', function() {
+      document.getElementById("messagealert").style.display = 'none'
+    })
+  }
+</script>
 {% endblock %}

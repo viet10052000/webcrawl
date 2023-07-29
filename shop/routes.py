@@ -25,9 +25,10 @@ def create():
     elif request.method == 'POST':
         data = Store().create()
         if data == 'success':
+            flash('Thêm cửa hàng thành công')
             return redirect('/shop/list')
-        else:
-            return render_template('/adminv2/store/create.html',data=data)
+        flash(data)
+        return redirect('/shop/create')
     
 @app.route('/shop/edit/<id>', methods=['GET','POST'])
 @login_required
@@ -43,27 +44,30 @@ def edit(id):
             "link_image": request.values.get('link_image'),
             "link_url": request.values.get('link_url')        
         }
-        Store().update(id,data)
-        return redirect('/shop/list')
+        store = Store().update(id,data)
+        if 'success' in store:
+            flash('Sửa cửa hàng thành công.')
+            return redirect('/shop/list')
+        flash(store)
+        return redirect('/shop/edit/' + id)
     
 @app.route('/shop/delete/<id>', methods=['GET'])
 @login_required
 @roles_required('admin','collector')
 def delete(id):
     if db.crawlproducts.find_one({'store_id': id}) or db.products.find_one({'store_id': id}):
-        data = 'Không thể xóa do còn sản phẩm và trình thu thập dữ liệu liên kết cửa hàng'
+        data = 'Xóa cửa hàng không thành công. Không thể xóa do còn sản phẩm và trình thu thập dữ liệu liên kết cửa hàng'
         flash(data)
         return redirect('/shop/list')
     lists = Store().delete(id)
-    return redirect('/shop/list')
-    lists = Store().delete(id)
+    flash('Xóa cửa hàng thành công')
     return redirect('/shop/list')
 
 @app.route('/dashboard')
 @login_required
 @roles_required('admin','collector')
 def dashboard():
-    total_user = db["users"].count_documents({"role": "user"})
+    total_user = db["users"].count_documents({})
     total_product = db["products"].count_documents({})
     total_store = db["stores"].count_documents({})
     total_tool = db["crawlproducts"].count_documents({})

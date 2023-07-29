@@ -18,13 +18,14 @@ class Category:
             "parent_id": request.values.get('parent_id'),
         }
         if not request.values.get('name'):
-            return 'Tên không được để trống'
+            return 'Tên không được để trống.'
         if not image:
-            return 'Ảnh không được để trống'
-        if db.stores.find_one({'name': category['name'] }):
-            return 'Tên danh mục đã tồn tại'
+            return 'Ảnh không được để trống.'
+        if db.categories.find_one({'name': category['name'] }):
+            return 'Tên danh mục đã tồn tại.'
         if db.categories.insert_one(category):
             return 'success'
+        return 'Thêm danh mục không thành công'
     
     def index(self):
         lists = list(db.categories.find())
@@ -40,7 +41,16 @@ class Category:
         return lists
     
     def update(self, id, data):
-        category = db.categories.update_one({ '_id': id }, { '$set': data })
+        category = db.categories.find_one({'_id': id })
+        if not request.values.get('name'):
+            return 'Tên không được để trống.'
+        if not data["image"]:
+            return 'Ảnh không được để trống.'
+        if db.categories.find_one({'name': data['name'] }) and category["name"] != data["name"]:
+            return 'Tên danh mục đã tồn tại.'
+        if db.categories.update_one({ '_id': id }, { '$set': data }):
+            return 'success'
+        return 'Sửa danh mục không thành công'
         
     def delete(self, id):
         category = db.categories.find_one_and_delete({ '_id': id })

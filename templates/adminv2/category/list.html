@@ -26,25 +26,31 @@
     <div class="col-md-12">
       <div class="card mt-3">
         <div class="card-header">
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            <div>
-            {% for message in messages %}
-              <span style="color: red;">{{ message }}</span>
-            {% endfor %}
-            </div>
-          {% endif %}
-        {% endwith %}
+          {% with messages = get_flashed_messages() %}
+            {% if messages %}
+              <div>
+              {% for message in messages %}
+              <div id="messagealert">
+                {% if 'không thành công' in message  %}
+                  <span style="color: red">{{ message }}</span>
+                {% else %}
+                  <span style="color: rgb(35, 167, 37);">{{ message }}</span>
+                {% endif %}
+                <span id="closealert" style="cursor: pointer;margin-left:20px" >x</span>
+              </div>
+              {% endfor %}
+              </div>
+            {% endif %}
+          {% endwith %}
         </div>
         <!-- /.card-header -->
         <div class="card-body table-responsive p-0" style="height: 80%">
           <table class="table table-head-fixed text-nowrap">
             <thead>
               <tr>
-                <th>Tên</th>
-                <th>Ảnh</th>
-                <th>Danh mục cha</th>
-                <th>Số lượng sản phẩm</th>
+                <th class="col-4">Tên</th>
+                <th class="col-3">Ảnh</th>
+                <th class="col-3">Số lượng sản phẩm</th>
                 <th class="col-2"></th>
               </tr>
             </thead>
@@ -57,14 +63,6 @@
                     <img src="data:image;base64,{{ item.image }}" width="75" height="75" />
                   {% else %}
                     <img src="https://i.pinimg.com/736x/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg" width="75" height="75">
-                  {% endif %}
-                </td>
-                <td>
-                  {% if item.parent_id %} {% for list in lists %} {% if list._id
-                  == item.parent_id %}
-                  <span style="font-weight: 400">{{ list.name }}</span>
-                  {% endif %} {% endfor %} {% else %}
-                  <span style="font-weight: 400">Không có</span>
                   {% endif %}
                 </td>
                 <td>{{ item.count }}</td>
@@ -223,4 +221,12 @@
     {% endif %}
   </nav>
 </div>
+<script>
+  var element = document.getElementById('closealert');
+  if (element) {
+    element.addEventListener('click', function() {
+      document.getElementById("messagealert").style.display = 'none'
+    })
+  }
+</script>
 {% endblock %}

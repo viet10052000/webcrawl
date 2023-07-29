@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, jsonify
+from flask import Flask, render_template, request, redirect, jsonify, flash
 from app import app, login_required, roles_required
 from toolcrawl.models import CrawlProduct, CrawlProductDetail
 import uuid
@@ -13,8 +13,10 @@ def createtool():
     elif request.method == 'POST':
         data = CrawlProduct().create()
         if 'success' in data:
+            flash('Thêm trình thu thập thành công')
             return redirect('/tool/list')
-        return render_template('adminv2/tool/create.html',data=data)
+        flash(data)
+        return redirect('/tool/create')
 
 @app.route('/tool/list')
 @login_required
@@ -67,42 +69,52 @@ def edittool(id):
         detail = db.crawlproductdetails.find_one({'crawlproduct_id': id})
         return render_template('adminv2/tool/edittool.html',item=item,detail=detail,categories=categories,stores=stores)
     elif request.method == 'POST':
-        data = {
-            "name": request.values.get('name'),
-            "category_id": request.values.get('category_id'),
-            "store_id": request.values.get('store_id'),
-            "link_url": request.values.get('link'),
-            "selector_frame": request.values.get('selector_frame'),
-            "selector_name": request.values.get('selector_name'),
-            "selector_url": request.values.get('selector_url'),
-            "selector_price": request.values.get('selector_price'),
-            "selector_link_image": request.values.get('selector_link_image'),
-            "selector_load_page": request.values.get('selector_load_page'),
-        }
-        detail = db.crawlproductdetails.find_one({'crawlproduct_id': id})
-        datadetail = {
-                "_id": detail["_id"],
-                "selector_specification_frame": request.values.get('selector_specification_frame'),
-                "selector_specification_name": request.values.get('selector_specification_name'),
-                "selector_specification_detail": request.values.get('selector_specification_detail'),
-                "selector_specification_button": request.values.get('selector_specification_button'),
-                "selector_rating": request.values.get('selector_rating'),
-                "selector_total_rating": request.values.get('selector_total_rating'),
-                "selector_description": request.values.get('selector_description'),
-                "crawlproduct_id": id,
-        }
-        if detail:
-            CrawlProduct().update(id,data)
-            CrawlProductDetail().update(detail["_id"], datadetail)
-        return redirect('/tool/list')
+        # data = {
+        #     "name": request.values.get('name'),
+        #     "category_id": request.values.get('category_id'),
+        #     "store_id": request.values.get('store_id'),
+        #     "link_url": request.values.get('link'),
+        #     "selector_frame": request.values.get('selector_frame'),
+        #     "selector_name": request.values.get('selector_name'),
+        #     "selector_url": request.values.get('selector_url'),
+        #     "selector_price": request.values.get('selector_price'),
+        #     "selector_link_image": request.values.get('selector_link_image'),
+        #     "selector_load_page": request.values.get('selector_load_page'),
+        # }
+        # detail = db.crawlproductdetails.find_one({'crawlproduct_id': id})
+        # datadetail = {
+        #         "_id": detail["_id"],
+        #         "selector_specification_frame": request.values.get('selector_specification_frame'),
+        #         "selector_specification_name": request.values.get('selector_specification_name'),
+        #         "selector_specification_detail": request.values.get('selector_specification_detail'),
+        #         "selector_specification_button": request.values.get('selector_specification_button'),
+        #         "selector_rating": request.values.get('selector_rating'),
+        #         "selector_total_rating": request.values.get('selector_total_rating'),
+        #         "selector_description": request.values.get('selector_description'),
+        #         "crawlproduct_id": id,
+        # }
+        crawlproduct = CrawlProduct().update(id)
+        if 'success' in crawlproduct:
+            flash('Sửa trình thu thập thành công')
+            return redirect('/tool/list')
+        flash(crawlproduct)
+        return redirect('/tool/edit/' + id)
 
 @app.route('/tool/delete/<id>', methods=['GET'])
 @login_required
 @roles_required('admin','collector')
 def deletetool(id):
-    CrawlProduct().delete(id)
+    schedule = db.schedules.find_one({'crawlproduct_id': id})
+    if (schedule):
+        flash('Xóa trình thu thập không thành công. Không thể xóa do liên kết với trình thu thập tự động, hãy xóa tất cả trình thu thập dự động có liên quan trình thu thập này.')
+        return redirect('/tool/list')
     detail = db.crawlproductdetails.find_one({'crawlproduct_id': id})
+    CrawlProduct().delete(id)
     CrawlProductDetail().delete(detail["_id"])
-    # schedule = db.schedules.find_one({'crawlproduct_id': id})
-    # db.schedules.delete_one({"_id": schedule["_id"]})
+    if (detail):
+        CrawlProduct().delete(id)
+        CrawlProductDetail().delete(detail["_id"])
+        flash('Xóa trình thu thập thành công')
+        return redirect('/tool/list')
+    flash('Xóa trình thu thập không thành công')
     return redirect('/tool/list')

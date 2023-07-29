@@ -18,6 +18,24 @@
     <div class="col-md-12">
       <!-- jquery validation -->
       <div class="card card-primary mt-3">
+        <div class="card-header">
+          {% with messages = get_flashed_messages() %}
+            {% if messages %}
+              <div>
+              {% for message in messages %}
+              <div id="messagealert">
+                {% if 'không thành công' in message  %}
+                  <span style="color: red">{{ message }}</span>
+                {% else %}
+                  <span style="color: rgb(35, 167, 37);">{{ message }}</span>
+                {% endif %}
+                <span id="closealert" style="cursor: pointer;margin-left:20px" >x</span>
+              </div>
+              {% endfor %}
+              </div>
+            {% endif %}
+          {% endwith %}
+        </div>
         <!-- /.card-header -->
         <div class="card-body table-responsive p-0" style="height: 80%">
           <table class="table table-head-fixed text-nowrap">
@@ -79,7 +97,7 @@
                           <label class="col-sm-12 col-form-label"
                             >Bạn muốn xóa
                             <span style="font-weight: bold; color: red"
-                              >{{item.crawlproduct_id}}</span
+                              >{{item.tool.name}}</span
                             >
                             ?</label
                           >
@@ -116,5 +134,13 @@
     <!-- /.row -->
   </div>
 </div>
+<script>
+  var element = document.getElementById('closealert');
+  if (element) {
+    element.addEventListener('click', function() {
+      document.getElementById("messagealert").style.display = 'none'
+    })
+  }
+</script>
   <!-- /.container-fluid -->
 {% endblock %}

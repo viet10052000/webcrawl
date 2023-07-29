@@ -7,7 +7,20 @@
         <div class="col-md-12">
           <!-- jquery validation -->
           <div class="card card-primary mt-3">
-            <div class="card-header"></div>
+            <div class="card-header">
+              {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <div>
+                {% for message in messages %}
+                <div id="messagealert">
+                  <span style="color: red">{{ message }}</span>
+                  <span id="closealert" style="cursor: pointer;margin-left:20px" >x</span>
+                </div>
+                {% endfor %}
+                </div>
+              {% endif %}
+            {% endwith %}
+            </div>
             <!-- /.card-header -->
             <div class="card-body">
                 <form action="/tool/edit/{{item._id}}" method="post">
@@ -18,7 +31,7 @@
                           <div class="form-floating mb-3 col-6">
                             <div class="form-floating mb-3">
                               <label for="floatingInput">Tên Tool</label>
-                              <input type="text" value="{{item.name}}" name="name" class="form-control" required>
+                              <input type="text" value="{{item.name}}" name="name" class="form-control">
                             </div>
                           </div>
                           <div class="form-floating mb-3 col-6">
@@ -30,7 +43,7 @@
                     <div class="row">
                       <div class="form-floating mb-3 col-6">
                         <label for="floatingPassword">Đường Dẫn</label>
-                        <input type="text" value="{{item.link_url}}" name="link" class="form-control" >
+                        <input type="text" value="{{item.link_url}}" name="link_url" class="form-control" >
                       </div>
                       <div class="form-floating mb-3 col-6">
                         <div>Danh Mục (<a href="/category/create" target="_blank">Thêm</a>) <span class="btn btn-sm" style="cursor: pointer;" id="loadcategory"><i class="fa-solid fa-rotate-right"></i></span></div>
@@ -214,5 +227,13 @@
     myCheckbox.addEventListener("change", () => {
       myDiv.style.display = myCheckbox.checked ? "none" : "block";
     }); 
+    </script>
+    <script>
+      var element = document.getElementById('closealert');
+      if (element) {
+        element.addEventListener('click', function() {
+          document.getElementById("messagealert").style.display = 'none'
+        })
+      }
     </script>
 {% endblock %}

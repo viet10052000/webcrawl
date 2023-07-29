@@ -7,15 +7,23 @@
       <!-- jquery validation -->
       <div class="card card-primary mt-3">
         <div class="card-header">
-          {% if data %}
-          <div style="color: red;">Thêm trình thu thập tự động không thành công</div>
-          <div style="color: red;">- {{ data }}</div>
+          {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div>
+            {% for message in messages %}
+            <div id="messagealert">
+              <span style="color: red">{{ message }}</span>
+              <span id="closealert" style="cursor: pointer;margin-left:20px" >x</span>
+            </div>
+            {% endfor %}
+            </div>
           {% endif %}
+        {% endwith %}
         </div>
         <!-- /.card-header -->
         <div class="card-body">
           <form action="/schedule/create" method="post">
-            <h1 class="h3 mb-3 fw-normal">Thêm lịch thu thập tự động</h1>
+            <h1 class="h3 mb-3 fw-normal">Thêm trình thu thập tự động</h1>
             <div class="form-floating mb-3 col-6">
               <label for="floatingPassword">Tên Tool</label>
               <select
@@ -70,6 +78,14 @@
   $(document).ready(function () {
     $(".js-example-basic-single").select2();
   });
+</script>
+<script>
+  var element = document.getElementById('closealert');
+  if (element) {
+    element.addEventListener('click', function() {
+      document.getElementById("messagealert").style.display = 'none'
+    })
+  }
 </script>
 {% endblock %}
 

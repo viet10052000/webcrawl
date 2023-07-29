@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, jsonify
+from flask import Flask, render_template, request, redirect, jsonify, flash
 from app import app, login_required, roles_required, db
 from schedule.models import Schedule
 from datetime import datetime
@@ -20,14 +20,16 @@ def schedule_list():
 @login_required
 @roles_required('admin','collector')
 def schedule_create():
-    categories = list(db.crawlproducts.find())
     if request.method == 'GET':
+        categories = list(db.crawlproducts.find())
         return render_template('adminv2/schedule/create.html',categories=categories)
     elif request.method == 'POST':
         data = Schedule().create()
         if 'success' in data:
+            flash('Thêm trình thu thập tự động thành công')
             return redirect('/schedule/list')
-        return render_template('adminv2/schedule/create.html',categories=categories,data=data)
+        flash(data)
+        return redirect('/schedule/create')
 
 @app.route('/schedule/edit/<id>', methods=['GET','POST'])
 @login_required
@@ -40,16 +42,21 @@ def schedule_edit(id):
     elif request.method == 'POST':
         data = {
             "_id" : id,
-            "name": request.values.get('name'),
+            "crawlproduct_id": request.values.get('crawlproduct_id'),
             "time_repeat": request.values.get('time_repeat'),
             "updated_at": datetime.now()
         }
-        Schedule().update(id,data)
-        return redirect('/schedule/list')
+        schedule = Schedule().update(id,data)
+        if schedule == 'success':
+            flash('Sửa trình thu thập tự động thành công')
+            return redirect('/schedule/list')
+        flash(schedule)
+        return redirect('/schedule/edit/' + id)
     
 @app.route('/schedule/delete/<id>', methods=['GET'])
 @login_required
 @roles_required('admin','collector')
 def schedule_delete(id):
     lists = Schedule().delete(id)
-    return redirect('/category/list')
+    flash('Xóa trình thu thập tự động thành công')
+    return redirect('/schedule/list')

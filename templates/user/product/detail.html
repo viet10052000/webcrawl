@@ -139,12 +139,14 @@
                                             <div class="pd-table gl-scroll" style="height: 400px;overflow-y: scroll;">
                                                 <table>
                                                     <tbody>
+                                                        {% if productdetail.introduction %}
                                                         {% for key, value in productdetail.introduction.items()  %}
                                                         <tr>
                                                             <td>{{key}}</td>
                                                             <td>{{value}}</td>
                                                         </tr>
                                                         {% endfor %}
+                                                        {% endif %}
                                                     </tbody>
                                                 </table>
                                             </div>

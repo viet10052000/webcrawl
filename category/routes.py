@@ -57,8 +57,10 @@ def categorycreate():
     elif request.method == 'POST':
         data = Category().create()
         if data == 'success':
+            flash('Thêm danh mục thành công')
             return redirect('/category/list')
-        return render_template('adminv2/category/create.html',categories=categories,data=data)
+        flash(data)
+        return redirect('/category/create')
     
 @app.route('/category/edit/<id>', methods=['GET','POST'])
 @login_required
@@ -88,16 +90,21 @@ def categoryedit(id):
             image_data = image.read()
             binary_data = Binary(image_data)
             data["image"] = binary_data
-        Category().update(id,data)
-        return redirect('/category/list')
+        category = Category().update(id,data)
+        if category == 'success':
+            flash('Sửa danh mục thành công')
+            return redirect('/category/list')
+        flash(category)
+        return redirect('/category/edit/' + id)
     
 @app.route('/category/delete/<id>', methods=['GET'])
 @login_required
 @roles_required('admin','collector')
 def categorydelete(id):
     if db.crawlproducts.find_one({'category_id': id}) or db.products.find_one({'category_id': id}):
-        data = 'Không thể xóa do còn sản phẩm và trình thu thập dữ liệu liên kết danh mục'
+        data = 'Xóa danh mục không thành công. Không thể xóa do còn sản phẩm và trình thu thập dữ liệu liên kết danh mục'
         flash(data)
         return redirect('/category/list')
     lists = Category().delete(id)
+    flash('Xóa danh mục thành công')
     return redirect('/category/list')

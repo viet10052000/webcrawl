@@ -27,6 +27,7 @@
                     </div>
                     <div class="form-floating mb-3">
                       <label for="floatingPassword">Thông số</label>
+                      {% if product.detail.introduction %}
                       <div style="overflow-y: scroll;height:400px">
                         <table class="table table-responsive" >
                           <tbody>
@@ -39,7 +40,8 @@
                           </tbody>
                         </table>
                       </div>
-                  </div>
+                      {% endif %}
+                    </div>
                 </form>
             </div>
             <!-- form start -->

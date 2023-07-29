@@ -8,10 +8,18 @@
       <div class="card card-primary mt-3">
         <!-- /.card-header -->
         <div class="card-header">
-          {% if data %}
-          <div style="color: red;">Thêm danh mục không thành công</div>
-          <div style="color: red;">- {{ data }}</div>
+          {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div>
+            {% for message in messages %}
+            <div id="messagealert">
+              <span style="color: red">{{ message }}</span>
+              <span id="closealert" style="cursor: pointer;margin-left:20px" >x</span>
+            </div>
+            {% endfor %}
+            </div>
           {% endif %}
+        {% endwith %}
         </div>
         <div class="card-body">
           <form action="/category/create" method="post" enctype="multipart/form-data">
@@ -91,5 +99,13 @@
     uploadInput.value = ''; // Clear the file input value
   });           
 </script> 
+<script>
+  var element = document.getElementById('closealert');
+  if (element) {
+    element.addEventListener('click', function() {
+      document.getElementById("messagealert").style.display = 'none'
+    })
+  }
+</script>
   <!-- /.container-fluid -->
 {% endblock %}

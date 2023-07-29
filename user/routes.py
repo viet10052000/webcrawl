@@ -19,7 +19,7 @@ def usercreate():
     elif request.method == 'POST':
         data = User().create()
         if 'success' in data:
-            flash('Thêm người dùng thành công!')
+            flash('Thêm người dùng thành công')
             return redirect('/user/list')
         flash(data)
         return redirect('/user/create')
@@ -29,7 +29,7 @@ def usercreate():
 @roles_required('admin')
 def userdelete(id):
     lists = User().delete(id)
-    flash('Xóa người dùng thành công!')
+    flash('Xóa người dùng thành công')
     return redirect('/user/list')
 
 @app.route('/profile/admin', methods=['GET'])

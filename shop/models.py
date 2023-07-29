@@ -24,7 +24,16 @@ class Store:
         return stores
     
     def update(self, id, data):
-        store = db.stores.update_one({ '_id': id }, { '$set': data })
+        store = db.stores.find_one({ '_id' : id })
+        if not data['name'] or not data['link_image'] or not data['link_url']:
+            return 'Dữ liệu không được để trống.'
+        if db.stores.find_one({'name': data['name'] }) and store["name"] != data["name"]:
+            return 'Tên cửa hàng đã tồn tại.'
+        if db.stores.find_one({'link_url': data['link_url'] }) and store["link_url"] != data["link_url"]:
+            return 'Đường dẫn cửa hàng đã tồn tại.'
+        if db.stores.update_one({ '_id': id }, { '$set': data }):
+            return 'success'
+        return 'Sửa cửa hàng không thành công.'
         
     def delete(self, id):
         store = db.stores.find_one_and_delete({ '_id': id })
