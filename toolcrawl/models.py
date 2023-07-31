@@ -181,8 +181,9 @@ class CrawlProduct:
                 "selector_link_image": request.values.get('selector_link_image'),
                 "selector_load_page": request.values.get('selector_load_page'),
             }
+            data_id = db.crawlproductdetails.find_one({ 'crawlproduct_id': crawl['_id'] })
             crawlproductdetail = {
-                "_id": id,
+                "_id": data_id["_id"],
                 "selector_specification_frame": request.values.get('selector_specification_frame'),
                 "selector_specification_name": request.values.get('selector_specification_name'),
                 "selector_specification_detail": request.values.get('selector_specification_detail'),
@@ -193,7 +194,7 @@ class CrawlProduct:
                 "crawlproduct_id": crawl['_id'],
             }
             db.crawlproducts.update_one({ '_id': id }, { '$set': crawl })
-            db.crawlproductdetails.update_one({ '_id': id }, { '$set': crawlproductdetail })
+            db.crawlproductdetails.update_one({ '_id': data_id["_id"] }, { '$set': crawlproductdetail })
             return 'success'
         
     def delete(self, id):

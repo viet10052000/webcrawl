@@ -13,43 +13,45 @@ except Exception as e:
     print(e)
     
 db = client['shops']
-stores = list(db.products.find())
+stores = list(db.products.find({"store_id":"9247580264714d23afcbd1c6ab5894c5","category_id": "109fe83691614079b53722577078a70a"}))
 for item in stores:
-  print(item)
-  pricehistory = [
-    {
-      "price": item["price"],
-      "created_at": datetime.now()
-    },
-    {
-      "price": item["price"],
-      "created_at": datetime.now() - timedelta(days=1)
-    },
-    {
-      "price": item["price"],
-      "created_at": datetime.now() - timedelta(days=2)
-    },
-    {
-      "price": item["price"],
-      "created_at": datetime.now() - timedelta(days=3)
-    },
-    {
-      "price": item["price"],
-      "created_at": datetime.now() - timedelta(days=4)
-    },
-    {
-      "price": item["price"],
-      "created_at": datetime.now() - timedelta(days=5)
-    },
-    {
-      "price": item["price"],
-      "created_at": datetime.now() - timedelta(days=6)
-    }
-  ]
-  db.products.update_one({'_id': item["_id"]},{
-    "$set" : {
-      "price_history": pricehistory,
-      "updated_at" : datetime.now(),
-      "created_at" : datetime.now()
-    }
-  })
+  db.products.delete_one({"_id": item["_id"]})
+# for item in stores:
+#   print(item)
+#   pricehistory = [
+#     {
+#       "price": item["price"],
+#       "created_at": datetime.now()
+#     },
+#     {
+#       "price": item["price"],
+#       "created_at": datetime.now() - timedelta(days=1)
+#     },
+#     {
+#       "price": item["price"],
+#       "created_at": datetime.now() - timedelta(days=2)
+#     },
+#     {
+#       "price": item["price"],
+#       "created_at": datetime.now() - timedelta(days=3)
+#     },
+#     {
+#       "price": item["price"],
+#       "created_at": datetime.now() - timedelta(days=4)
+#     },
+#     {
+#       "price": item["price"],
+#       "created_at": datetime.now() - timedelta(days=5)
+#     },
+#     {
+#       "price": item["price"],
+#       "created_at": datetime.now() - timedelta(days=6)
+#     }
+#   ]
+#   db.products.update_one({'_id': item["_id"]},{
+#     "$set" : {
+#       "price_history": pricehistory,
+#       "updated_at" : datetime.now(),
+#       "created_at" : datetime.now()
+#     }
+#   })

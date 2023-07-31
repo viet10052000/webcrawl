@@ -184,6 +184,17 @@ def crawlselenium(id):
             except:
                 rating = 0
                 total_rating = 0
+            
+            if isinstance(rating, str):
+                if "/" in rating:
+                    rating = rating.split("/")[0]
+                    rating = float(rating)
+            if isinstance(total_rating, str):
+                numbers = re.findall(r'\d+', total_rating)
+                if numbers:
+                    total_rating = int(numbers[0])
+                else:
+                    total_rating = 0
             detail = {
                 "_id": uuid.uuid4().hex,
                 "product_id": data["_id"],
@@ -228,7 +239,7 @@ def crawlsave(id):
             }
         ]
         item["updated_at"] = datetime.now()
-        check_duplicate = db.products.find_one({"name": item["name"]})
+        check_duplicate = db.products.find_one({"name": item["name"],"store_id": item["store_id"]})
         if check_duplicate:
             del item["_id"]
             del detail["_id"]
