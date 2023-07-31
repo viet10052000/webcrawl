@@ -5,6 +5,7 @@ from category.models import Category
 from math import ceil
 from pymongo import ASCENDING, DESCENDING
 import locale, re
+import difflib
 locale.setlocale(locale.LC_ALL, '')
 
 @app.route('/api/product/detail/<id>')
@@ -184,6 +185,12 @@ def is_subarray_in_string(subarray, string):
 
     return subarray_set.issubset(string_set)
 
+def calculate_similarity_percentage(string1, string2):
+    matcher = difflib.SequenceMatcher(None, string1, string2)
+    similarity_ratio = matcher.ratio()
+    similarity_percentage = similarity_ratio * 100
+    return similarity_percentage
+
 @app.route('/home/product/compare/detail/<id>',methods=['GET'])
 def product_compare_detail(id):
     product = db.products.find_one({"_id":id})
@@ -202,13 +209,33 @@ def product_compare_detail(id):
             data = is_subarray_in_string(longest_substring,name)
             if data:
                 item["store"] = db.stores.find_one({"_id": item["store_id"]},{"name":1,"link_image":1})
+                ss1 = calculate_similarity_percentage(item["name"]," ".join(longest_substring))
+                item["ss"] = ss1
                 list_data.append(item)
-                price.append(item["price"])
-        for item in list_data:
+                
+        max_ss_dict = {}
+        for data_dict in list_data:
+            id_value = data_dict["store_id"]
+            ss_value = data_dict["ss"]
+            if id_value in max_ss_dict:
+                if ss_value > max_ss_dict[id_value]:
+                    max_ss_dict[id_value] = ss_value
+            else:
+                max_ss_dict[id_value] = ss_value
+
+        result_list = []
+        for data_dict in list_data:
+            id_value = data_dict["store_id"]
+            ss_value = data_dict["ss"]
+
+            if ss_value == max_ss_dict[id_value]:
+                result_list.append(data_dict)
+                price.append(data_dict["price"])      
+        for item in result_list:
             price_data = item["price"]
             if price_data == min(price):
                 min_product = item
-        list_data.remove(min_product)   
+        result_list.remove(min_product)   
     else:
         min_product = product
         min_product["store"] = db.stores.find_one({"_id": min_product["store_id"]},{"name":1,"link_image":1})
@@ -226,7 +253,7 @@ def product_compare_detail(id):
     for item in similar_product:
         item["store"] = db.stores.find_one({"_id": item["store_id"]})
         item["price"] = locale.format_string("%.0f", int(item["price"]), grouping=True)
-    return render_template("user/compare/detail.html",min_product=min_product,list_data=list_data,similar_product=similar_product,category=g.categories)
+    return render_template("user/compare/detail.html",min_product=min_product,list_data=result_list,similar_product=similar_product,category=g.categories)
 
 @app.route('/home/product/compare/rating/<id>',methods=['GET'])
 def product_compare_rating(id):
@@ -248,29 +275,39 @@ def product_compare_rating(id):
             if data:
                 item["store"] = db.stores.find_one({"_id": item["store_id"]},{"name":1,"link_image":1})
                 item["rating"] = db.productdetails.find_one({"product_id": item["_id"]},{"rating":1,"total_rating":1})
-                print(item["rating"])
-                rating_data = item["rating"]["rating"]
-                if type(rating_data) == str:
-                    if "/" in rating_data:
-                        rating_data = rating_data.split("/")[0]
-                rating_data = float(rating_data)
-                item["rating"]["rating"] = rating_data
-                rating.append(rating_data)
-                total_rating = item["rating"]["total_rating"]
-                if type(total_rating) == str:
-                    total_rating = re.findall(r'\d+', total_rating)[0]
-                total_rating = int(total_rating)
-                item["rating"]["total_rating"] = total_rating
+                ss1 = calculate_similarity_percentage(item["name"]," ".join(longest_substring))
+                item["ss"] = ss1
+                if item["rating"] == None:
+                    item["rating"] = {}
+                    item["rating"]["rating"] = 0
+                    item["rating"]["total_rating"] = 0
                 list_data.append(item)
-                price.append(item["price"])
-        print(rating)
-        for item in list_data:
+                
+        max_ss_dict = {}
+        for data_dict in list_data:
+            id_value = data_dict["store_id"]
+            ss_value = data_dict["ss"]
+            if id_value in max_ss_dict:
+                if ss_value > max_ss_dict[id_value]:
+                    max_ss_dict[id_value] = ss_value
+            else:
+                max_ss_dict[id_value] = ss_value
+
+        result_list = []
+        for data_dict in list_data:
+            id_value = data_dict["store_id"]
+            ss_value = data_dict["ss"]
+
+            if ss_value == max_ss_dict[id_value]:
+                result_list.append(data_dict)
+                rating_data = data_dict["rating"]["rating"]
+                rating.append(rating_data)
+      
+        for item in result_list:
             price_data = item["rating"]["rating"]
-            total_rating = item["rating"]["total_rating"]
             if price_data == max(rating):
                 min_product = item
-        print(list_data)
-        list_data.remove(min_product)  
+        result_list.remove(min_product)  
     else:
         min_product = product
         min_product["store"] = db.stores.find_one({"_id": min_product["store_id"]},{"name":1,"link_image":1})
@@ -288,7 +325,7 @@ def product_compare_rating(id):
     for item in similar_product:
         item["store"] = db.stores.find_one({"_id": item["store_id"]})
         item["price"] = locale.format_string("%.0f", int(item["price"]), grouping=True)
-    return render_template("user/compare/rating.html",min_product=min_product,list_data=list_data,similar_product=similar_product,category=g.categories)
+    return render_template("user/compare/rating.html",min_product=min_product,list_data=result_list,similar_product=similar_product,category=g.categories)
 
 @app.route('/home/product/detail/<id>',methods=['GET'])
 def product_detail(id):
