@@ -304,7 +304,8 @@ def product_compare_rating(id):
                 rating.append(rating_data)
       
         for item in result_list:
-            price_data = item["rating"]["rating"]
+            price_data = float(item["rating"]["rating"])
+            rating = [float(item) for item in rating if isinstance(item, (int, float)) or (isinstance(item, str) and item.replace(".", "", 1).isdigit())]
             if price_data == max(rating):
                 min_product = item
         result_list.remove(min_product)  
