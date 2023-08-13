@@ -22,10 +22,6 @@
                         <input type="text" value="{{product.price}}" class="form-control" disabled>
                     </div>
                     <div class="form-floating mb-3">
-                      <label for="floatingPassword">Giới thiệu sản phẩm</label>
-                      <textarea rows="12" cols="100" class="form-control">{{product.detail.description}}</textarea>
-                    </div>
-                    <div class="form-floating mb-3">
                       <label for="floatingPassword">Thông số</label>
                       {% if product.detail.introduction %}
                       <div style="overflow-y: scroll;height:400px">
@@ -41,6 +37,14 @@
                         </table>
                       </div>
                       {% endif %}
+                    </div>
+                    <div class="form-floating mb-3">
+                      <label for="floatingPassword">Rating</label>
+                      <input type="text" value="{{product.detail.rating}}" class="form-control" disabled>
+                    </div>
+                    <div class="form-floating mb-3">
+                      <label for="floatingPassword">Tổng rating</label>
+                      <input type="text" value="{{product.detail.total_rating}}" class="form-control" disabled>
                     </div>
                 </form>
             </div>

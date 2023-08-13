@@ -84,8 +84,11 @@
                                 </li>
                                 {% if session['user'] and session['user']['role'] != 'user' %}
                                 <li data-tooltip="tooltip" data-placement="left" title="Trang Admin">
-
-                                    <a href="/dashboard"><i class="fas fa-bars"></i></a>
+                                    {% if session['user']['role'] == 'admin' %}
+                                        <a href="/dashboard"><i class="fas fa-bars"></i></a>
+                                    {% else %}
+                                        <a href="/tool/list"><i class="fas fa-bars"></i></a>
+                                    {% endif %}
                                 </li>
                                 {% endif %}
                                   <li class="has-dropdown" data-tooltip="tooltip" data-placement="left" title="Account">

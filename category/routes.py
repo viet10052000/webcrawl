@@ -51,7 +51,7 @@ def api_category_list():
 @login_required
 @roles_required('admin','collector')
 def categorycreate():
-    categories = list(db.categories.find())
+    categories = list(db.categories.find({"parent_id":""}))
     if request.method == 'GET':
         return render_template('adminv2/category/create.html',categories=categories)
     elif request.method == 'POST':
@@ -76,7 +76,7 @@ def categoryedit(id):
             except:
                 image_base64 = base64.b64encode(category['image']).decode('ascii')
                 category["image"] = image_base64
-        categories = list(db.categories.find())
+        categories = list(db.categories.find({"parent_id":""}))
         return render_template('adminv2/category/edit.html', category=category, categories=categories)
     elif request.method == 'POST':
         data = {

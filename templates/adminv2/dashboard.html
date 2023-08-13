@@ -111,11 +111,136 @@
     </div>
   </div>
 
+    <!-- Content Row -->
+
+    <div class="row">
+      <!-- Area Chart -->
+      <div class="col-xl-6 col-lg-6">
+        <div class="mb-4">
+          <!-- Card Header - Dropdown -->
+          <div
+            class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+          >
+            <h6 class="m-0 font-weight-bold text-primary">Cửa Hàng</h6>
+          </div>
+          <!-- Card Body -->
+          <div class="card-body">
+            <div class="chart-area">
+              <canvas id="chartStore"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-6 col-lg-6">
+        <div class="mb-4">
+          <!-- Card Header - Dropdown -->
+          <div
+            class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+          >
+            <h6 class="m-0 font-weight-bold text-primary">Danh mục</h6>
+          </div>
+          <!-- Card Body -->
+          <div class="card-body">
+            <div class="chart-area">
+              <canvas id="chartCategory"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
 </div>
 <!-- /.container-fluid -->
 {% endblock %}
 {% block script %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      let data = []
+      const api_get_price_history = async () => {
+          await $.ajax({
+            type: "GET",
+            url: '/api/dashboard',
+            success: function (response) {
+              data = response
+            },
+            error: function (error) {
+              console.log(error)
+            },
+          });
+          let price = []
+          let labels = []
+          data.map(item => {
+            labels.push(item.name);
+            price.push(item.count);
+          })
+          const ctx = document.getElementById('chartStore');
+          new Chart(ctx, {
+              type: 'bar',
+              data: {
+                  labels: labels,
+                  datasets: [{
+                  data: price,
+                  label: "sản phẩm",
+                  borderWidth: 1,
+                  backgroundColor: "#4E73DF",
+                  }]
+              },
+              options: {
+                  scales: {
+                      y: {
+                          beginAtZero: true
+                      }
+                  }
+              }
+            });
+          }
+      $(document).ready(function () {
+          api_get_price_history() 
+      });
+    </script>
+    <script>
+      let data1 = []
+      const api_get_price_history1 = async () => {
+          await $.ajax({
+            type: "GET",
+            url: '/api/dashboard/category',
+            success: function (response) {
+              data1 = response
+            },
+            error: function (error) {
+              console.log(error)
+            },
+          });
+          let price = []
+          let labels = []
+          data1.map(item => {
+            labels.push(item.name);
+            price.push(item.count);
+          })
+          const ctx = document.getElementById('chartCategory');
+          new Chart(ctx, {
+              type: 'bar',
+              data: {
+                  labels: labels,
+                  datasets: [{
+                  data: price,
+                  label: "sản phẩm",
+                  borderWidth: 1,
+                  backgroundColor: "red",
+                  }]
+              },
+              options: {
+                  scales: {
+                      y: {
+                          beginAtZero: true
+                      }
+                  }
+              }
+            });
+          }
+      $(document).ready(function () {
+          api_get_price_history1() 
+      });
+    </script>
     <script src="/static/vendor/chart.js/Chart.min.js"></script>
-    <script src="/static/js/demo/chart-area-demo.js"></script>
-    <script src="/static/js/demo/chart-pie-demo.js"></script>
 {% endblock %}

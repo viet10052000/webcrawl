@@ -40,6 +40,24 @@
     <!-- left column -->
     <div class="col-md-12">
       <div class="card mt-3">
+        <div class="card-header">
+          {% with messages = get_flashed_messages() %}
+            {% if messages %}
+              <div>
+              {% for message in messages %}
+              <div id="messagealert">
+                {% if 'không thành công' in message  %}
+                  <span style="color: red">{{ message }}</span>
+                {% else %}
+                  <span style="color: rgb(35, 167, 37);">{{ message }}</span>
+                {% endif %}
+                <span id="closealert" style="cursor: pointer;margin-left:20px" >x</span>
+              </div>
+              {% endfor %}
+              </div>
+            {% endif %}
+          {% endwith %}
+        </div>
         <div class="card-body table-responsive p-0" style="height: 80%">
           {% if not lists %}
           <div style="text-align:center">Không có sản phẩm</div>
@@ -58,11 +76,68 @@
             <tbody>
               {% for item in lists %}
               <tr>
-                <td style="white-space: pre-line;"><a style="display: block;width:300px;" href="/product/detail/{{item._id}}" target="_blank">{{ item.name }}</a></td>
+                <td style="white-space: pre-line;"><a style="display: block;width:300px;" href="/product/detail/{{item._id}}">{{ item.name }}</a></td>
                 <td><img src="{{ item.store.link_image }}" width="50" height="20" />{{ item.store.name }}</td>
                 <td><img src="{{ item.link_image }}" width="75" height="75" /></td>
                 <td>{{ item.price }}</td>
+                <td>
+                  <a class="btn" href="#" data-toggle="modal" data-target="#delete_{{item._id}}">
+                    <i
+                      data-bs-toggle="tooltip"
+                      title="delete"
+                      class="fa-solid fa-trash-can text-danger"
+                    ></i>
+                  </a>
+                </td>
               </tr>
+              <div
+              class="modal fade"
+              id="delete_{{item._id}}"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="basicModal"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-hidden="true"
+                    >
+                      &times;
+                    </button>
+                  </div>
+                  <form action="/product/delete/{{item._id}}" method="get">
+                    <div class="modal-body">
+                      <div class="form-group row">
+                        <label class="col-sm-12 col-form-label"
+                          >Bạn muốn xóa
+                          <span style="font-weight: bold; color: red"
+                            >{{item.name}}</span
+                          >
+                          ?</label
+                        >
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                      >
+                        Đóng
+                      </button>
+                      <button type="submit" class="btn btn-danger">
+                        Xóa
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
               {% endfor %}
             </tbody>
           </table>
@@ -176,5 +251,13 @@
   $(document).ready(function () {
     $(".js-example-basic-single").select2();
   });
+</script>
+<script>
+  var element = document.getElementById('closealert');
+  if (element) {
+    element.addEventListener('click', function() {
+      document.getElementById("messagealert").style.display = 'none'
+    })
+  }
 </script>
 {% endblock %}

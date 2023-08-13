@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, jsonify, g
+from flask import render_template, request, redirect, jsonify, g, flash
 from app import app, login_required, roles_required, db
 from product.models import Product
 from category.models import Category
@@ -12,6 +12,21 @@ locale.setlocale(locale.LC_ALL, '')
 def api_get_price_history(id):
     product = db.products.find_one({"_id":id})
     return jsonify(product["price_history"]), 200
+
+@app.route('/product/delete/<id>', methods=['GET'])
+@login_required
+@roles_required('admin','collector')
+def deleteproduct(id):
+    product = db.products.find_one({'_id': id})
+    detail = db.productdetails.find_one({'product_id': id})
+    if product:
+        db.products.delete_one({'_id': id})
+        if detail:
+            db.productdetails.delete_one({'_id': detail['_id']})
+        flash('Xóa sản phẩm thành công')
+        return redirect('/product/list')
+    flash('Xóa sản phẩm không thành công')
+    return redirect('/product/list')
 
 @app.route('/product/list')
 @login_required

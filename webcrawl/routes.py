@@ -188,7 +188,9 @@ def crawlselenium(id):
             if isinstance(rating, str):
                 if "/" in rating:
                     rating = rating.split("/")[0]
-                    rating = float(rating)
+                if "," in rating:
+                    rating = rating.replace(",", ".").replace("\n", "")
+                rating = float(rating)
             if isinstance(total_rating, str):
                 numbers = re.findall(r'\d+', total_rating)
                 if numbers:
@@ -254,7 +256,13 @@ def crawlsave(id):
             else:
                 item["price_history"] = item["price_history"] + check_duplicate["price_history"]
             db.products.update_one({ '_id': check_duplicate['_id'] }, { '$set': item })
-            db.productdetails.update_one({'product_id': check_duplicate["_id"]},{ '$set': detail })
+            productdetails = db.productdetails.find_one({'product_id': check_duplicate["_id"]},{"_id":1})
+            db.productdetails.update_one({'_id': productdetails["_id"]},{ '$set': {
+                "description": detail["description"],
+                "introduction": detail["introduction"],
+                "rating": detail["rating"],
+                "total_rating": detail["total_rating"],  
+            }})
         else:
             item["created_at"] = datetime.now()
             db.products.insert_one(item)

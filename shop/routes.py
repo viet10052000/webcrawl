@@ -63,9 +63,29 @@ def delete(id):
     flash('Xóa cửa hàng thành công')
     return redirect('/shop/list')
 
+@app.route('/api/dashboard')
+@login_required
+@roles_required('admin')
+def dashboardapi():
+    lists = Store().index()
+    for item in lists:
+        item["count"] = db.products.count_documents({"store_id": item["_id"]})
+    return jsonify(lists), 200
+
+@app.route('/api/dashboard/category')
+@login_required
+@roles_required('admin')
+def dashboardapicate():
+    lists = list(db.categories.find({"parent_id":""},{"name":1}))
+    for item in lists:
+        cate = list(db.categories.find({"parent_id": item["_id"]},{"_id":1}))
+        ids = [doc['_id'] for doc in cate]
+        item["count"] = db.products.count_documents({"category_id": {"$in": ids}})
+    return jsonify(lists), 200
+
 @app.route('/dashboard')
 @login_required
-@roles_required('admin','collector')
+@roles_required('admin')
 def dashboard():
     total_user = db["users"].count_documents({})
     total_product = db["products"].count_documents({})

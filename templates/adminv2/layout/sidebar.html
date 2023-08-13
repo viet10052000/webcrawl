@@ -21,18 +21,20 @@
       <span>Về Trang Home</span></a
     >
   </li>
+  {% if session['user']['name'] == 'admin' %}
   <li class="nav-item {% if request.path == '/dashboard' %} active {% endif %}">
     <a class="nav-link" href="/dashboard">
       <i class="fas fa-fw fa-tachometer-alt"></i>
-      <span>Dashboard</span></a
+      <span>Thống kê</span></a
     >
   </li>
+  {% endif %}
 
   <!-- Divider -->
   <hr class="sidebar-divider" />
 
   <!-- Heading -->
-  <div class="sidebar-heading">Quản Lý Crawl</div>
+  <div class="sidebar-heading">Quản Lý Trình thu thập</div>
   <!-- Nav Item - Charts -->
   <li class="nav-item {% if request.path == '/tool/list' %} active {% endif %}">
     <a class="nav-link" href="/tool/list">
@@ -76,6 +78,7 @@
   </li>
 
   <!-- Divider -->
+  {% if session['user']['name'] == 'admin' %}
   <hr class="sidebar-divider d-none d-md-block" />
 
   <div class="sidebar-heading">Quản lý Người Dùng</div>
@@ -87,6 +90,7 @@
       <span>Người Dùng</span></a
     >
   </li>
+  {% endif %}
 
 
   <!-- Sidebar Toggler (Sidebar) -->
